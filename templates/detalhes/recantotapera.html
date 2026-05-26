@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recanto da Tapera - Detalhes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+</head>
+<body class="body-conteudo pagina-detalhe">
+
+    <header>
+        <div class="logo">Memória Potiguar</div>
+        <nav>
+            <a href="/index">Início</a>
+            <a href="/categorias">Categorias</a>
+            <a href="/login" class="logout">Sair</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <main class="detalhe-container">
+        <h1 class="detalhe-titulo">Recanto da Tapera</h1>
+        <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
+
+        <section class="galeria-secao">
+            <h2>Galeria do Lugar</h2>
+            <div class="galeria-grid">
+                <img src="{{ url_for('static', filename='img/taapera.jpg') }}" alt="Foto 1">
+                <img src="{{ url_for('static', filename='img/taapera.jpg') }}" alt="Foto 2"> 
+                <img src="{{ url_for('static', filename='img/taapera.jpg') }}" alt="Foto 3">
+            </div>
+        </section>
+
+        <section class="info-secao">
+            <h2>História e Cultura</h2>
+            <p>O Recanto da Tapera faz da gastronomia uma extensão da sua própria história, servindo o autêntico sabor do Seridó. O cardápio foca na culinária afetiva, com pratos regionais que resgatam o tempero das famílias sertanejas.</p>
+            <p>Adicione aqui mais detalhes históricos, curiosidades, pratos principais e a importância cultural que o estabelecimento carrega na região potiguar.</p>
+        </section>
+
+        <section class="info-secao">
+            <h2>Localização</h2>
+            <p><strong>Endereço:</strong> Zona Rural, Caicó - RN (Insira o endereço exato aqui)</p>
+            <div class="mapa-placeholder">
+                <p>Espaço reservado para o mapa de localização.</p>
+            </div>
+        </section>
+
+        <a href="javascript:history.back()" class="btn">← Voltar</a>
+    </main>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+</body>
+</html>

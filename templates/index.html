@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memória Potiguar - Início</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="logo">Memória Potiguar</div>
+        <nav>
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/login" class="Adm">Administração</a>
+            <a href="/login" class="logout">Sair</a>
+
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <section class="carousel principal-carousel">
+        <img src="{{ url_for('static', filename='img/recanto2.jpg') }}" alt="Banner 1">
+        <img src="{{ url_for('static', filename='img/Gastrobar.jpg') }}" alt="Banner 2">
+        <img src="{{ url_for('static', filename='img/castelo.jpg') }}" alt="Banner 3">
+
+        <div class="carousel-text">
+            <h1>Descubra o RN</h1>
+            <p>Explore histórias, cultura e lugares incríveis do Rio Grande do Norte.</p>
+        </div>
+    </section>
+
+    <section class="section-categories-large">
+        
+        <div class="large-card">
+            <div class="large-card-img">
+                <img src="{{ url_for('static', filename='img/historia.jpg') }}" alt="Histórico">
+            </div>
+            <div class="large-card-content">
+                <h2>Histórico</h2>
+                <p>Viaje no tempo conhecendo os monumentos, os marcos da colonização, as memórias esquecidas e o passado que desenhou as linhas e a identidade do povo potiguar através dos séculos.</p>
+                <a href="/historia" class="btn-large-card">Ver mais</a>
+            </div>
+        </div>
+
+        <div class="large-card reverse"> 
+            <div class="large-card-img">
+                <img src="{{ url_for('static', filename='img/cutural1.png') }}" alt="Cultural">
+            </div>
+            <div class="large-card-content">
+                <h2>Cultural</h2>
+                <p>Mergulhe de cabeça nas nossas ricas manifestações artísticas, no autêntico artesanato feito à mão, no folclore pulsante e nas expressões únicas que dão vida e movimento à nossa terra.</p>
+                <a href="/cultural" class="btn-large-card">Ver mais</a>
+            </div>
+        </div>
+
+        <div class="large-card">
+            <div class="large-card-img">
+                <img src="{{ url_for('static', filename='img/gastronomico1.png') }}" alt="Gastronômico">
+            </div>
+            <div class="large-card-content">
+                <h2>Gastronômico</h2>
+                <p>Saboreie a legítima e marcante culinária sertaneja e litorânea. Uma mesa posta cheia de temperos fortes, histórias de herança e ingredientes nativos que oferecem uma verdadeira viagem de sabores.</p>
+                <a href="/gastronomia" class="btn-large-card">Ver mais</a>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="carousel segundo-carousel">
+        <img src="{{ url_for('static', filename='img/museu_caicó.jpg') }}" alt="Galeria 1">
+        <img src="{{ url_for('static', filename='img/Igreja_Matriz_de_Nossa_Senhora_dos_Remédios.jpg') }}" alt="Galeria 2">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Galeria 3">
+        
+        <div class="carousel-text">
+            <h2>Registros Potiguares</h2>
+            <p>Paisagens e memórias capturadas pelo tempo.</p>
+        </div>
+    </section>
+
+    <section class="tribute-section">
+        <div class="tribute-container">
+            <span class="tribute-tag">Homenagem Especial</span>
+            <h2>Velha Barra de Santana</h2>
+            <h3>A Cidade Submersa pelas Águas</h3>
+            <p>
+                Um capítulo de profunda nostalgia e história no coração do Seridó. A Velha Barra de Santana hoje descansa sob as águas, mas sua memória permanece viva na mente de seu povo. Recordar suas ruas, sua capela e sua história é trazer à tona a identidade de uma comunidade que cedeu seu chão para dar lugar ao progresso, mas que nunca deixou suas verdadeiras raízes afundarem.
+            </p>
+            <a href="/sobre" class="btn-tribute">Conhecer essa História →</a>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 Memória Potiguar
+    </footer>
+
+</body>
+</html>

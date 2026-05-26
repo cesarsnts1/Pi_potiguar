@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memória Potiguar - Sobre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="logo">Memória Potiguar</div>
+        <nav>
+            <a href="/index">Início</a>
+            <a href="/categorias">Categorias</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/login" class="logout">Sair</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <div class="container-sobre">
+
+        <h1>Sobre o Projeto</h1>
+
+        <p>O <strong>Memória Potiguar</strong> é um projeto desenvolvido com o objetivo de valorizar, preservar e divulgar a rica história e cultura do Rio Grande do Norte. Através de uma plataforma digital acessível e intuitiva, buscamos conectar pessoas às suas origens.</p>
+
+        <p>A iniciativa surgiu da união de estudantes interessados em tecnologia e cultura, que identificaram a necessidade de um espaço dedicado à memória histórica da região. Assim, o projeto reúne conteúdos relacionados à história, ao turismo e à gastronomia.</p>
+
+        <p>Mais do que um site informativo, o <strong>Memória Potiguar</strong> se propõe a ser um ambiente de valorização cultural, incentivando o conhecimento, o reconhecimento e o orgulho das tradições locais.</p>
+
+        <h2>Equipe de Desenvolvedores</h2>
+
+        <div class="devs-flex">
+
+            <div class="dev">
+                <img src="{{ url_for('static', filename='img/icaro.png') }}">
+                <h3>Icaro Emanuel</h3>
+                <span>Backend e banco de dados</span>
+            </div>
+
+            <div class="dev">
+                <img src="{{ url_for('static', filename='img/cesar.png') }}">
+                <h3>César Santos</h3>
+                <span>Front-end e design</span>
+            </div>
+
+            <div class="dev">
+                <img src="{{ url_for('static', filename='img/jacioneide.png') }}">
+                <h3>Jacioneide Michelle</h3>
+                <span>Lógica, integração e backend </span>
+            </div>
+
+            <div class="dev">
+                <img src="{{ url_for('static', filename='img/lidia.png') }}">
+                <h3>Lídia Maria</h3>
+                <span>Front-end</span>
+            </div>
+
+            <div class="dev">
+                <img src="{{ url_for('static', filename='img/felipe.png') }}">
+                <h3>Felipe Gabriel</h3>
+                <span>Front-end</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+</body>
+</html>

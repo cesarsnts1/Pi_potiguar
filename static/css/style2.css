@@ -1,0 +1,100 @@
+/* ==========================================================================
+   EFEITO DE BOTÃO NAS IMAGENS DOS CARDS ORIGINAIS
+   ========================================================================== */
+   .link-imagem {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.link-imagem img {
+    transition: transform 0.4s ease, filter 0.3s ease;
+}
+
+/* Quando passa o mouse na imagem antiga, ela faz um efeito de "botão clicável" */
+.link-imagem:hover img {
+    transform: scale(1.06);
+    filter: brightness(0.9);
+}
+
+/* ==========================================================================
+   ESTILOS ISOLADOS PARA AS NOVAS PÁGINAS DE DETALHES
+   ========================================================================== */
+.pagina-detalhe .detalhe-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.pagina-detalhe .detalhe-titulo {
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    margin-bottom: 5px;
+}
+
+.pagina-detalhe .detalhe-subtitulo {
+    font-size: 1.1rem;
+    color: #fde68a;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+.pagina-detalhe .info-secao, 
+.pagina-detalhe .galeria-secao {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.pagina-detalhe h2 {
+    color: #662c09;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f5e6d3;
+    padding-bottom: 8px;
+}
+
+.pagina-detalhe p {
+    line-height: 1.7;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+}
+
+/* Grid da Galeria (Exibe até 3 itens lindamente lado a lado) */
+.pagina-detalhe .galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.pagina-detalhe .galeria-grid img,
+.pagina-detalhe .galeria-grid video {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* Área do Mapa */
+.pagina-detalhe .mapa-placeholder {
+    width: 100%;
+    height: 250px;
+    background: #eee3d5;
+    border: 2px dashed #662c09;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    color: #662c09;
+    font-weight: 500;
+}
+
+.pagina-detalhe .btn {
+    margin: 20px 0; /* Alinha o botão de voltar dentro do container */
+}

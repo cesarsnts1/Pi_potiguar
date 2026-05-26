@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural - Memória Potiguar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="body-conteudo">
+
+    <header>
+        <div class="logo">Memória Potiguar</div>
+        <nav>
+            <a href="/index">Início</a>
+            <a href="/categorias">Categorias</a>
+            <a href="/login" class="logout">Sair</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <div class="faixa-imagem">
+         <img src="{{ url_for('static', filename='img/cutural1.png') }}">
+    </div>
+
+    
+        <section class="container-flex-cards">
+
+            <div class="card">
+                <a href="/detalhe/torneioleite" class="link-imagem">
+                    <img src="{{ url_for('static', filename='img/torneioleite.png') }}">
+                </a>
+                <div class="card-content">
+                    <h3>Festa da Colheita e Torneio Leiteiro</h3>
+                    <p>A Festa da Colheita e o Torneio Leiteiro de Cruzeta, no Rio Grande do Norte, celebram a força do homem do campo e a abundância do sertão...</p>
+                </div>
+            </div>
+    
+            <div class="card">
+                <a href="/detalhe/filarmonica" class="link-imagem">
+                    <img src="{{ url_for('static', filename='img/filarmonica.jpg') }}">
+                </a>
+                <div class="card-content">
+                    <h3>Filarmônica de Cruzeta</h3>
+                    <p>A Filarmônica de Cruzeta, também conhecida como Filarmônica 24 de Outubro, é uma instituição musical que transforma vidas...</p>
+                </div>
+            </div>
+    
+            <div class="card">
+                <a href="/detalhe/casacultura" class="link-imagem">
+                    <img src="{{ url_for('static', filename='img/casacultura.png') }}">
+                </a>
+                <div class="card-content">
+                    <h3>Casa de Cultura</h3>
+                    <p>A Casa da Cultura de Caicó, também conhecida como Sobrado do Padre Brito Guerra, é um dos mais importantes patrimônios...</p>
+                </div>
+            </div>
+    
+            <div class="card">
+                <a href="/detalhe/museuserido" class="link-imagem">
+                    <img src="{{ url_for('static', filename='img/museuserido.png') }}">
+                </a>
+                <div class="card-content">
+                    <h3>Museu do Seridó</h3>
+                    <p>O Museu do Seridó, vinculado à Universidade Federal do Rio Grande do Norte, é uma importante instituição histórica e cultural...</p>
+                </div>
+            </div>
+    
+            <div class="card">
+                <a href="/detalhe/artesanato" class="link-imagem">
+                    <img src="{{ url_for('static', filename='img/artesanato.png') }}">
+                </a>
+                <div class="card-content">
+                    <h3>Centro de Artesanato de Jucurutu</h3>
+                    <p>Situado na Rua Professor João Bezerra, no coração do município, o Centro de Artesanato de Jucurutu (RN) surge como um importante equipamento...</p>
+                </div>
+            </div>
+    
+            <div class="card">
+                <a href="/detalhe/casapedra" class="link-imagem">
+                    <img src="{{ url_for('static', filename='img/casapedra.png') }}">
+                </a>
+                <div class="card-content">
+                    <h3>Casa de Pedra</h3>
+                    <p>A Casa de Pedra de Jucurutu, também conhecida como Pedra do Navio, é uma formação geológica esculpida pela natureza...</p>
+                </div>
+            </div>
+    
+        </section>
+
+   
+
+    <a href="/categorias" class="btn">← Voltar para Categorias</a>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+</body>
+</html>

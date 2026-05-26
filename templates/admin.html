@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memória Potiguar - Painel de Administração</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style3.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="logo">Memória Potiguar</div>
+        <nav>
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/admin" class="Adm">Administração</a>
+            <a href="/logout" class="logout">Sair</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <main class="admin-container">
+        
+        <div id="successAlert" class="alert-success-potiguar hidden">
+            <strong>Sucesso!</strong> O novo lugar foi cadastrado com êxito na Memória Potiguar.
+        </div>
+
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h2>Adicionar Novo Lugar Histórico</h2>
+                <p>Insira as informações para registrar um novo ponto de cultura, história ou gastronomia no RN.</p>
+            </div>
+
+            <form id="placeForm" method="POST" action="/adicionar-lugar" class="form-potiguar">
+                
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label for="placeName">Nome do Lugar *</label>
+                        <input type="text" id="placeName" name="nome" required placeholder="Ex: Capela de Santana, Engenho Novo..." class="input-potiguar">
+                    </div>
+                    
+                    <div class="form-group flex-1">
+                        <label for="placeCategory">Categoria *</label>
+                        <select id="placeCategory" name="categoria" required class="input-potiguar select-potiguar">
+                            <option value="">Selecione...</option>
+                            <option value="historico">Histórico</option>
+                            <option value="cultural">Cultural</option>
+                            <option value="gastronomico">Gastronômico</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="placeAddress">Endereço / Localização *</label>
+                    <input type="text" id="placeAddress" name="endereco" required placeholder="Ex: Zona Rural, Caicó - RN" class="input-potiguar">
+                </div>
+
+                <div class="form-group">
+                    <label for="placeDesc">História / Descrição do Lugar *</label>
+                    <textarea id="placeDesc" name="descricao" rows="6" required placeholder="Escreva aqui os detalhes históricos, memórias e relevância cultural deste local..." class="input-potiguar textarea-potiguar"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="placeImg">URL da Imagem ou Caminho *</label>
+                    <input type="text" id="placeImg" name="imagem" required placeholder="Ex: img/novolugar.jpg" class="input-potiguar">
+                </div>
+
+                <div class="form-actions-potiguar">
+                    <a href="/index" class="btn-cancelar">Cancelar</a>
+                    <button type="submit" class="btn-enviar-potiguar">Registrar Lugar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        © 2026 Memória Potiguar
+    </footer>
+
+    <script>
+        document.getElementById('placeForm').addEventListener('submit', function(e) {
+            // Nota: Quando o Flask estiver salvando no banco de dados, comente a linha abaixo
+            e.preventDefault(); 
+            
+            const alertBox = document.getElementById('successAlert');
+            alertBox.classList.remove('hidden');
+            this.reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => { alertBox.classList.add('hidden'); }, 4000);
+        });
+    </script>
+</body>
+</html>

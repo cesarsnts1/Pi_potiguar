@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memória Potiguar - Cadastro / Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="body-cadastro">
+
+    <div class="container-cadastro">
+        <h2>Entrar no Painel</h2>
+        
+        <form method="POST" action="{{ url_for('cadastro') }}">
+            <input type="text" name="username" placeholder="Usuário ou E-mail" required>
+            
+            <input type="password" name="password" placeholder="Sua Senha" required>
+            
+            <button type="submit">Acessar Sistema</button>
+        </form>
+
+        <p>Esqueceu as credenciais? <a href="/sobre">Saiba mais sobre o projeto</a></p>
+        <p><a href="/index">← Voltar para o Início</a></p>
+    </div>
+
+</body>
+</html>

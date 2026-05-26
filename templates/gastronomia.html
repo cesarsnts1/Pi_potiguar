@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gastronomia - Memória Potiguar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="body-conteudo">
+
+    <header>
+        <div class="logo">Memória Potiguar</div>
+        <nav>
+            <a href="/index">Início</a>
+            <a href="/categorias">Categorias</a>
+            <a href="/login" class="logout">Sair</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <div class="faixa-imagem">
+        <img src="{{ url_for('static', filename='img/gastronomico1.png') }}">
+    </div>
+
+    <section class="container-flex-cards">
+
+        <div class="card">
+            <a href="/detalhe/recantotapera" class="link-imagem">
+                <img src="{{ url_for('static', filename='img/taapera.jpg') }}">
+            </a>
+            <div class="card-content">
+                <h3>Recanto da Tapera</h3>
+                <p>O Recanto da Tapera faz da gastronomia uma extensão da sua própria história, servindo o autêntico sabor do Seridó...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <a href="/detalhe/gastrobar" class="link-imagem">
+                <img src="{{ url_for('static', filename='img/Gastrobar.jpg') }}">
+            </a>
+            <div class="card-content">
+                <h3>Gastrobar</h3>
+                <p>A gastronomia do Gastrobar, na Serra do João do Vale, é uma celebração da regionalidade com sofisticação...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <a href="/detalhe/pracatrailers" class="link-imagem">
+                <img src="{{ url_for('static', filename='img/Trailers.jpg') }}">
+            </a>
+            <div class="card-content">
+                <h3>Praça dos Trailers</h3>
+                <p>A Praça dos Trailers é o ponto de encontro mais democrático de Caicó, onde a vida urbana pulsa ao redor da gastronomia de rua...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <a href="/detalhe/temperoterra" class="link-imagem">
+                <img src="{{ url_for('static', filename='img/terra.jpg') }}">
+            </a>
+            <div class="card-content">
+                <h3>Tempero da Terra</h3>
+                <p>O restaurante Tempero da Terra, em Caicó, é uma das principais referências em comida regional e caseira da cidade...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <a href="/detalhe/mozafla" class="link-imagem">
+                <img src="{{ url_for('static', filename='img/mozafla.jpg') }}">
+            </a>
+            <div class="card-content">
+                <h3>Mozafla Restaurante</h3>
+                <p>O Mozafla Restaurante, em Cruzeta, é a principal referência quando o assunto é o sabor autêntico da comida caseira...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <a href="/detalhe/restaurantezorro" class="link-imagem">
+                <img src="{{ url_for('static', filename='img/zorro.jpg') }}">
+            </a>
+            <div class="card-content">
+                <h3>Restaurante do Zorro</h3>
+                <p>O Restaurante do Zorro, em Jucurutu, é uma das referências mais tradicionais quando se busca a verdadeira culinária regional...</p>
+            </div>
+        </div>
+
+    </section>
+
+    <a href="/categorias" class="btn">← Voltar para Categorias</a>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+</body>
+</html>
