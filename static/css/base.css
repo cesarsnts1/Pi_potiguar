@@ -1,0 +1,106 @@
+/* ==========================================================================
+   CONFIGURAÇÕES GERAIS E RESET
+   ========================================================================== */                                        
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5e6d3; /* Tom creme padrão */
+    color: #3d2b1f;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Marca d'água decorativa de fundo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 550px;
+    height: 550px;
+    background: url("/static/img/fundo.png") no-repeat center;
+    background-size: contain;
+    transform: translate(-50%, -50%);
+    opacity: 0.04;
+    z-index: -1;
+}
+
+/* ==========================================================================
+   HEADER (BARRA DO TOPO FIXA)
+   ========================================================================== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: #662c09;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 20px;
+    color: white;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #fde68a;
+}
+
+.logout {
+    background: #c18d6a;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.Adm {
+    background: #c18d6a;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.spacer {
+    height: 80px; /* Impede que o conteúdo suma sob o header */
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+footer {
+    text-align: center;
+    padding: 25px;
+    background: #662c09;
+    color: white;
+}
+
+/* RESPONSIVIDADE DO HEADER */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    nav a {
+        margin: 0 10px;
+    }
+}

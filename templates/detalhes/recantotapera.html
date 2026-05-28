@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Recanto da Tapera - Detalhes</title>
+
+    <!-- Fonte -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
-</head>
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/conteudo.css">
+
 <body class="body-conteudo pagina-detalhe">
 
+    <!-- HEADER -->
     <header>
         <div class="logo">Memória Potiguar</div>
+
         <nav>
             <a href="/index">Início</a>
             <a href="/categorias">Categorias</a>
@@ -21,36 +28,83 @@
 
     <div class="spacer"></div>
 
+    <!-- CONTEÚDO -->
     <main class="detalhe-container">
-        <h1 class="detalhe-titulo">Recanto da Tapera</h1>
-        <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
 
+        <h1 class="detalhe-titulo">
+            Recanto da Tapera
+        </h1>
+
+        <p class="detalhe-subtitulo">
+            O autêntico sabor e tradição do Seridó
+        </p>
+
+        <!-- GALERIA -->
         <section class="galeria-secao">
+
             <h2>Galeria do Lugar</h2>
+
             <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/taapera.jpg') }}" alt="Foto 1">
-                <img src="{{ url_for('static', filename='img/taapera.jpg') }}" alt="Foto 2"> 
-                <img src="{{ url_for('static', filename='img/taapera.jpg') }}" alt="Foto 3">
+
+                <img 
+                    src="{{ url_for('static', filename='img/taapera.jpg') }}" 
+                    alt="Foto 1"
+                >
+
+                <img 
+                    src="{{ url_for('static', filename='img/taapera.jpg') }}" 
+                    alt="Foto 2"
+                >
+
+                <img 
+                    src="{{ url_for('static', filename='img/taapera.jpg') }}" 
+                    alt="Foto 3"
+                >
+
             </div>
         </section>
 
+        <!-- HISTÓRIA -->
         <section class="info-secao">
+
             <h2>História e Cultura</h2>
-            <p>O Recanto da Tapera faz da gastronomia uma extensão da sua própria história, servindo o autêntico sabor do Seridó. O cardápio foca na culinária afetiva, com pratos regionais que resgatam o tempero das famílias sertanejas.</p>
-            <p>Adicione aqui mais detalhes históricos, curiosidades, pratos principais e a importância cultural que o estabelecimento carrega na região potiguar.</p>
+
+            <p>
+                O Recanto da Tapera faz da gastronomia uma extensão da sua
+                própria história, servindo o autêntico sabor do Seridó.
+            </p>
+
+            <p>
+                O cardápio valoriza a culinária afetiva e os pratos regionais,
+                resgatando o tempero das famílias sertanejas.
+            </p>
+
         </section>
 
+        <!-- LOCALIZAÇÃO -->
         <section class="info-secao">
+
             <h2>Localização</h2>
-            <p><strong>Endereço:</strong> Zona Rural, Caicó - RN (Insira o endereço exato aqui)</p>
+
+            <p>
+                <strong>Endereço:</strong>
+                Zona Rural, Caicó - RN
+            </p>
+
             <div class="mapa-placeholder">
                 <p>Espaço reservado para o mapa de localização.</p>
             </div>
+
         </section>
 
-        <a href="javascript:history.back()" class="btn">← Voltar</a>
+        <!-- BOTÃO -->
+        <a href="javascript:history.back()" class="btn">
+            ← Voltar
+        </a>
+
     </main>
 
+    <!-- FOOTER -->
     <footer>
         © 2026 Memória Potiguar | IFRN - Caicó
     </footer>

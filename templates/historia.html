@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>História - Memória Potiguar</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+    
 </head>
 <body class="body-conteudo">
 
@@ -13,8 +15,10 @@
         <div class="logo">Memória Potiguar</div>
         <nav>
             <a href="/index">Início</a>
-            <a href="/categorias">Categorias</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/login" class="Adm">Administração</a>
             <a href="/login" class="logout">Sair</a>
+
         </nav>
     </header>
 

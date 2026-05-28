@@ -4,92 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memória Potiguar - Painel de Administração</title>
+
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style3.css') }}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
+
 <body>
 
+    <!-- HEADER -->
     <header>
         <div class="logo">Memória Potiguar</div>
+
         <nav>
-            <a href="/index">Início</a>
-            <a href="/sobre">Sobre</a>
-            <a href="/admin" class="Adm">Administração</a>
-            <a href="/logout" class="logout">Sair</a>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('sobre') }}">Sobre</a>
+            <a href="{{ url_for('admin') }}" class="Adm">Administração</a>
+            <a href="{{ url_for('logout') }}" class="logout">Sair</a>
         </nav>
     </header>
 
     <div class="spacer"></div>
 
+    <!-- CONTEÚDO -->
     <main class="admin-container">
-        
-        <div id="successAlert" class="alert-success-potiguar hidden">
-            <strong>Sucesso!</strong> O novo lugar foi cadastrado com êxito na Memória Potiguar.
-        </div>
 
-        <div class="admin-card">
+        <!-- ALERTAS FLASK -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert-success-potiguar">
+                        <strong>Sucesso!</strong> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- CARD -->
+        <section class="admin-card">
+
             <div class="admin-card-header">
                 <h2>Adicionar Novo Lugar Histórico</h2>
-                <p>Insira as informações para registrar um novo ponto de cultura, história ou gastronomia no RN.</p>
+
+                <p>
+                    Insira as informações para registrar um novo ponto
+                    de cultura, história ou gastronomia do RN.
+                </p>
             </div>
 
-            <form id="placeForm" method="POST" action="/adicionar-lugar" class="form-potiguar">
-                
+            <!-- FORMULÁRIO -->
+            <form
+                id="placeForm"
+                method="POST"
+                action="{{ url_for('adicionar_lugar') }}"
+                class="form-potiguar"
+            >
+
+                <!-- NOME + CATEGORIA -->
                 <div class="form-row">
+
                     <div class="form-group flex-2">
                         <label for="placeName">Nome do Lugar *</label>
-                        <input type="text" id="placeName" name="nome" required placeholder="Ex: Capela de Santana, Engenho Novo..." class="input-potiguar">
+
+                        <input
+                            type="text"
+                            id="placeName"
+                            name="nome"
+                            required
+                            autocomplete="off"
+                            placeholder="Ex: Capela de Santana"
+                            class="input-potiguar"
+                        >
                     </div>
-                    
+
                     <div class="form-group flex-1">
                         <label for="placeCategory">Categoria *</label>
-                        <select id="placeCategory" name="categoria" required class="input-potiguar select-potiguar">
+
+                        <select
+                            id="placeCategory"
+                            name="categoria"
+                            required
+                            class="input-potiguar select-potiguar"
+                        >
                             <option value="">Selecione...</option>
-                            <option value="historico">Histórico</option>
-                            <option value="cultural">Cultural</option>
-                            <option value="gastronomico">Gastronômico</option>
+                            <option value="historico">🏛 Histórico</option>
+                            <option value="cultural">🎭 Cultural</option>
+                            <option value="gastronomico">🍴 Gastronômico</option>
                         </select>
                     </div>
+
                 </div>
 
+                <!-- ENDEREÇO -->
                 <div class="form-group">
-                    <label for="placeAddress">Endereço / Localização *</label>
-                    <input type="text" id="placeAddress" name="endereco" required placeholder="Ex: Zona Rural, Caicó - RN" class="input-potiguar">
+                    <label for="placeAddress">
+                        Endereço / Localização *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="placeAddress"
+                        name="endereco"
+                        required
+                        autocomplete="street-address"
+                        placeholder="Ex: Zona Rural, Caicó - RN"
+                        class="input-potiguar"
+                    >
                 </div>
 
+                <!-- DESCRIÇÃO -->
                 <div class="form-group">
-                    <label for="placeDesc">História / Descrição do Lugar *</label>
-                    <textarea id="placeDesc" name="descricao" rows="6" required placeholder="Escreva aqui os detalhes históricos, memórias e relevância cultural deste local..." class="input-potiguar textarea-potiguar"></textarea>
+                    <label for="placeDesc">
+                        História / Descrição do Lugar *
+                    </label>
+
+                    <textarea
+                        id="placeDesc"
+                        name="descricao"
+                        rows="6"
+                        required
+                        placeholder="Escreva aqui os detalhes históricos, memórias e relevância cultural deste local..."
+                        class="input-potiguar textarea-potiguar"
+                    ></textarea>
                 </div>
 
+                <!-- IMAGEM -->
                 <div class="form-group">
-                    <label for="placeImg">URL da Imagem ou Caminho *</label>
-                    <input type="text" id="placeImg" name="imagem" required placeholder="Ex: img/novolugar.jpg" class="input-potiguar">
+                    <label for="placeImg">
+                        URL da Imagem *
+                    </label>
+
+                    <input
+                        type="url"
+                        id="placeImg"
+                        name="imagem"
+                        required
+                        placeholder="https://site.com/imagem.jpg"
+                        class="input-potiguar"
+                    >
                 </div>
 
+                <!-- BOTÕES -->
                 <div class="form-actions-potiguar">
-                    <a href="/index" class="btn-cancelar">Cancelar</a>
-                    <button type="submit" class="btn-enviar-potiguar">Registrar Lugar</button>
+
+                    <a
+                        href="{{ url_for('index') }}"
+                        class="btn-cancelar"
+                    >
+                        Cancelar
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn-enviar-potiguar"
+                    >
+                        Registrar Lugar
+                    </button>
+
                 </div>
+
             </form>
-        </div>
+
+        </section>
+
     </main>
 
+    <!-- FOOTER -->
     <footer>
-        © 2026 Memória Potiguar
+        © 2026 Memória Potiguar | IFRN - Caicó
     </footer>
 
+    <!-- SCRIPT -->
     <script>
-        document.getElementById('placeForm').addEventListener('submit', function(e) {
-            // Nota: Quando o Flask estiver salvando no banco de dados, comente a linha abaixo
-            e.preventDefault(); 
-            
-            const alertBox = document.getElementById('successAlert');
-            alertBox.classList.remove('hidden');
-            this.reset();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => { alertBox.classList.add('hidden'); }, 4000);
+        const form = document.getElementById("placeForm");
+
+        form.addEventListener("submit", () => {
+            const btn = document.querySelector(".btn-enviar-potiguar");
+
+            btn.innerText = "Salvando...";
+            btn.disabled = true;
         });
     </script>
+
 </body>
 </html>

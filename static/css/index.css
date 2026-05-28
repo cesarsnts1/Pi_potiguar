@@ -1,0 +1,142 @@
+/* CARROSSEIS (PÁGINA INICIAL)*/
+.carousel {
+    width: 90%;
+    margin: 20px auto;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.carousel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    opacity: 0;
+}
+
+.carousel::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+    top: 0;
+    left: 0;
+}
+
+.carousel-text {
+    position: absolute;
+    z-index: 2;
+    color: white;
+    top: 50%;
+    left: 8%;
+    transform: translateY(-50%);
+    max-width: 500px;
+}
+
+.carousel-text h1, .carousel-text h2 {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+/* ANIMAÇÕES DO CARROSSEL */
+.principal-carousel img, .segundo-carousel img { animation: slide1 15s infinite; }
+.principal-carousel img:nth-child(1), .segundo-carousel img:nth-child(1) { animation-delay: 0s; }
+.principal-carousel img:nth-child(2), .segundo-carousel img:nth-child(2) { animation-delay: 5s; }
+.principal-carousel img:nth-child(3), .segundo-carousel img:nth-child(3) { animation-delay: 10s; }
+
+@keyframes slide1 {
+    0% { opacity: 0; }
+    5% { opacity: 1; }
+    30% { opacity: 1; }
+    35% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* ==========================================================================
+   SEÇÃO DE CATEGORIAS GRANDES (INDEX)
+   ========================================================================== */
+.section-categories-large {
+    width: 90%;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.large-card {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    align-items: center;
+    transition: transform 0.3s;
+}
+
+.large-card:hover {
+    transform: translateY(-5px);
+}
+
+.large-card-img {
+    flex: 1;
+    height: 320px;
+    overflow: hidden;
+}
+
+.large-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.large-card-content {
+    flex: 1;
+    padding: 40px;
+}
+
+.large-card-content h2 {
+    color: #92400e;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.large-card-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.btn-large-card {
+    display: inline-block;
+    text-decoration: none;
+    background: #662c09;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-large-card:hover {
+    background:  #662c09;
+}
+
+.large-card.reverse {
+    flex-direction: row-reverse;
+}
+
+/* RESPONSIVIDADE INDEX */
+@media (max-width: 768px) {
+    .large-card, .large-card.reverse {
+        flex-direction: column;
+    }
+    .large-card-img {
+        width: 100%;
+        height: 200px;
+    }
+}

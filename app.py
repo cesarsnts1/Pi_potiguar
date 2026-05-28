@@ -1,82 +1,129 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, flash
+import sqlite3
 
 app = Flask(__name__)
+app.secret_key = 'chave_secreta_potiguar'
+
+
+def conectar_banco():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+# ----------------------------
+# ROTAS PÚBLICAS
+# ----------------------------
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html')
 
-@app.route('/login')
-def login():
-    return redirect(url_for('cadastro'))
-
-@app.route('/cadastro', methods=['GET', 'POST'])
-def cadastro():
-    if request.method == 'POST':
-        return redirect(url_for('index'))
-    return render_template('cadastro.html')
-
-@app.route('/cultural')
-def cultural():
-    return render_template('cultural.html')
-
-@app.route('/gastronomia')
-def gastronomia():
-    return render_template('gastronomia.html')
-
-@app.route('/historia')
-def historia():
-    return render_template('historia.html')
 
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html')
 
+
+# NOVA ROTA
 @app.route('/categorias')
 def categorias():
-    return redirect(url_for('index'))
-
-@app.route('/detalhe/<slug>')
-def detalhe(slug):
-    return render_template(f'detalhes/{slug}.html')
+    return render_template('categorias.html')
 
 
-# ==========================================================================
-# NOVAS ROTAS: ADMINISTRAÇÃO (MEMÓRIA POTIGUAR)
-# ==========================================================================
+# NOVA ROTA
+@app.route('/historia')
+def historia():
+    return render_template('historia.html')
+
+
+# NOVA ROTA
+@app.route('/gastronomia')
+def gastronomia():
+    return render_template('gastronomia.html')
+
+
+@app.route('/login')
+def login():
+    return redirect('/cadastro')
+
+
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+
+    if request.method == 'POST':
+        usuario_input = request.form.get('username')
+        senha_input = request.form.get('password')
+
+        conn = conectar_banco()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT * FROM usuarios
+            WHERE (matricula = ? OR email = ?) AND senha = ?
+        ''', (usuario_input, usuario_input, senha_input))
+
+        usuario_encontrado = cursor.fetchone()
+
+        conn.close()
+
+        if usuario_encontrado:
+            return redirect('/admin')
+        else:
+            flash('Matrícula/E-mail ou senha incorretos.', 'danger')
+            return redirect('/cadastro')
+
+    return render_template('cadastro.html')
+
+
+# ----------------------------
+# ROTAS ADMIN
+# ----------------------------
 
 @app.route('/admin')
 def admin():
-    """Exibe o painel administrativo para adicionar novos lugares"""
     return render_template('admin.html')
+
 
 @app.route('/adicionar-lugar', methods=['POST'])
 def adicionar_lugar():
-    """Recebe os dados do formulário do admin.html via POST"""
-    # Coleta de dados vindos do formulário pelo atributo 'name' do input
+
     nome = request.form.get('nome')
     categoria = request.form.get('categoria')
     endereco = request.form.get('endereco')
     descricao = request.form.get('descricao')
     imagem = request.form.get('imagem')
 
-    # [Aqui futuramente você adicionará o código para salvar no Banco de Dados]
-    print(f"Novo lugar recebido: {nome} | Categoria: {categoria}")
+    conn = conectar_banco()
+    cursor = conn.cursor()
 
-    # Após processar/salvar, redireciona de volta para o painel com sucesso
-    # Ou altere para redirect(url_for('index')) se preferir voltar para a Home
-    return redirect(url_for('admin'))
+    try:
+        cursor.execute('''
+            INSERT INTO lugares
+            (nome, categoria, endereco, descricao, imagem)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (nome, categoria, endereco, descricao, imagem))
+
+        conn.commit()
+
+        flash('O novo lugar foi cadastrado com êxito na Memória Potiguar.')
+
+    except sqlite3.Error as e:
+        print(f'Erro no banco: {e}')
+        flash('Erro ao tentar salvar no banco de dados.')
+
+    finally:
+        conn.close()
+
+    return redirect('/admin')
+
 
 @app.route('/logout')
 def logout():
-    """Rota para efetuar o logout e limpar a sessão"""
-    # [Aqui futuramente você limpará a session do usuário]
-    return redirect(url_for('index'))
+    flash('Você saiu do painel administrativo.')
+    return redirect('/index')
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-    

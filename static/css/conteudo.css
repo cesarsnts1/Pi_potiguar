@@ -1,0 +1,96 @@
+/* ==========================================================================
+   ESTRUTURA DAS PÁGINAS DE CONTEÚDO (MUDADO DE GRID PARA FLEX)
+   ========================================================================== */
+   .body-conteudo {
+    background-color:#f5e6d3;;
+    color: #333;
+}
+
+.body-conteudo header {
+    background: #662c09;
+}
+
+.faixa-imagem {
+    width: 100%;
+}
+
+.faixa-imagem img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Flexbox aplicado no container de cards para torná-lo flexível */
+.container-flex-cards {
+    padding: 50px 8%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    width: calc(33.333% - 20px); /* Ocupa 3 colunas em telas grandes */
+    min-width: 300px; /* Garante que não esmague */
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.card-content h3 {
+    color: #662c09;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #666;
+}
+
+.btn {
+    display: inline-block;
+    margin: 20px 8%;
+    background: #662c09;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #4a1f05;
+}
+
+/* RESPONSIVIDADE DOS CARDS */
+@media (max-width: 900px) {
+    .card {
+        width: calc(50% - 15px); /* Em tablets vira 2 colunas */
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 100%; /* No celular fica em uma única coluna fluida */
+    }
+}
