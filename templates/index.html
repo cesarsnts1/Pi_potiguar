@@ -11,7 +11,10 @@
 <body>
 
     <header>
-        <div class="logo">Memória Potiguar</div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+            <span>Memória Potiguar</span>
+        </div>
         <nav>
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>

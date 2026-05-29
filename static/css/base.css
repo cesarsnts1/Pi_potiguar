@@ -33,7 +33,7 @@ body::before {
 /* ==========================================================================
    HEADER (BARRA DO TOPO FIXA)
    ========================================================================== */
-header {
+   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,12 +43,23 @@ header {
     width: 100%;
     top: 0;
     z-index: 1000;
+    box-sizing: border-box; /* Garante que o padding não aumente a largura total */
 }
 
+/* MODIFICADO: Alinha a imagem e o texto lado a lado */
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espaço entre a imagem da logo e o texto */
     font-weight: 700;
-    font-size: 20px;
+    font-size: 40;
     color: white;
+}
+
+/* NOVO: Controla o tamanho da imagem da logo */
+.logo img {
+    width: 35px; /* Ajuste o tamanho vertical/horizontal como preferir */
+    height: auto;
 }
 
 nav {
@@ -81,7 +92,7 @@ nav a:hover {
 }
 
 .spacer {
-    height: 80px; /* Impede que o conteúdo suma sob o header */
+    height: 80px; /* Mantido para o conteúdo não sumir sob o header */
 }
 
 /* ==========================================================================
