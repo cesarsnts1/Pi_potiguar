@@ -49,15 +49,50 @@ def cutural():
 
 # ROTA CORRIGIDA: Agora aceita o formato /detalhe/recantotapera
 # ROTA CORRIGIDA COM O CAMINHO DA SUBPASTA
+
+#GASTRONOMICO
 @app.route('/detalhe/recantotapera')
 def recantotapera():
     return render_template('detalhes/recantotapera.html')
 
+@app.route('/detalhe/gastrobar')
+def gastrobar():
+    return render_template('detalhes/gastrobar.html')
+
+@app.route('/detalhe/pracatrailers')
+def pracatrailers():
+    return render_template('detalhes/pracatrailers.html')
+
+@app.route('/detalhe/temperoterra')
+def temperoterra():
+    return render_template('detalhes/temperoterra.html')
+
+@app.route('/detalhe/mozafla')
+def mozafla():
+    return render_template('detalhes/mozafla.html')
+
+@app.route('/detalhe/restaurantezorro')
+def restaurantezorro():
+    return render_template('detalhes/restaurantezorro.html')
+
+
+
+
+
 
 @app.route('/detalhe/artesanato')
-def recantotapera():
-    return render_template('detalhes/recantotapera.html')
+def artesanato():
+    return render_template('detalhes/artesanato.html')
 
+@app.route('/detalhe/casacultura')
+def casacultura():
+    return render_template('detalhes/casacultura.html')
+
+
+@app.route('/detalhe/casafortecuo')
+def casafortecuo():
+    return render_template('detalhes/casafortecuo.html')
+gastrobar
 @app.route('/login')
 def login():
     return redirect('/cadastro')
