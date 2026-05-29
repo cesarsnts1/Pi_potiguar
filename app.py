@@ -26,23 +26,37 @@ def sobre():
     return render_template('sobre.html')
 
 
-# NOVA ROTA
 @app.route('/categorias')
 def categorias():
     return render_template('categorias.html')
 
 
-# NOVA ROTA
 @app.route('/historia')
 def historia():
     return render_template('historia.html')
 
 
-# NOVA ROTA
 @app.route('/gastronomia')
 def gastronomia():
     return render_template('gastronomia.html')
 
+
+@app.route('/cutural')
+def cutural():
+    return render_template('cutural.html')
+
+
+
+# ROTA CORRIGIDA: Agora aceita o formato /detalhe/recantotapera
+# ROTA CORRIGIDA COM O CAMINHO DA SUBPASTA
+@app.route('/detalhe/recantotapera')
+def recantotapera():
+    return render_template('detalhes/recantotapera.html')
+
+
+@app.route('/detalhe/artesanato')
+def recantotapera():
+    return render_template('detalhes/recantotapera.html')
 
 @app.route('/login')
 def login():

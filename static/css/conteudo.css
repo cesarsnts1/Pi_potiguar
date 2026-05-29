@@ -1,8 +1,8 @@
 /* ==========================================================================
-   ESTRUTURA DAS PÁGINAS DE CONTEÚDO (MUDADO DE GRID PARA FLEX)
+   ESTRUTURA DAS PÁGINAS DE CONTEÚDO (FLEXBOX)
    ========================================================================== */
    .body-conteudo {
-    background-color:#f5e6d3;;
+    background-color: #f5e6d3;
     color: #333;
 }
 
@@ -21,7 +21,7 @@
     display: block;
 }
 
-/* Flexbox aplicado no container de cards para torná-lo flexível */
+/* Container de listagem de cartões */
 .container-flex-cards {
     padding: 50px 8%;
     display: flex;
@@ -36,8 +36,8 @@
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
-    width: calc(33.333% - 20px); /* Ocupa 3 colunas em telas grandes */
-    min-width: 300px; /* Garante que não esmague */
+    width: calc(33.333% - 20px);
+    min-width: 300px;
     display: flex;
     flex-direction: column;
 }
@@ -67,6 +67,7 @@
     color: #666;
 }
 
+/* Estilo geral para botões */
 .btn {
     display: inline-block;
     margin: 20px 8%;
@@ -82,15 +83,97 @@
     background: #4a1f05;
 }
 
-/* RESPONSIVIDADE DOS CARDS */
+/* ==========================================================================
+   PÁGINA DE DETALHES ESPECÍFICA (CORREÇÃO DE LAYOUT)
+   ========================================================================== */
+.detalhe-container {
+    padding: 40px 8%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.detalhe-titulo {
+    color: #662c09;
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.detalhe-subtitulo {
+    font-size: 1.1rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+
+/* Seções de Blocos Brancos */
+.info-secao, .galeria-secao {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.info-secao h2, .galeria-secao h2 {
+    color: #662c09;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f5e6d3;
+    padding-bottom: 8px;
+}
+
+.info-secao p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+/* Grid de imagens lado a lado */
+.galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.galeria-grid img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.galeria-grid img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Bloco do Mapa */
+.mapa-placeholder {
+    background: #eee6dc;
+    border: 2px dashed #c18d6a;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    color: #662c09;
+    font-weight: 500;
+    margin-top: 15px;
+}
+
+/* Adaptação do botão na tela de detalhes */
+.detalhe-container .btn {
+    margin: 20px 0 0 0;
+}
+
+/* RESPONSIVIDADE GERAL DOS CARDS */
 @media (max-width: 900px) {
     .card {
-        width: calc(50% - 15px); /* Em tablets vira 2 colunas */
+        width: calc(50% - 15px);
     }
 }
 
 @media (max-width: 768px) {
     .card {
-        width: 100%; /* No celular fica em uma única coluna fluida */
+        width: 100%;
     }
 }

@@ -11,13 +11,14 @@
 <body>
 
     <header>
-        <div class="logo">Memória Potiguar</div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+        </div>
         <nav>
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>
             <a href="/login" class="Adm">Administração</a>
-            <a href="/login" class="logout">Sair</a>
-
+            <a href="/logout" class="logout">Sair</a>
         </nav>
     </header>
 
