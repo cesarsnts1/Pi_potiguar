@@ -156,3 +156,78 @@
         gap: 0;
     }
 }
+
+.logo img{
+    height: 60px;
+    width: auto;
+    display: block;
+}
+
+/* ==========================
+   LOGIN ADMIN
+   ========================== */
+
+.body-cadastro {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5e6d3;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container-cadastro {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.1);
+    text-align: center;
+}
+
+.container-cadastro h2 {
+    color: #78350f;
+    margin-bottom: 25px;
+}
+
+.container-cadastro form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.container-cadastro input {
+    padding: 12px;
+    border: 1px solid #d6c2ad;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.container-cadastro input:focus {
+    outline: none;
+    border-color: #92400e;
+}
+
+.container-cadastro button {
+    background: #13b03d;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.container-cadastro button:hover {
+    background: #0e872e;
+}
+
+.container-cadastro a {
+    color: #92400e;
+    text-decoration: none;
+}
+
+.container-cadastro a:hover {
+    text-decoration: underline;
+}

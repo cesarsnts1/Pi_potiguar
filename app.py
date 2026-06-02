@@ -74,6 +74,9 @@ def restaurantezorro():
 
 
 # ROTAS DETALHADAS: HISTÓRICO
+@app.route('/detalhe/velhabarra')
+def velhabarra():
+    return render_template('detalhes/velhabarra.html')
 
 @app.route('/detalhe/casafortecuo')
 def casafortecuo():
@@ -205,13 +208,6 @@ def adicionar_lugar():
         conn.close()
 
     return redirect('/admin')
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    flash('Você saiu do painel administrativo.', 'info')
-    return redirect('/index')
 
 
 if __name__ == '__main__':

@@ -20,13 +20,14 @@
 
     <!-- HEADER -->
     <header>
-        <div class="logo">Memória Potiguar</div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Memória Potiguar">
+        </div>
 
         <nav>
             <a href="{{ url_for('index') }}">Início</a>
             <a href="{{ url_for('sobre') }}">Sobre</a>
             <a href="{{ url_for('admin') }}" class="Adm">Administração</a>
-            <a href="{{ url_for('logout') }}" class="logout">Sair</a>
         </nav>
     </header>
 
