@@ -1,14 +1,9 @@
-from flask import Flask, render_template, request, redirect, flash
-import sqlite3
+from flask import Flask, render_template, request, redirect, flash, session
+from werkzeug.security import check_password_hash
+from db import conectar
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_potiguar'
-
-
-def conectar_banco():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 # ----------------------------
@@ -41,15 +36,12 @@ def gastronomia():
     return render_template('gastronomia.html')
 
 
-@app.route('/cultural')  
+@app.route('/cultural')
 def cultural():
     return render_template('cultural.html')
 
 
-
-
 # ROTAS DETALHADAS: GASTRONOMIA
-
 
 @app.route('/detalhe/recantotapera')
 def recantotapera():
@@ -81,8 +73,7 @@ def restaurantezorro():
     return render_template('detalhes/restaurantezorro.html')
 
 
-
-# ROTAS DETALHADAS: HISTÓRICO 
+# ROTAS DETALHADAS: HISTÓRICO
 
 @app.route('/detalhe/casafortecuo')
 def casafortecuo():
@@ -109,21 +100,8 @@ def igrejamatriz():
     return render_template('detalhes/igrejamatriz.html')
 
 
-
 # ROTAS DETALHADAS: CULTURAL
-
-
-
-
-
-
-
-
-
-
-
-
-
+# (adicione aqui as rotas culturais conforme necessário)
 
 
 # ----------------------------
@@ -141,21 +119,25 @@ def cadastro():
         usuario_input = request.form.get('username')
         senha_input = request.form.get('password')
 
-        conn = conectar_banco()
-        cursor = conn.cursor()
+        conn = conectar()
+        cursor = conn.cursor(dictionary=True, buffered=True)
 
-        cursor.execute('''
-            SELECT * FROM usuarios
-            WHERE (matricula = ? OR email = ?) AND senha = ?
-        ''', (usuario_input, usuario_input, senha_input))
-
-        usuario_encontrado = cursor.fetchone()
+        # Busca por usuário (email ou campo usuario)
+        cursor.execute(
+            'SELECT * FROM administradores WHERE usuario = %s',
+            (usuario_input,)
+        )
+        admin = cursor.fetchone()
+        cursor.close()
         conn.close()
 
-        if usuario_encontrado:
+        # Verifica senha com hash seguro
+        if admin and check_password_hash(admin['senha'], senha_input):
+            session['admin_id'] = admin['id']
+            session['admin_usuario'] = admin['usuario']
             return redirect('/admin')
         else:
-            flash('Matrícula/E-mail ou senha incorretos.', 'danger')
+            flash('Usuário ou senha incorretos.', 'danger')
             return redirect('/cadastro')
 
     return render_template('cadastro.html')
@@ -165,37 +147,61 @@ def cadastro():
 # PAINEL ADMINISTRATIVO
 # ----------------------------
 
+def login_requerido(f):
+    """Decorador simples para proteger rotas do admin."""
+    from functools import wraps
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if 'admin_id' not in session:
+            flash('Faça login para acessar o painel.', 'warning')
+            return redirect('/cadastro')
+        return f(*args, **kwargs)
+    return wrapper
+
+
 @app.route('/admin')
+@login_requerido
 def admin():
-    return render_template('admin.html')
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM pontos_turisticos ORDER BY id DESC')
+    lugares = cursor.fetchall()
+    cursor.execute('SELECT * FROM categorias ORDER BY nome')
+    categorias = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('admin.html', lugares=lugares, categorias=categorias)
 
 
 @app.route('/adicionar-lugar', methods=['POST'])
+@login_requerido
 def adicionar_lugar():
     nome = request.form.get('nome')
-    categoria = request.form.get('categoria')
-    endereco = request.form.get('endereco')
+    categoria_id = request.form.get('categoria')
+    localizacao = request.form.get('endereco')
     descricao = request.form.get('descricao')
-    imagem = request.form.get('imagem')
+    nome_imagem = request.form.get('imagem')
 
-    conn = conectar_banco()
+    conn = conectar()
     cursor = conn.cursor()
 
     try:
         cursor.execute('''
-            INSERT INTO lugares
-            (nome, categoria, endereco, descricao, imagem)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (nome, categoria, endereco, descricao, imagem))
+            INSERT INTO pontos_turisticos
+            (nome, descricao, localizacao, nome_imagem, categoria_id)
+            VALUES (%s, %s, %s, %s, %s)
+        ''', (nome, descricao, localizacao, nome_imagem, categoria_id))
 
         conn.commit()
-        flash('O novo lugar foi cadastrado com êxito na Memória Potiguar.', 'success')
+        flash('Novo lugar cadastrado com êxito na Memória Potiguar!', 'success')
 
-    except sqlite3.Error as e:
+    except Exception as e:
+        conn.rollback()
         print(f'Erro no banco: {e}')
-        flash('Erro ao tentar salvar no banco de dados.', 'danger')
+        flash('Erro ao salvar no banco de dados.', 'danger')
 
     finally:
+        cursor.close()
         conn.close()
 
     return redirect('/admin')
@@ -203,6 +209,7 @@ def adicionar_lugar():
 
 @app.route('/logout')
 def logout():
+    session.clear()
     flash('Você saiu do painel administrativo.', 'info')
     return redirect('/index')
 

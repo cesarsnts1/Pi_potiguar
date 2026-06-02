@@ -4,12 +4,14 @@ from werkzeug.security import generate_password_hash
 senha = generate_password_hash("281207")
 
 HOST = "localhost"
+PORT = 3307
 USER = "root"
 PASSWORD = ""
 
 
 conexao = mysql.connector.connect(
     host=HOST,
+    port=PORT,
     user=USER,
     password=PASSWORD
 )
@@ -73,7 +75,7 @@ INSERT INTO administradores (usuario, senha)
 VALUES (%s, %s)
 """, (
     "icaro.e@escolar.ifrn.edu.br",
-    senha_hash
+    "scrypt:32768:8:1$t57B6qMJ9d8IpOJm$07c05063f538f16fe85da54bd37d99667386d8443e6f1d0f3756a5c6168ab13ab04eaf9cbe7045a1a5c100b895484d922e80d01a6c6ad20a4dfbb831f8f3537b"
 ))
 
 
