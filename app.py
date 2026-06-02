@@ -12,7 +12,7 @@ def conectar_banco():
 
 
 # ----------------------------
-# ROTAS PÚBLICAS
+# ROTAS PÚBLICAS GERAIS
 # ----------------------------
 
 @app.route('/')
@@ -41,35 +41,40 @@ def gastronomia():
     return render_template('gastronomia.html')
 
 
-@app.route('/cutural')
-def cutural():
-    return render_template('cutural.html')
+@app.route('/cultural')  # Corrigido de /cutural para /cultural
+def cultural():
+    return render_template('cultural.html')
 
 
 
-# ROTA CORRIGIDA: Agora aceita o formato /detalhe/recantotapera
-# ROTA CORRIGIDA COM O CAMINHO DA SUBPASTA
 
-#GASTRONOMICO
+# ROTAS DETALHADAS: GASTRONOMIA
+
+
 @app.route('/detalhe/recantotapera')
 def recantotapera():
     return render_template('detalhes/recantotapera.html')
+
 
 @app.route('/detalhe/gastrobar')
 def gastrobar():
     return render_template('detalhes/gastrobar.html')
 
+
 @app.route('/detalhe/pracatrailers')
 def pracatrailers():
     return render_template('detalhes/pracatrailers.html')
+
 
 @app.route('/detalhe/temperoterra')
 def temperoterra():
     return render_template('detalhes/temperoterra.html')
 
+
 @app.route('/detalhe/mozafla')
 def mozafla():
     return render_template('detalhes/mozafla.html')
+
 
 @app.route('/detalhe/restaurantezorro')
 def restaurantezorro():
@@ -77,22 +82,54 @@ def restaurantezorro():
 
 
 
-
-
-
-@app.route('/detalhe/artesanato')
-def artesanato():
-    return render_template('detalhes/artesanato.html')
-
-@app.route('/detalhe/casacultura')
-def casacultura():
-    return render_template('detalhes/casacultura.html')
-
+# ROTAS DETALHADAS: HISTÓRICO 
 
 @app.route('/detalhe/casafortecuo')
 def casafortecuo():
     return render_template('detalhes/casafortecuo.html')
-gastrobar
+
+
+@app.route('/detalhe/cruzeiroalmas')
+def cruzeiroalmas():
+    return render_template('detalhes/cruzeiroalmas.html')
+
+
+@app.route('/detalhe/casteloengady')
+def casteloengady():
+    return render_template('detalhes/casteloengady.html')
+
+
+@app.route('/detalhe/museuserido')
+def museuserido():
+    return render_template('detalhes/museuserido.html')
+
+
+@app.route('/detalhe/igrejamatriz')
+def igrejamatriz():
+    return render_template('detalhes/igrejamatriz.html')
+
+
+
+# ROTAS DETALHADAS: CULTURAL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ----------------------------
+# AUTENTICAÇÃO E CADASTRO
+# ----------------------------
+
 @app.route('/login')
 def login():
     return redirect('/cadastro')
@@ -100,7 +137,6 @@ def login():
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
-
     if request.method == 'POST':
         usuario_input = request.form.get('username')
         senha_input = request.form.get('password')
@@ -114,7 +150,6 @@ def cadastro():
         ''', (usuario_input, usuario_input, senha_input))
 
         usuario_encontrado = cursor.fetchone()
-
         conn.close()
 
         if usuario_encontrado:
@@ -127,7 +162,7 @@ def cadastro():
 
 
 # ----------------------------
-# ROTAS ADMIN
+# PAINEL ADMINISTRATIVO
 # ----------------------------
 
 @app.route('/admin')
@@ -137,7 +172,6 @@ def admin():
 
 @app.route('/adicionar-lugar', methods=['POST'])
 def adicionar_lugar():
-
     nome = request.form.get('nome')
     categoria = request.form.get('categoria')
     endereco = request.form.get('endereco')
@@ -155,12 +189,11 @@ def adicionar_lugar():
         ''', (nome, categoria, endereco, descricao, imagem))
 
         conn.commit()
-
-        flash('O novo lugar foi cadastrado com êxito na Memória Potiguar.')
+        flash('O novo lugar foi cadastrado com êxito na Memória Potiguar.', 'success')
 
     except sqlite3.Error as e:
         print(f'Erro no banco: {e}')
-        flash('Erro ao tentar salvar no banco de dados.')
+        flash('Erro ao tentar salvar no banco de dados.', 'danger')
 
     finally:
         conn.close()
@@ -170,7 +203,7 @@ def adicionar_lugar():
 
 @app.route('/logout')
 def logout():
-    flash('Você saiu do painel administrativo.')
+    flash('Você saiu do painel administrativo.', 'info')
     return redirect('/index')
 
 
