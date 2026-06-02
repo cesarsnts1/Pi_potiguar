@@ -41,7 +41,7 @@ def gastronomia():
     return render_template('gastronomia.html')
 
 
-@app.route('/cultural')  # Corrigido de /cutural para /cultural
+@app.route('/cultural')  
 def cultural():
     return render_template('cultural.html')
 

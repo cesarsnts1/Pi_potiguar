@@ -1,6 +1,4 @@
-/* ==========================================================================
-   CONFIGURAÇÕES GERAIS E RESET
-   ========================================================================== */                                         
+
    * {
     margin: 0;
     padding: 0;
@@ -9,13 +7,13 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f5e6d3; /* Tom creme padrão */
+    background-color: #f5e6d3; 
     color: #3d2b1f;
     position: relative;
     overflow-x: hidden;
 }
 
-/* Marca d'água decorativa de fundo */
+
 body::before {
     content: "";
     position: fixed;
@@ -30,17 +28,12 @@ body::before {
     z-index: -1;
 }
 
-/* ==========================================================================
-   HEADER (BARRA DO TOPO FIXA)
-   ========================================================================== */
-/* ==========================================================================
-   HEADER (BARRA DO TOPO FIXA) - ATUALIZADO
-   ========================================================================== */
+
    header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 8%; /* Reduzido o padding vertical para compensar a logo maior */
+    padding: 6px 8%; 
     background: #662c09;
     position: fixed;
     width: 100%;
@@ -54,15 +47,15 @@ body::before {
     align-items: center;
 }
 
-/* Controla o novo tamanho da imagem da logo */
+
 .logo img {
     width: 250px;      /* Aumente ou diminua este valor para ajustar a escala */
     height: auto;     /* Mantém a proporção original da imagem */
     display: block;
 }
 
-/* Ajuste do espaçador para compensar a nova altura do cabeçalho */
-.spacer {
+
+.espaço {
     height: 90px; 
 }
 
@@ -89,13 +82,13 @@ nav a:hover {
     border-radius: 20px;
 }
 
-.spacer {
-    height: 80px; /* Evita que o conteúdo suma por baixo do header fixo */
+.espaço {
+    height: 90px; 
 }
 
-/* ==========================================================================
-   FOOTER
-   ========================================================================== */
+
+
+
 footer {
     text-align: center;
     padding: 25px;
@@ -103,7 +96,7 @@ footer {
     color: white;
 }
 
-/* RESPONSIVIDADE DO HEADER */
+
 @media (max-width: 768px) {
     header {
         flex-direction: column;

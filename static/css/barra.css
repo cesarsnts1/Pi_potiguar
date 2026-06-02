@@ -1,11 +1,9 @@
-/* ==========================================================================
-   SEÇÃO HOMENAGEM
-   ========================================================================== */
+
    .tribute-section {
     background: #5a2e1f;
     color: #f5e6d3;
-    padding: 80px 10%;
-    margin-top: 40px;
+    padding: 80px ;
+
     text-align: center;
 }
 
@@ -16,11 +14,11 @@
 
 .tribute-tag {
     display: inline-block;
-    font-size: 0.85rem;
+    font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #fde68a;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     border: 1px solid #fde68a;
     padding: 4px 12px;
     border-radius: 15px;
@@ -35,26 +33,22 @@
 .tribute-section h3 {
     font-size: 1.4rem;
     color: #fde68a;
-    font-weight: 400;
     margin-bottom: 25px;
 }
 
 .tribute-section p {
     font-size: 1.1rem;
     line-height: 1.8;
-    opacity: 0.9;
     margin-bottom: 35px;
 }
 
 .btn-tribute {
-    display: inline-block;
+    
     text-decoration: none;
     background: #92400e;
     color: white;
     padding: 12px 35px;
     border-radius: 30px;
-    font-weight: 600;
-    transition: 0.3s;
 }
 
 .btn-tribute:hover {
