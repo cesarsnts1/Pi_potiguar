@@ -115,7 +115,6 @@ def cadastro():
         conn = conectar()
         cursor = conn.cursor(dictionary=True, buffered=True)
 
-        # Busca por usuário (email ou campo usuario)
         cursor.execute(
             'SELECT * FROM administradores WHERE usuario = %s',
             (usuario_input,)
@@ -124,7 +123,6 @@ def cadastro():
         cursor.close()
         conn.close()
 
-        # Verifica senha com hash seguro
         if admin and check_password_hash(admin['senha'], senha_input):
             session['admin_id'] = admin['id']
             session['admin_usuario'] = admin['usuario']

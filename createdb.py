@@ -4,9 +4,9 @@ from werkzeug.security import generate_password_hash
 senha = generate_password_hash("281207")
 
 HOST = "localhost"
-PORT = 3307
+PORT = 3306
 USER = "root"
-PASSWORD = ""
+PASSWORD = "admin"
 
 
 conexao = mysql.connector.connect(
