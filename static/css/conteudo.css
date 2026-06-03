@@ -21,7 +21,6 @@
     display: block;
 }
 
-/* Container de listagem de cartões */
 .container-flex-cards {
     padding: 50px 8%;
     display: flex;
@@ -72,7 +71,6 @@
     color: #666;
 }
 
-/* Estilo geral para botões */
 .btn {
     display: inline-block;
     margin: 20px 8%;
@@ -110,7 +108,6 @@
     margin-bottom: 40px;
 }
 
-/* Seções de Blocos Brancos */
 .info-secao, .galeria-secao {
     background: white;
     padding: 30px;
@@ -132,7 +129,6 @@
     color: #444;
 }
 
-/* Grid de imagens lado a lado */
 .galeria-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -153,7 +149,6 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Bloco do Mapa */
 .mapa-placeholder {
     background: #eee6dc;
     border: 2px dashed #c18d6a;
@@ -165,12 +160,10 @@
     margin-top: 15px;
 }
 
-/* Adaptação do botão na tela de detalhes */
 .detalhe-container .btn {
     margin: 20px 0 0 0;
 }
 
-/* RESPONSIVIDADE GERAL DOS CARDS */
 @media (max-width: 900px) {
     .card {
         width: calc(50% - 15px);

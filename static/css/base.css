@@ -11,6 +11,7 @@ body {
     color: #3d2b1f;
     position: relative;
     overflow-x: hidden;
+    padding-top: 0px;
 }
 
 
@@ -49,11 +50,15 @@ body::before {
 
 
 .logo img {
-    width: 250px;      /* Aumente ou diminua este valor para ajustar a escala */
-    height: auto;     /* Mantém a proporção original da imagem */
+    width: 250px;     
+    height: auto;     
     display: block;
 }
 
+
+.spacer {
+    height: 90px; 
+}
 
 .espaço {
     height: 90px; 

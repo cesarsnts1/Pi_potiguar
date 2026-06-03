@@ -7,7 +7,7 @@
     padding: 0 20px;
 }
 
-/* Utilitário para sumir com o alerta de sucesso no início */
+
 .hidden {
     display: none !important;
 }
@@ -55,7 +55,6 @@
     margin-bottom: 8px;
 }
 
-/* Campos de entrada com as transições suaves e foco na cor do tema */
 .input-potiguar {
     width: 100%;
     padding: 12px 16px;
@@ -85,7 +84,6 @@
     height: 48px;
 }
 
-/* Alinhamento estruturado para Nome e Categoria */
 .form-row {
     display: flex;
     gap: 20px;
@@ -94,7 +92,7 @@
 .flex-2 { flex: 2; }
 .flex-1 { flex: 1; }
 
-/* Botões do Rodapé do Painel */
+
 .form-actions-potiguar {
     display: flex;
     justify-content: flex-end;
@@ -106,7 +104,7 @@
 }
 
 .btn-enviar-potiguar {
-    background-color: #13b03d; /* Segue o padrão verde do botão 'Adm' do menu */
+    background-color: #13b03d; 
     color: white;
     padding: 12px 30px;
     font-family: 'Poppins', sans-serif;
@@ -132,11 +130,11 @@
 }
 
 .btn-cancelar:hover {
-    color: #ef4444; /* Fica vermelho ao passar o mouse */
+    color: #ef4444; 
     text-decoration: underline;
 }
 
-/* Alerta de feedback positivo */
+
 .alert-success-potiguar {
     background-color: #d1fae5;
     border: 1px solid #a7f3d0;
