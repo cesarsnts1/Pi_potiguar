@@ -41,7 +41,7 @@ def cultural():
     return render_template('cultural.html')
 
 
-# ROTAS DETALHADAS: GASTRONOMIA
+#  GASTRONOMIA
 
 @app.route('/detalhe/recantotapera')
 def recantotapera():
@@ -63,7 +63,7 @@ def zorro():
     return render_template('detalhes/zorro.html')
 
 
-# ROTAS DETALHADAS: HISTÓRICO
+# HISTÓRICO
 @app.route('/detalhe/velhabarra')
 def velhabarra():
     return render_template('detalhes/velhabarra.html')
@@ -94,12 +94,12 @@ def catedralsantana():
 
 
 # ROTAS DETALHADAS: CULTURAL
-# (adicione aqui as rotas culturais conforme necessário)
 
 
-# ----------------------------
+
+
 # AUTENTICAÇÃO E CADASTRO
-# ----------------------------
+
 
 @app.route('/login')
 def login():

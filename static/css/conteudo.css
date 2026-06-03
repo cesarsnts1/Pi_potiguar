@@ -57,8 +57,13 @@
     flex-grow: 1;
 }
 
+.card-content h1 {
+    color: #3f6609;
+    margin-bottom: 10px;
+}
+
 .card-content h3 {
-    color: #662c09;
+    color: #3f6609;
     margin-bottom: 10px;
 }
 
@@ -87,8 +92,8 @@
    PÁGINA DE DETALHES ESPECÍFICA (CORREÇÃO DE LAYOUT)
    ========================================================================== */
 .detalhe-container {
-    padding: 40px 8%;
-    max-width: 1200px;
+    padding: 10rem 8% 40px 8%;
+    max-width: 1200p1x;
     margin: 0 auto;
 }
 
