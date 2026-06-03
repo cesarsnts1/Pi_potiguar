@@ -48,11 +48,6 @@ def recantotapera():
     return render_template('detalhes/recantotapera.html')
 
 
-@app.route('/detalhe/gastrobar')
-def gastrobar():
-    return render_template('detalhes/gastrobar.html')
-
-
 @app.route('/detalhe/pracatrailers')
 def pracatrailers():
     return render_template('detalhes/pracatrailers.html')
@@ -63,14 +58,9 @@ def temperoterra():
     return render_template('detalhes/temperoterra.html')
 
 
-@app.route('/detalhe/mozafla')
-def mozafla():
-    return render_template('detalhes/mozafla.html')
-
-
-@app.route('/detalhe/restaurantezorro')
-def restaurantezorro():
-    return render_template('detalhes/restaurantezorro.html')
+@app.route('/detalhe/zorro')
+def zorro():
+    return render_template('detalhes/zorro.html')
 
 
 # ROTAS DETALHADAS: HISTÓRICO
@@ -98,9 +88,9 @@ def museuserido():
     return render_template('detalhes/museuserido.html')
 
 
-@app.route('/detalhe/igrejamatriz')
-def igrejamatriz():
-    return render_template('detalhes/igrejamatriz.html')
+@app.route('/detalhe/catedralsantana')
+def catedralsantana():
+    return render_template('detalhes/catedralsantana.html')
 
 
 # ROTAS DETALHADAS: CULTURAL
