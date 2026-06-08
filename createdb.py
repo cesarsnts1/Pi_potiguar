@@ -4,9 +4,9 @@ from werkzeug.security import generate_password_hash
 senha = generate_password_hash("281207")
 
 HOST = "localhost"
-PORT = 3306
+PORT = 3307
 USER = "root"
-PASSWORD = "admin"
+PASSWORD = ""
 
 
 conexao = mysql.connector.connect(
@@ -79,38 +79,51 @@ VALUES (%s, %s)
 ))
 
 
-# INSERT CATEGORIA
 cursor.execute("""
-INSERT INTO categorias (nome)
-VALUES (%s)
-""", (
-    "",
-))
-
-
-# INSERT PONTOS TURISTICOS
-cursor.execute("""
-INSERT INTO pontos_turisticos
-(
-    nome,
-    descricao,
-    localizacao,
-    nome_imagem,
-    tipo_imagem,
-    imagem,
-    categoria_id
+CREATE TABLE IF NOT EXISTS categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
 )
-VALUES
-(%s, %s, %s, %s, %s, %s, %s)
-""", (
-    "",
-    "",
-    "",
-    "",
-    "",
-    None,
-    1
-))
+""")
+
+categorias_padrao = [
+    "Histórico",
+    "Cultural",
+    "Gastronômico"
+]
+
+for categoria in categorias_padrao:
+    cursor.execute(
+        "SELECT id FROM categorias WHERE nome = %s",
+        (categoria,)
+    )
+
+    if cursor.fetchone() is None:
+        cursor.execute(
+            "INSERT INTO categorias(nome) " \
+            "VALUES(%s)",
+            (categoria,)
+        )
+
+categorias_padrao = [
+    "Histórico",
+    "Cultural",
+    "Gastronômico"
+]
+
+for categoria in categorias_padrao:
+    cursor.execute(
+        "SELECT id FROM categorias WHERE nome = %s",
+        (categoria,)
+    )
+
+    if cursor.fetchone() is None:
+        cursor.execute(
+            "INSERT INTO categorias (nome) VALUES (%s)",
+            (categoria,)
+        )
+
+
 
 
 conexao.commit()

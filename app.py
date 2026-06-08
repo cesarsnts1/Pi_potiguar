@@ -167,6 +167,7 @@ def admin():
 @app.route('/adicionar-lugar', methods=['POST'])
 @login_requerido
 def adicionar_lugar():
+
     nome = request.form.get('nome')
     categoria_id = request.form.get('categoria')
     localizacao = request.form.get('endereco')
@@ -177,21 +178,45 @@ def adicionar_lugar():
     cursor = conn.cursor()
 
     try:
-        cursor.execute('''
+
+        cursor.execute("""
             INSERT INTO pontos_turisticos
-            (nome, descricao, localizacao, nome_imagem, categoria_id)
+            (
+                nome,
+                descricao,
+                localizacao,
+                nome_imagem,
+                categoria_id
+            )
             VALUES (%s, %s, %s, %s, %s)
-        ''', (nome, descricao, localizacao, nome_imagem, categoria_id))
+        """, (
+            nome,
+            descricao,
+            localizacao,
+            nome_imagem,
+            categoria_id
+        ))
 
         conn.commit()
-        flash('Novo lugar cadastrado com êxito na Memória Potiguar!', 'success')
+
+        flash(
+            'Novo lugar cadastrado com êxito na Memória Potiguar!',
+            'success'
+        )
 
     except Exception as e:
+
         conn.rollback()
-        print(f'Erro no banco: {e}')
-        flash('Erro ao salvar no banco de dados.', 'danger')
+
+        print("ERRO BANCO:", e)
+
+        flash(
+            f'Erro ao salvar: {e}',
+            'danger'
+        )
 
     finally:
+
         cursor.close()
         conn.close()
 

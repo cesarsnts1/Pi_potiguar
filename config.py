@@ -1,5 +1,5 @@
 HOST = "localhost"
-PORT = 3306
+PORT = 3307
 USER = "root"
-PASSWORD = "admin"
+PASSWORD = ""
 DATABASE = "pi_potiguar"

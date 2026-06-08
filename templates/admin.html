@@ -94,9 +94,12 @@
                             class="input-potiguar select-potiguar"
                         >
                             <option value="">Selecione...</option>
-                            <option value="historico">🏛 Histórico</option>
-                            <option value="cultural">🎭 Cultural</option>
-                            <option value="gastronomico">🍴 Gastronômico</option>
+
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">
+                                    {{ categoria.nome }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
 
