@@ -64,18 +64,13 @@ def zorro():
 
 
 # HISTÓRICO
-@app.route('/detalhe/velhabarra')
-def velhabarra():
-    return render_template('detalhes/velhabarra.html')
+@app.route('/detalhe/novabarra')
+def novabarra():
+    return render_template('detalhes/novabarra.html')
 
 @app.route('/detalhe/casafortecuo')
 def casafortecuo():
     return render_template('detalhes/casafortecuo.html')
-
-
-@app.route('/detalhe/cruzeiroalmas')
-def cruzeiroalmas():
-    return render_template('detalhes/cruzeiroalmas.html')
 
 
 @app.route('/detalhe/casteloengady')

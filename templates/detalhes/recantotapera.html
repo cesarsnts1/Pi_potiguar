@@ -6,6 +6,8 @@
     <title>Recanto da Tapera - Detalhes</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
@@ -48,7 +50,7 @@
             <p>
                 O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e 
                 Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, 
-                foi revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
+                revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
                 culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional. 
                 É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência 
                 cultural genuína em Jucurutu.
@@ -58,9 +60,8 @@
         <section class="info-secao">
             <h2>Localização</h2>
             <p><strong>Endereço:</strong> Sítio Tapera, 6908, Zona Rural de Jucurutu - RN</p>
-            <div class="mapa-placeholder">
-                <p>Espaço reservado para o mapa de localização.</p>
-            </div>
+            
+            <div id="mapa"></div>
         </section>
 
         <a href="javascript:history.back()" class="btn">← Voltar</a>
@@ -71,6 +72,51 @@
         © 2026 Memória Potiguar | IFRN - Caicó
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function inicializarMapa() {
+            var lat = -6.070228;
+            var lng = -37.053891;
+
+            // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
+            var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // 2. CAMADA DE SATÉLITE: Imagens reais (Esri World Imagery)
+            var mapaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Inicializa o mapa adicionando a versão comum por padrão
+            var mapa = L.map('mapa', {
+                center: [lat, lng],
+                zoom: 14,
+                layers: [mapaComum] // Mapa inicial
+            });
+
+            // Adiciona o marcador com texto fixo
+            L.marker([lat, lng])
+                .addTo(mapa)
+                .bindPopup("<b>Recanto da Tapera</b><br>Sítio Tapera, Jucurutu - RN")
+                .openPopup();
+
+            // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
+            var mapasDisponiveis = {
+                "Mapa Padrão": mapaComum,
+                "Satélite": mapaSatelite
+            };
+
+            // Adiciona o botão de escolha na tela
+            L.control.layers(mapasDisponiveis, null, { collapsed: false }).addTo(mapa);
+
+            // Ajuste automático antiquebra de tamanho
+            setTimeout(function() {
+                mapa.invalidateSize();
+            }, 300);
+        }
+
+        window.onload = inicializarMapa;
+    </script>
 </body>
-</html>
 </html>

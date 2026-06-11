@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museu do Seridó - Detalhes</title>
+    <title>Recanto da Tapera - Detalhes</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
@@ -20,7 +22,6 @@
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>
             <a href="/login" class="Adm">Administração</a>
-            <a href="/logout" class="logout">Sair</a>
         </nav>
     </header>
 
@@ -28,42 +29,39 @@
 
     <main class="detalhe-container">
 
-        <h1 class="detalhe-titulo">Museu do Seridó</h1>
-        <p class="detalhe-subtitulo">Cultura e história do RN</p>
+        <h1 class="detalhe-titulo">Museu do seridó</h1>
+        <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
 
         <section class="galeria-secao">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/museuserido.png') }}" alt="Foto 1 do Museu do Seridó">
-                <img src="{{ url_for('static', filename='img/museuserido1.jpg') }}" alt="Foto 2 do Museu do Seridó">
-                <img src="{{ url_for('static', filename='img/museuserido2.jpg') }}" alt="Foto 3 do Museu do Seridó">
+                <img src="{{ url_for('static', filename='img/tapera.png') }}" alt="Foto 1 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/tapera1.png') }}" alt="Foto 2 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/tapera2.png') }}" alt="Foto 3 do Recanto da Tapera">
             </div>
         </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>
             <p>
-                O Museu do Seridó é a principal instituição de preservação da memória e da cultura sertaneja no interior potiguar, 
-                sendo um espaço fundamental para entender a identidade do povo seridoense.
+                O Recanto da Tapera é um excelente exemplo de preservação histórica aliada à gastronomia. 
+                É um casarão centenário transformado em um restaurante de culinária regional.
             </p>
             <p>
-                O museu foi fundado em 1962 pelo padre Antenor Salvino de Araújo, sendo chamado inicialmente de “Museu Pena de Ouro”. 
-                Seu acervo inicial formou-se com doações de famílias da região, e sua gestão ficou a cargo da Diocese de Caicó. 
-                Mais tarde, com a criação do Centro Regional de Ensino Superior (CERES/UFRN) na cidade, 
-                o museu passou para a administração da Universidade Federal do Rio Grande do Norte (UFRN), que em 1993 deu ao espaço 
-                sua configuração definitiva com a exposição de longa duração "Seridó, Terra Nossa de Cada Dia". O prédio que o abriga é, 
-                por si só, uma relíquia histórica: a antiga Cadeia Pública e Senado da Câmara da Vila do Príncipe, uma construção que data 
-                de 1812. Quem visita pode conferir um acervo que retrata a vida cotidiana, 
-                as festas religiosas (como a tradicional Festa de Sant'Ana), o artesanato em couro e a história social do Seridó.
+                O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e 
+                Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, 
+                revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
+                culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional. 
+                É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência 
+                cultural genuína em Jucurutu.
             </p>
         </section>
 
         <section class="info-secao">
             <h2>Localização</h2>
-            <p><strong>Endereço:</strong> Rua Amaro Cavalcanti, 123, Centro, Caicó - RN</p>
-            <div class="mapa-placeholder">
-                <p>Espaço reservado para o mapa de localização.</p>
-            </div>
+            <p><strong>Endereço:</strong> Sítio Tapera, 6908, Zona Rural de Jucurutu - RN</p>
+            
+            <div id="mapa"></div>
         </section>
 
         <a href="javascript:history.back()" class="btn">← Voltar</a>
@@ -74,5 +72,51 @@
         © 2026 Memória Potiguar | IFRN - Caicó
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function inicializarMapa() {
+            var lat = -6.457840;
+            var lng = -37.094414;
+
+            // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
+            var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // 2. CAMADA DE SATÉLITE: Imagens reais (Esri World Imagery)
+            var mapaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Inicializa o mapa adicionando a versão comum por padrão
+            var mapa = L.map('mapa', {
+                center: [lat, lng],
+                zoom: 14,
+                layers: [mapaComum] // Mapa inicial
+            });
+
+            // Adiciona o marcador com texto fixo
+            L.marker([lat, lng])
+                .addTo(mapa)
+                .bindPopup("<b>Museu do seridó</b><br>Museu do seridó, Caico - RN")
+                .openPopup();
+
+            // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
+            var mapasDisponiveis = {
+                "Mapa Padrão": mapaComum,
+                "Satélite": mapaSatelite
+            };
+
+            // Adiciona o botão de escolha na tela
+            L.control.layers(mapasDisponiveis, null, { collapsed: false }).addTo(mapa);
+
+            // Ajuste automático antiquebra de tamanho
+            setTimeout(function() {
+                mapa.invalidateSize();
+            }, 300);
+        }
+
+        window.onload = inicializarMapa;
+    </script>
 </body>
 </html>

@@ -57,12 +57,12 @@
 }
 
 .card-content h1 {
-    color: #3f6609;
+    color: #662c09;
     margin-bottom: 10px;
 }
 
 .card-content h3 {
-    color: #3f6609;
+    color: #662c09;
     margin-bottom: 10px;
 }
 
@@ -91,7 +91,7 @@
    ========================================================================== */
 .detalhe-container {
     padding: 10rem 8% 40px 8%;
-    max-width: 1200p1x;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -164,6 +164,61 @@
     margin: 20px 0 0 0;
 }
 
+/* ==========================================================================
+   INTEGRAÇÃO CORRETA DO MAPA REAL (ANTI-QUEBRA DO LEAFLET)
+   ========================================================================== */
+#mapa {
+    width: 100%;
+    height: 380px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-top: 15px;
+    border: 1px solid #eee6dc;
+    z-index: 1; /* Garante posicionamento correto na hierarquia */
+}
+
+/* CORREÇÃO CRÍTICA: Impede que o CSS geral do site quebre as imagens internas do mapa */
+#mapa img {
+    max-width: none !important;
+    max-height: none !important;
+    background: none !important;
+    display: inline !important; 
+}
+
+/* Alinha a tipografia dos balões ao padrão Poppins */
+.leaflet-container {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Customização visual das popups */
+.leaflet-popup-content-wrapper {
+    border-radius: 10px !important;
+    padding: 6px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15) !important;
+}
+
+.leaflet-popup-content b {
+    color: #662c09 !important;
+    font-size: 15px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Customização dos botões de zoom (+ e -) do mapa */
+.leaflet-bar a {
+    background-color: #ffffff !important;
+    color: #662c09 !important;
+    transition: 0.2s;
+}
+
+.leaflet-bar a:hover {
+    background-color: #f5e6d3 !important;
+    color: #4a1f05 !important;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
 @media (max-width: 900px) {
     .card {
         width: calc(50% - 15px);
@@ -173,5 +228,14 @@
 @media (max-width: 768px) {
     .card {
         width: 100%;
+    }
+    .faixa-imagem img {
+        height: 300px;
+    }
+    .detalhe-container {
+        padding-top: 8rem;
+    }
+    #mapa {
+        height: 280px; /* Reduz ligeiramente a altura do mapa no mobile */
     }
 }
