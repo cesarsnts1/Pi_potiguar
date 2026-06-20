@@ -29,7 +29,7 @@
 
     <main class="detalhe-container">
 
-        <h1 class="detalhe-titulo">Castelo do Engady</h1>
+        <h1 class="detalhe-titulo">Casa de Pedra</h1>
         <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
 
         <section class="galeria-secao">
@@ -75,8 +75,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         function inicializarMapa() {
-            var lat = -6.470738;
-            var lng = -37.107705;
+            var lat = -6.013829;
+            var lng = -37.020790;
 
             // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
             var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -98,7 +98,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup("<b>Castelo do Engady/b><br>Castelo do Engady, Caico - RN")
+                .bindPopup("<b>Casa de Pedra <br>Casa de Pedra, Jucurutu - RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito

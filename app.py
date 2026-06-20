@@ -40,55 +40,62 @@ def gastronomia():
 def cultural():
     return render_template('cultural.html')
 
-
-#  GASTRONOMIA
+# ROTAS DETALHADAS
+#  GASTRONÔ
 
 @app.route('/detalhe/recantotapera')
 def recantotapera():
-    return render_template('detalhes/recantotapera.html')
-
-
-@app.route('/detalhe/pracatrailers')
-def pracatrailers():
-    return render_template('detalhes/pracatrailers.html')
+    return render_template('detalhes/gastronomico/recantotapera.html')
 
 
 @app.route('/detalhe/temperoterra')
 def temperoterra():
-    return render_template('detalhes/temperoterra.html')
+    return render_template('detalhes/gastronomico/temperoterra.html')
 
 
 @app.route('/detalhe/zorro')
 def zorro():
-    return render_template('detalhes/zorro.html')
+    return render_template('detalhes/gastronomico/zorro.html')
 
 
 # HISTÓRICO
 @app.route('/detalhe/novabarra')
 def novabarra():
-    return render_template('detalhes/novabarra.html')
+    return render_template('detalhes/historico/novabarra.html')
 
 @app.route('/detalhe/casafortecuo')
 def casafortecuo():
-    return render_template('detalhes/casafortecuo.html')
+    return render_template('detalhes/historico/casafortecuo.html')
 
 
 @app.route('/detalhe/casteloengady')
 def casteloengady():
-    return render_template('detalhes/casteloengady.html')
+    return render_template('detalhes/historico/casteloengady.html')
 
 
 @app.route('/detalhe/museuserido')
 def museuserido():
-    return render_template('detalhes/museuserido.html')
+    return render_template('detalhes/historico/museuserido.html')
 
 
 @app.route('/detalhe/catedralsantana')
 def catedralsantana():
-    return render_template('detalhes/catedralsantana.html')
+    return render_template('detalhes/historico/catedralsantana.html')
 
+@app.route('/detalhe/casapedra')
+def casapedra():
+    return render_template('detalhes/historico/casapedra.html')
 
-# ROTAS DETALHADAS: CULTURAL
+#CULTURAL
+
+@app.route('/detalhe/casacultura')
+def casacultura():
+    return render_template('detalhes/cultural/casacultura.html')
+
+@app.route('/detalhe/artesanato')
+def artesanato():
+    return render_template('detalhes/cultural/artesanato.html')
+
 
 
 

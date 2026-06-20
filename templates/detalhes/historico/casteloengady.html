@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recanto da Tapera - Detalhes</title>
+    <title>Castelo de Engady - Detalhes</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
@@ -29,31 +29,26 @@
 
     <main class="detalhe-container">
 
-        <h1 class="detalhe-titulo">Recanto da Tapera</h1>
-        <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
+        <h1 class="detalhe-titulo">Castelo de Engady</h1>
+        <p class="detalhe-subtitulo">A fantasia medieval no sertão de Caicó</p>
 
         <section class="galeria-secao">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/tapera.png') }}" alt="Foto 1 do Recanto da Tapera">
-                <img src="{{ url_for('static', filename='img/tapera1.png') }}" alt="Foto 2 do Recanto da Tapera">
-                <img src="{{ url_for('static', filename='img/tapera2.png') }}" alt="Foto 3 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/castelodeengady1.jpg') }}" alt="Foto 1 do Castelo de Engady">
+                <img src="{{ url_for('static', filename='img/castelodeengady2.png') }}" alt="Foto 2 do Castelo de Engady">
+                <img src="{{ url_for('static', filename='img/castelodeengady3.jpg') }}" alt="Foto 3 do Castelo de Engady">
             </div>
         </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>
             <p>
-                O Recanto da Tapera é um excelente exemplo de preservação histórica aliada à gastronomia. 
-                É um casarão centenário transformado em um restaurante de culinária regional.
+                O Castelo de Engady é, sem dúvida, um dos pontos turísticos mais singulares e surpreendentes de Caicó. Trata-se de uma construção arquitetônica que reproduz um autêntico castelo medieval, com torres, ameias, fosso e ponte levadiça, 
+                erguido em meio ao sertão potiguar.
             </p>
             <p>
-                O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e 
-                Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, 
-                revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
-                culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional. 
-                É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência 
-                cultural genuína em Jucurutu.
+                texto aq
             </p>
         </section>
 
@@ -75,8 +70,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         function inicializarMapa() {
-            var lat = -6.070228;
-            var lng = -37.053891;
+            var lat = -6.470738;
+            var lng = -37.107705;
 
             // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
             var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -98,7 +93,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup("<b>Recanto da Tapera</b><br>Sítio Tapera, Jucurutu - RN")
+                .bindPopup("<b>Castelo de Engady</b><br>Castelo de Engady, Caico - RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
