@@ -1,5 +1,4 @@
-
-   * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -13,7 +12,6 @@ body {
     overflow-x: hidden;
     padding-top: 0px;
 }
-
 
 body::before {
     content: "";
@@ -29,8 +27,7 @@ body::before {
     z-index: -1;
 }
 
-
-   header {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,13 +45,19 @@ body::before {
     align-items: center;
 }
 
+/* Faz o link da logo se alinhar como bloco */
+.logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
 
 .logo img {
     width: 250px;     
     height: auto;     
     display: block;
+    cursor: pointer; /* Garante que mostre o ponteiro de clique na logo */
 }
-
 
 .spacer {
     height: 90px; 
@@ -87,20 +90,12 @@ nav a:hover {
     border-radius: 20px;
 }
 
-.espaço {
-    height: 90px; 
-}
-
-
-
-
 footer {
     text-align: center;
     padding: 25px;
     background: #662c09;
     color: white;
 }
-
 
 @media (max-width: 768px) {
     header {

@@ -16,8 +16,9 @@
 
     <header>
         <div class="logo">
-            <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
-        </div>
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
         <nav>
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>
@@ -30,30 +31,24 @@
     <main class="detalhe-container">
 
         <h1 class="detalhe-titulo">Casa de Pedra</h1>
-        <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
+        <p class="detalhe-subtitulo">As historias nas paredes</p>
 
         <section class="galeria-secao">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/tapera.png') }}" alt="Foto 1 do Recanto da Tapera">
-                <img src="{{ url_for('static', filename='img/tapera1.png') }}" alt="Foto 2 do Recanto da Tapera">
-                <img src="{{ url_for('static', filename='img/tapera2.png') }}" alt="Foto 3 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/casapedra.png') }}" alt="Foto 1 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/casadepedra3.png') }}" alt="Foto 2 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/casadepedra2.jpg') }}" alt="Foto 3 do Recanto da Tapera">
             </div>
         </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>
             <p>
-                O Recanto da Tapera é um excelente exemplo de preservação histórica aliada à gastronomia. 
-                É um casarão centenário transformado em um restaurante de culinária regional.
+                As pinturas rupestres gravadas no abrigo ancestral revelam a história e a tradição do Seridó.
             </p>
             <p>
-                O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e 
-                Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, 
-                revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
-                culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional. 
-                É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência 
-                cultural genuína em Jucurutu.
+                Escondida como um segredo ancestral nas paisagens imponentes de Jucurutu, a Casa da Pedra é um verdadeiro santuário da arqueologia e do ecoturismo no Seridó potiguar. Muito mais do que uma impressionante formação rochosa esculpida pela natureza ao longo de milênios, esse majestoso abrigo de pedra testemunha a presença dos primeiros habitantes da região, guardando em suas paredes pinturas rupestres que desafiam o tempo e narram a pré-história do sertão. Localizada em meio à fascinante vegetação da caatinga, o acesso ao local se dá por trilhas que atraem aventureiros, pesquisadores e amantes da natureza em busca de contemplação e mistério. Ao se aproximar de sua abertura monumental, o visitante é envolvido por uma atmosfera de profundo respeito e silêncio, onde o vento que sopra entre as rochas parece ecoar vozes de gerações passadas. Um destino indispensável para quem deseja se desconectar da modernidade e tocar as raízes mais profundas e místicas da terra potiguar.
             </p>
         </section>
 

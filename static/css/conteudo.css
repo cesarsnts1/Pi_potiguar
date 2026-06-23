@@ -29,20 +29,31 @@
     gap: 30px;
 }
 
+/* Remove os estilos padrões de link para o card inteiro */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    width: calc(33.333% - 20px);
+    min-width: 300px;
+    display: flex;
+}
+
 .card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-    width: calc(33.333% - 20px);
-    min-width: 300px;
+    transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    cursor: pointer;
 }
 
-.card:hover {
+/* Efeito hover aplicado via card-link para o card flutuar de forma estável */
+.card-link:hover .card {
     transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .card img {
@@ -174,10 +185,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     margin-top: 15px;
     border: 1px solid #eee6dc;
-    z-index: 1; /* Garante posicionamento correto na hierarquia */
+    z-index: 1;
 }
 
-/* CORREÇÃO CRÍTICA: Impede que o CSS geral do site quebre as imagens internas do mapa */
 #mapa img {
     max-width: none !important;
     max-height: none !important;
@@ -185,12 +195,10 @@
     display: inline !important; 
 }
 
-/* Alinha a tipografia dos balões ao padrão Poppins */
 .leaflet-container {
     font-family: 'Poppins', sans-serif !important;
 }
 
-/* Customização visual das popups */
 .leaflet-popup-content-wrapper {
     border-radius: 10px !important;
     padding: 6px;
@@ -204,7 +212,6 @@
     margin-bottom: 4px;
 }
 
-/* Customização dos botões de zoom (+ e -) do mapa */
 .leaflet-bar a {
     background-color: #ffffff !important;
     color: #662c09 !important;
@@ -220,13 +227,13 @@
    RESPONSIVIDADE (MEDIA QUERIES)
    ========================================================================== */
 @media (max-width: 900px) {
-    .card {
+    .card-link {
         width: calc(50% - 15px);
     }
 }
 
 @media (max-width: 768px) {
-    .card {
+    .card-link {
         width: 100%;
     }
     .faixa-imagem img {
@@ -236,6 +243,6 @@
         padding-top: 8rem;
     }
     #mapa {
-        height: 280px; /* Reduz ligeiramente a altura do mapa no mobile */
+        height: 280px; 
     }
 }

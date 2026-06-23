@@ -13,7 +13,9 @@
 
     <header>
         <div class="logo">
-            <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
         </div>
         <nav>
             <a href="/index">Início</a>
@@ -28,46 +30,41 @@
          <img src="{{ url_for('static', filename='img/cutural1.png') }}">
     </div>
 
+    <section class="container-flex-cards">
     
-        <section class="container-flex-cards">
-    
+        <a href="/detalhe/casacultura" class="card-link">
             <div class="card">
-                <a href="/detalhe/casacultura" class="link-imagem">
-                    <img src="{{ url_for('static', filename='img/casacultura.png') }}">
-                </a>
+                <img src="{{ url_for('static', filename='img/casacultura.png') }}">
                 <div class="card-content">
                     <h3>Casa de Cultura</h3>
                     <p>A Casa da Cultura de Caicó, também conhecida como Sobrado do Padre Brito Guerra, é um dos mais importantes patrimônios...</p>
                 </div>
             </div>
-    
+        </a>
+
+        <a href="/detalhe/museuserido" class="card-link">
             <div class="card">
-                <a href="/detalhe/museuserido" class="link-imagem">
-                    <img src="{{ url_for('static', filename='img/museuserido.png') }}">
-                </a>
+                <img src="{{ url_for('static', filename='img/museuserido.png') }}">
                 <div class="card-content">
                     <h3>Museu do Seridó</h3>
                     <p>O Museu do Seridó, vinculado à Universidade Federal do Rio Grande do Norte, é uma importante instituição histórica e cultural...</p>
                 </div>
             </div>
+        </a>
 
-    
+        <a href="/detalhe/casapedra" class="card-link">
             <div class="card">
-                <a href="/detalhe/casapedra" class="link-imagem">
-                    <img src="{{ url_for('static', filename='img/casapedra.png') }}">
-                </a>
+                <img src="{{ url_for('static', filename='img/casapedra.png') }}">
                 <div class="card-content">
                     <h3>Casa de Pedra</h3>
                     <p>A Casa de Pedra de Jucurutu, também conhecida como Pedra do Navio, é uma formação geológica esculpida pela natureza...</p>
                 </div>
             </div>
+        </a>
     
-        </section>
-
-   
+    </section>
 
    <a href="/index" class="btn">← Voltar para Categorias</a>
-
 
     <footer>
         © 2026 Memória Potiguar | IFRN - Caicó

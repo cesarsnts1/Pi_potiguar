@@ -16,8 +16,9 @@
 
     <header>
         <div class="logo">
-            <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
-        </div>
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
         <nav>
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>
@@ -30,30 +31,24 @@
     <main class="detalhe-container">
 
         <h1 class="detalhe-titulo">Museu do seridó</h1>
-        <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
+        <p class="detalhe-subtitulo">O acervo de couro na antiga cadeia de 1812 preserva a memória e a tradição do Seridó</p>
 
         <section class="galeria-secao">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/tapera.png') }}" alt="Foto 1 do Recanto da Tapera">
-                <img src="{{ url_for('static', filename='img/tapera1.png') }}" alt="Foto 2 do Recanto da Tapera">
-                <img src="{{ url_for('static', filename='img/tapera2.png') }}" alt="Foto 3 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/museuserido.png') }}" alt="Foto 1 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/museuserido1.jpg') }}" alt="Foto 2 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/museuserido2.jpg') }}" alt="Foto 3 do Recanto da Tapera">
             </div>
         </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>
             <p>
-                O Recanto da Tapera é um excelente exemplo de preservação histórica aliada à gastronomia. 
-                É um casarão centenário transformado em um restaurante de culinária regional.
+                Salvaguardando séculos de memórias entre as paredes de uma antiga cadeia pública de 1812, o Museu do Seridó pulsa como a grande arca da identidade sertaneja.
             </p>
             <p>
-                O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e 
-                Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, 
-                revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
-                culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional. 
-                É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência 
-                cultural genuína em Jucurutu.
+                Guardando os tesouros da memória sertaneja na histórica Rua Amaro Cavalcanti, o Museu do Seridó é o guardião definitivo da identidade e da alma do povo seridoense. O próprio edifício que o abriga já é um monumento: a antiga Cadeia Pública e Senado da Câmara da Vila do Príncipe, cuja construção remonta a 1812. Fundado em 1962 pelo padre Antenor Salvino de Araújo como "Museu Pena de Ouro", o espaço evoluiu sob a zelosa administração da UFRN, consolidando nos anos 90 sua emblemática exposição "Seridó, Terra Nossa de Cada Dia". Ao percorrer suas salas, o visitante mergulha no cotidiano vibrante do sertão, descobrindo o artesanato em couro, os segredos das festas religiosas — como a Festa de Sant'Ana — e a rica história social da região. Embora temporariamente fechado para reformas que garantirão seu brilho para as próximas gerações, o museu permanece no imaginário local como um farol de conhecimento e pesquisa, essencial para quem deseja compreender a força e a beleza da cultura potiguar..
             </p>
         </section>
 
