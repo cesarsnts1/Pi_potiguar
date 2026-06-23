@@ -75,8 +75,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         function inicializarMapa() {
-            var lat = -6.013829;
-            var lng = -37.020790;
+            var lat = -6.0700581;
+            var lng = -37.0542504;   
 
             // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
             var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -98,7 +98,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup("<b>Casa da Pedra <br>Casa da Pedra, Jucurutu - RN")
+                .bindPopup("<br>Recanto Da Tapera, Jucurutu - RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito

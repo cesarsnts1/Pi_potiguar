@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Churrascaria do Zorro - Detalhes</title>
+    <title>Churrascaria Do Zorro - Detalhes</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
@@ -27,39 +29,39 @@
 
     <main class="detalhe-container">
 
-        <h1 class="detalhe-titulo">Churrascaria do Zorro</h1>
-        <p class="detalhe-subtitulo">Simplicidade e culinária seridoense</p>
+        <h1 class="detalhe-titulo">Churrascaria Do Zorro</h1>
+        <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
 
         <section class="galeria-secao">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/zorro.jpg') }}" alt="Foto 1 da Churrascaria do Zorro">
-                <img src="{{ url_for('static', filename='img/zorro1.png') }}" alt="Foto 2 da Churrascaria do Zorro">
-                <img src="{{ url_for('static', filename='img/zorro2.png') }}" alt="Foto 3 da Churrascaria do Zorro">
+                <img src="{{ url_for('static', filename='img/tapera.png') }}" alt="Foto 1 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/tapera1.png') }}" alt="Foto 2 do Recanto da Tapera">
+                <img src="{{ url_for('static', filename='img/tapera2.png') }}" alt="Foto 3 do Recanto da Tapera">
             </div>
         </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>
             <p>
-                A Churrascaria do Zorro é um ponto de referência da gastronomia local 
-                em Jucurutu, conhecido por seu ambiente simples e foco na culinária regional.
+                O Recanto da Tapera é um excelente exemplo de preservação histórica aliada à gastronomia. 
+                É um casarão centenário transformado em um restaurante de culinária regional.
             </p>
             <p>
-                A Churrascaria do Zorro é um estabelecimento voltado para a culinária regional, com especialidade em churrasco. 
-                Seu nome, "Zorro", não tem sua origem documentada, mas especula-se que possa ser uma referência ao apelido de seu 
-                fundador ou da família proprietária. A churrascaria também atuava como ponto de apoio para eventos locais, vendendo 
-                ingressos para festas tradicionais da cidade, 
-                como vaquejadas e shows musicais, reforçando seu papel como ponto de encontro da comunidade.
+                O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e 
+                Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, 
+                revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
+                culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional. 
+                É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência 
+                cultural genuína em Jucurutu.
             </p>
         </section>
 
         <section class="info-secao">
             <h2>Localização</h2>
-            <p><strong>Endereço:</strong> Rua São Pedro, s/n, no bairro Novo Horizonte, em Jucurutu - RN</p>
-            <div class="mapa-placeholder">
-                <p>Espaço reservado para o mapa de localização.</p>
-            </div>
+            <p><strong>Endereço:</strong> Sítio Tapera, 6908, Zona Rural de Jucurutu - RN</p>
+            
+            <div id="mapa"></div>
         </section>
 
         <a href="javascript:history.back()" class="btn">← Voltar</a>
@@ -70,5 +72,51 @@
         © 2026 Memória Potiguar | IFRN - Caicó
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function inicializarMapa() {
+            var lat = -6.047271;
+            var lng = -37.0317119;
+
+            // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
+            var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // 2. CAMADA DE SATÉLITE: Imagens reais (Esri World Imagery)
+            var mapaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Inicializa o mapa adicionando a versão comum por padrão
+            var mapa = L.map('mapa', {
+                center: [lat, lng],
+                zoom: 14,
+                layers: [mapaComum] // Mapa inicial
+            });
+
+            // Adiciona o marcador com texto fixo
+            L.marker([lat, lng])
+                .addTo(mapa)
+                .bindPopup("<b><br>Churrascaria Do Zorro, Jucurutu - RN")
+                .openPopup();
+
+            // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
+            var mapasDisponiveis = {
+                "Mapa Padrão": mapaComum,
+                "Satélite": mapaSatelite
+            };
+
+            // Adiciona o botão de escolha na tela
+            L.control.layers(mapasDisponiveis, null, { collapsed: false }).addTo(mapa);
+
+            // Ajuste automático antiquebra de tamanho
+            setTimeout(function() {
+                mapa.invalidateSize();
+            }, 300);
+        }
+
+        window.onload = inicializarMapa;
+    </script>
 </body>
 </html>

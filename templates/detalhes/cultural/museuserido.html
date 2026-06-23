@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recanto da Tapera - Detalhes</title>
+    <title>Muséu Do Seridó- Detalhes</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
@@ -29,7 +29,7 @@
 
     <main class="detalhe-container">
 
-        <h1 class="detalhe-titulo">Museu do seridó</h1>
+        <h1 class="detalhe-titulo">Muséu Do Seridó</h1>
         <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
 
         <section class="galeria-secao">
@@ -75,9 +75,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         function inicializarMapa() {
-            var lat = -6.457840;
-            var lng = -37.094414;
-
+            var lat = -6.4578488;
+            var lng = -37.0943184;   
             // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
             var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
@@ -98,7 +97,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup("<b>Museu do seridó</b><br>Museu do seridó, Caico - RN")
+                .bindPopup("<br>Muséu Do Seridó, Caicó- RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
