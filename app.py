@@ -97,9 +97,6 @@ def artesanato():
     return render_template('detalhes/cultural/artesanato.html')
 
 
-
-
-
 # AUTENTICAÇÃO E CADASTRO
 
 
