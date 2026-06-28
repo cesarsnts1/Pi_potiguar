@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos - Memória Potiguar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+</head>
+<body class="body-conteudo">
+
+    <header>
+        <div class="logo">
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
+        </div>
+        <nav>
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/login" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <div class="faixa-imagem">
+         <img src="{{ url_for('static', filename='img/eventos.png') }}">
+    </div>
+
+    <section class="container-flex-cards">
+    
+        <a href="/detalhe/casacultura" class="card-link">
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/casacultura.png') }}">
+                <div class="card-content">
+                    <h3>Casa de Cultura</h3>
+                    <p>O prédio é histórico, com origem no século XIX, tendo sido construído por volta de 1811. Durante parte de sua história...
+                </div>
+            </div>
+        </a>
+
+        <a href="/detalhe/museuserido" class="card-link">
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/museuserido1.jpg') }}">
+                <div class="card-content">
+                    <h3>Museu do Seridó</h3>
+                    <p> O museu foi fundado em 1962 pelo padre Antenor Salvino de Araújo, sendo chamado inicialmente de “Museu Pena de Ouro”...</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="/detalhe/casapedra" class="card-link">
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/casapedra.png') }}">
+                <div class="card-content">
+                    <h3>Casa de Pedra</h3>
+                    <p>Uma caverna natural de formação geológica (mármore). Fica a aproximadamente 300 metros de extensão e...</p>
+                </div>
+            </div>
+        </a>
+    
+    </section>
+
+   <a href="/index" class="btn">← Voltar para Categorias</a>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+</body>
+</html>

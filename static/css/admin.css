@@ -165,67 +165,153 @@
    LOGIN ADMIN
    ========================== */
 
-.body-cadastro {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f5e6d3;
-    font-family: 'Poppins', sans-serif;
+/* ================= LOGIN ================= */
+
+.body-cadastro{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#f6eadb,#f3dbc0);
+
+    font-family:'Poppins',sans-serif;
 }
 
-.container-cadastro {
-    width: 100%;
-    max-width: 450px;
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,.1);
-    text-align: center;
+.container-cadastro{
+
+    width:420px;
+
+    background:#fff;
+
+    padding:45px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.12);
+
+    border:1px solid #ead7c5;
 }
 
-.container-cadastro h2 {
-    color: #78350f;
-    margin-bottom: 25px;
+.login-logo{
+
+    width:130px;
+
+    margin-bottom:20px;
 }
 
-.container-cadastro form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.container-cadastro h2{
+
+    color:#92400e;
+
+    margin-bottom:10px;
+
+    font-size:28px;
 }
 
-.container-cadastro input {
-    padding: 12px;
-    border: 1px solid #d6c2ad;
-    border-radius: 10px;
-    font-size: 15px;
+.login-subtitulo{
+
+    color:#777;
+
+    font-size:15px;
+
+    margin-bottom:30px;
 }
 
-.container-cadastro input:focus {
-    outline: none;
-    border-color: #92400e;
+.container-cadastro form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
 }
 
-.container-cadastro button {
-    background: #13b03d;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
+.container-cadastro input{
+
+    padding:15px;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    transition:.3s;
 }
 
-.container-cadastro button:hover {
-    background: #0e872e;
+.container-cadastro input:focus{
+
+    border-color:#92400e;
+
+    box-shadow:0 0 10px rgba(146,64,14,.2);
+
+    outline:none;
 }
 
-.container-cadastro a {
-    color: #92400e;
-    text-decoration: none;
+.container-cadastro button{
+
+    padding:15px;
+
+    background:#92400e;
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
 }
 
-.container-cadastro a:hover {
-    text-decoration: underline;
+.container-cadastro button:hover{
+
+    background:#6f2f08;
+
+    transform:translateY(-2px);
+}
+
+.voltar-site{
+
+    display:inline-block;
+
+    margin-top:25px;
+
+    color:#92400e;
+
+    text-decoration:none;
+
+    font-weight:600;
+}
+
+.voltar-site:hover{
+
+    text-decoration:underline;
+}
+
+.login-alert{
+
+    margin-bottom:20px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    background:#fde8e8;
+
+    color:#b91c1c;
+
+    font-size:14px;
 }

@@ -96,6 +96,14 @@ def casacultura():
 def artesanato():
     return render_template('detalhes/cultural/artesanato.html')
 
+@app.route('/evento')
+def eventos():
+    return render_template('evento.html')
+
+@app.route('/detalhe/festa_padroeira')
+def festa_padroeira():
+    return render_template('detalhes/evento/festa_padroeira.html')
+
 
 # AUTENTICAÇÃO E CADASTRO
 

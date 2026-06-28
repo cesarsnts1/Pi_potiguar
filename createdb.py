@@ -89,7 +89,8 @@ CREATE TABLE IF NOT EXISTS categorias (
 categorias_padrao = [
     "Histórico",
     "Cultural",
-    "Gastronômico"
+    "Gastronômico",
+    "Eventos"
 ]
 
 for categoria in categorias_padrao:
@@ -108,7 +109,8 @@ for categoria in categorias_padrao:
 categorias_padrao = [
     "Histórico",
     "Cultural",
-    "Gastronômico"
+    "Gastronômico",
+    "Eventos"
 ]
 
 for categoria in categorias_padrao:
