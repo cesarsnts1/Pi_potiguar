@@ -38,24 +38,25 @@
             <div class="galeria-grid">
                 <img src="{{ url_for('static', filename='img/castelodeengady1.jpg') }}" alt="Foto 1 do Castelo de Engady">
                 <img src="{{ url_for('static', filename='img/castelodeengady2.png') }}" alt="Foto 2 do Castelo de Engady">
-                <img src="{{ url_for('static', filename='img/castelodeengady3.jpg') }}" alt="Foto 3 do Castelo de Engady">
             </div>
         </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>
             <p>
-                O Castelo de Engady é, sem dúvida, um dos pontos turísticos mais singulares e surpreendentes de Caicó. Trata-se de uma construção arquitetônica que reproduz um autêntico castelo medieval, com torres, ameias, fosso e ponte levadiça, 
-                erguido em meio ao sertão potiguar.
+                 O Castelo de Engady surgiu de maneira diferente das construções Europeias famosas que serviam para defesa da cidade. Foi feito pelo Monsenhor Salvino de Araújo num estilo que conversa com o mouro-medieval, para ser um lugar de recolhimento e oração. 
             </p>
             <p>
-                Ancorado de forma dramática sobre um rochedo no bairro Soledade, em Caicó, o Castelo de Engady evoca uma atmosfera de mistério e devoção que desafia o próprio tempo. Diferente das fortalezas europeias erguidas para a guerra, esta joia de traços mouro-medievais nasceu do sonho e da fé do Monsenhor Salvino de Araújo, que entre 1973 e 1974 dedicou esforços ininterruptos para erguer um santuário de recolhimento e oração. Suas sete imponentes torres celebram o número sagrado da Bíblia, coroando uma estrutura labiríntica composta por pátios, guaritas, pontes, muralhas e até uma capela íntima. Embora o abandono governamental e o vandalismo tenham deixado cicatrizes em suas paredes decadentes, o castelo ainda conserva uma aura de solenidade indescritível, clamando por uma revitalização que devolva seu antigo esplendor decorado com espadas, peças religiosas e estandartes. Para o viajante que se aventura a conhecê-lo, Engady se revela como o maior e mais poético manifesto de arte e espiritualidade adormecido no coração do Seridó
+                Foram construídas sete torres em honra ao número sagrado da Bíblia. Para se tornar habitável, foram necessários onze meses de trabalhos ininterruptos, de 04 de junho de 1973 a maio de 1974, sendo aplicados Cr$ 25.000,00 (vinte e cinco mil cruzeiros), desde a compra do terreno até serem fechadas todas as portas, algo em torno do que seria R$110.000,00 nos dias de hoje. Infelizmente, o Castelo de Engady foi totalmente abandonado pelo governo do estado, o que levou a sua deterioração. Sendo talvez o maior desperdício socioeconômico e cultural da cidade.
+                 O Castelo é assentado sobre um rochedo, tendo sua estrutura composta de pátios, terraços, peitoris, balcões, guaritas, torres, pontes, escadas, batentes, poços, tanques, fortificações, ameias, salas, dormitórios, capela, dependências de serviços domésticos, vigias, muralhas. Costumava ser decorado com quadros, emblemas, estandartes, espadas, carrancas, correntes, peças bíblicas e religiosas, e outros. Hoje em dia a construção não atrai muitos visitantes, por seu aspecto decadente e por ser situada numa região marginalizada.
+                 A situação poderia mudar completamente se houvesse um projeto governamental para a revitalização do lugar. Cabe a nós potiguares levarmos essa pauta a discussão.
+
             </p>
         </section>
 
         <section class="info-secao">
             <h2>Localização</h2>
-            <p><strong>Endereço:</strong> Sítio Tapera, 6908, Zona Rural de Jucurutu - RN</p>
+            <p><strong>Endereço:</strong> Bairro Soledade na cidade de Caicó - RN</p>
             
             <div id="mapa"></div>
         </section>
@@ -94,7 +95,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup("</b><br>Castelo de Engady, Caico - RN")
+                .bindPopup("</b><br>Castelo de Engady, Caicó - RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito

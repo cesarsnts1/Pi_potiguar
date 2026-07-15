@@ -246,3 +246,50 @@
         height: 280px; 
     }
 }
+
+/* ==========================================================================
+   LEGENDAS DE IMAGENS (FONTES/CRÉDITOS)
+   ========================================================================== */
+.galeria-item {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.galeria-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.galeria-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.3s;
+}
+
+.galeria-item img:hover {
+    transform: scale(1.02);
+}
+
+.fonte-imagem {
+    font-size: 11px;
+    color: #888;
+    padding: 8px 14px 10px 14px;
+    margin: 0;
+    background: #faf6f2;
+    border-top: 1px solid #eee6dc;
+    font-style: italic;
+    letter-spacing: 0.3px;
+    line-height: 1.4;
+}
+
+.fonte-imagem::before {
+    content: "📷 ";
+    font-style: normal;
+}
