@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/index.css">
     <link rel="stylesheet" href="/static/css/barra.css">
+</head> <!-- Fechamento da tag head corrigido aqui -->
     
 <body>
 
@@ -15,7 +16,16 @@
             <a href="/index">
                 <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
             </a>
+        </div> 
+        
         <nav>
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit">
+                    🔍
+                </button>
+            </form>
+    
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>
             <a href="/login" class="Adm">Administração</a>
@@ -54,7 +64,7 @@
             </div>
             <div class="large-card-content">
                 <h2>Cutural</h2>
-                <p>Mergulhe de cabeça nas nossas ricas manifestações artísticas, no autêntico artesanato feito à mão, no folclore pulsante e nas expressões únicas que dão vida e movimento à nossa terra.</p>
+                <p>Mergulhe de cabeça nas nossas ricas manifestações artísticas, no autêntico artesanato feito à mão, no folcloreqpulsante e nas expressões únicas que dão vida e movimento à nossa terra.</p>
                 <a href="/cultural" class="btn-large-card">Ver mais</a>
             </div>
         </div>
@@ -88,7 +98,6 @@
         <img src="{{ url_for('static', filename='img/colagem.png') }}" alt="Galeria 2">
         <img src="{{ url_for('static', filename='img/forte.png') }}" alt="Galeria 2">
 
-        
         <div class="carousel-text">
             <h2>Registros Potiguares</h2>
             <p>Paisagens e memórias capturadas pelo tempo.</p>
@@ -103,12 +112,13 @@
             <p>
                 Um capítulo de profunda nostalgia e história no coração do Seridó. A Velha Barra de Santana hoje descansa sob as águas, mas sua memória permanece viva na mente de seu povo. Recordar suas ruas, sua capela e sua história é trazer à tona a identidade de uma comunidade que cedeu seu chão para dar lugar ao progresso, mas que nunca deixou suas verdadeiras raízes afundarem.
             </p>
-            <a href="/sobre" class="btn-tribute">Conhecer essa História →</a>
+            <!-- Link corrigido para a rota limpa do Flask -->
+            <a href="/barra-santana" class="btn-tribute">Conhecer essa História →</a>
         </div>
     </section>
 
     <footer>
-        © 2026 Memória Potiguar
+        © 2026 Memória Potiguar | IFRN - Caicó
     </footer>
 
 </body>

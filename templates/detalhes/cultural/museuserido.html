@@ -19,7 +19,17 @@
             <a href="/index">
                 <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
             </a>
+        </div> 
+        
         <nav>
+            
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit">
+                    🔍
+                </button>
+            </form>
+    
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>
             <a href="/login" class="Adm">Administração</a>

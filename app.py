@@ -36,9 +36,9 @@ def gastronomia():
     return render_template('gastronomia.html')
 
 
-@app.route('/cultural')
-def cultural():
-    return render_template('cultural.html')
+@app.route('/barra-santana') # Ou o nome que você escolheu para a rota
+def barra_santana():
+    return render_template('barra_santana.html')
 
 # ROTAS DETALHADAS
 #  GASTRONÔ
