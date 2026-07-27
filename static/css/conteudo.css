@@ -246,50 +246,66 @@
         height: 280px; 
     }
 }
+/* ======================================================================  GALERIA COM CRÉDITO EM HOVER
+====================================================================== */
 
-/* ==========================================================================
-   LEGENDAS DE IMAGENS (FONTES/CRÉDITOS)
-   ========================================================================== */
-.galeria-item {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    border-radius: 10px;
+.galeria-item{
+    position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 12px;
+    cursor: pointer;
 }
 
-.galeria-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+.galeria-item img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+
+    transition: transform .35s ease;
 }
 
-.galeria-item img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 10px 10px 0 0;
-    transition: transform 0.3s;
+.galeria-item:hover img{
+    transform: scale(1.08);
 }
 
-.galeria-item img:hover {
-    transform: scale(1.02);
+.credito-imagem{
+
+    position:absolute;
+    left:0;
+    bottom:0;
+
+    width:100%;
+    padding:12px 15px;
+
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(4px);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    color:white;
+    text-decoration:none;
+
+    font-size:13px;
+
+    transform:translateY(100%);
+    transition:.35s ease;
 }
 
-.fonte-imagem {
-    font-size: 11px;
-    color: #888;
-    padding: 8px 14px 10px 14px;
-    margin: 0;
-    background: #faf6f2;
-    border-top: 1px solid #eee6dc;
-    font-style: italic;
-    letter-spacing: 0.3px;
-    line-height: 1.4;
+.galeria-item:hover .credito-imagem{
+    transform:translateY(0);
 }
 
-.fonte-imagem::before {
-    content: "📷 ";
-    font-style: normal;
+.credito-imagem:hover{
+    background:rgba(0,0,0,.82);
+}
+
+.seta{
+    font-size:16px;
+    transition:.3s;
+}
+
+.credito-imagem:hover .seta{
+    transform:translateX(4px);
 }

@@ -186,7 +186,7 @@
 
     width:420px;
 
-    background:#fff;
+    background:#662c09;
 
     padding:45px;
 
@@ -208,7 +208,7 @@
 
 .container-cadastro h2{
 
-    color:#92400e;
+    color:#fff7ed;;
 
     margin-bottom:10px;
 
@@ -217,7 +217,7 @@
 
 .login-subtitulo{
 
-    color:#777;
+    color:#fff7ed;
 
     font-size:15px;
 
@@ -248,7 +248,7 @@
 
 .container-cadastro input:focus{
 
-    border-color:#92400e;
+    border-color:#fff7ed;;
 
     box-shadow:0 0 10px rgba(146,64,14,.2);
 
@@ -289,7 +289,7 @@
 
     margin-top:25px;
 
-    color:#92400e;
+    color:#fff7ed;
 
     text-decoration:none;
 

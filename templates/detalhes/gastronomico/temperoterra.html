@@ -26,7 +26,7 @@
             <form action="/buscar" method="GET" class="search-form">
                 <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
                 <button type="submit">
-                    🔍
+                    
                 </button>
             </form>
     
@@ -43,14 +43,55 @@
         <h1 class="detalhe-titulo">Restaurante Tempero Da Terra </h1>
         <p class="detalhe-subtitulo">Sabor caseiro e tradição caicoense</p>
 
-        <section class="galeria-secao">
-            <h2>Galeria do Lugar</h2>
-            <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/temperoterra1.png') }}" alt="Foto 1 do Tempero Da Terra">
-                <img src="{{ url_for('static', filename='img/temperoterra2.png') }}" alt="Foto 2 do Tempero Da Terra">
-                <img src="{{ url_for('static', filename='img/temperoterra3.png') }}" alt="Foto 3 do Tempero Da Terra">
-            </div>
-        </section>
+<section class="galeria-secao">
+<h2>Galeria do Lugar</h2>
+
+<div class="galeria-grid">
+
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/temperoterra1.png') }}"
+         alt="Foto 1 do Castelo de Engady">
+
+    <a class="credito-imagem"
+       href=
+ rel="noopener noreferrer">
+
+        <span>Fonte: -</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/temperoterra2.png') }}"
+         alt="Foto 1 do Castelo de Engady">
+
+    <a class="credito-imagem"
+       href=
+ rel="noopener noreferrer">
+
+        <span>Fonte: -</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/temperoterra3.png') }}"
+         alt="Foto 1 do Castelo de Engady">
+
+    <a class="credito-imagem"
+       href=
+ rel = "noopener noreferrer">
+
+        <span>Fonte: -</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+    </div>
+    </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>

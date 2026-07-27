@@ -26,7 +26,7 @@
             <form action="/buscar" method="GET" class="search-form">
                 <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
                 <button type="submit">
-                    🔍
+                    
                 </button>
             </form>
     
@@ -42,15 +42,55 @@
 
         <h1 class="detalhe-titulo">Churrascaria Do Zorro</h1>
         <p class="detalhe-subtitulo">O point do churrasco em Jucurutu</p>
+<section class="galeria-secao">
+<h2>Galeria do Lugar</h2>
 
-        <section class="galeria-secao">
-            <h2>Galeria do Lugar</h2>
-            <div class="galeria-grid">
-                <img src="{{ url_for('static', filename='img/zorro1.jpg') }}" alt="Foto 1 da Churrascaria Do Zorro">
-                <img src="{{ url_for('static', filename='img/zorro2.png') }}" alt="Foto 2 da Churrascaria Do Zorro">
-                <img src="{{ url_for('static', filename='img/zorro3.png') }}" alt="Foto 3 da Churrascaria Do Zorro">
-            </div>
-        </section>
+<div class="galeria-grid">
+
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/zorro1.jpg') }}"
+         alt="Foto 1 do Castelo de Engady">
+
+    <a class="credito-imagem"
+       href=
+ rel="noopener noreferrer">
+
+        <span>Fonte: -</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/zorro2.png') }}"
+         alt="Foto 1 do Castelo de Engady">
+
+    <a class="credito-imagem"
+       href=
+ rel="noopener noreferrer">
+
+        <span>Fonte: -</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/zorro3.png') }}"
+         alt="Foto 1 do Castelo de Engady">
+
+    <a class="credito-imagem"
+       href=
+ rel = "noopener noreferrer">
+
+        <span>Fonte: -</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+    </div>
+    </section>
 
         <section class="info-secao">
             <h2>História e Cultura</h2>
