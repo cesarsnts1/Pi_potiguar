@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pesquisa - Memória Potiguar</title>
+
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/barra.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <a href="/index">
+
+            <img
+                src="{{ url_for('static', filename='img/logo5.png') }}"
+                alt="Logo Memória Potiguar"
+            >
+
+        </a>
+
+    </div>
+
+
+    <nav>
+
+        <form action="/buscar" method="GET" class="search-form">
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Pesquisar..."
+                value="{{ termo }}"
+            >
+
+            <button type="submit">
+                🔍
+            </button>
+
+        </form>
+
+
+        <a href="/index">Início</a>
+
+        <a href="/sobre">Sobre</a>
+
+        <a href="/login" class="Adm">
+            Administração
+        </a>
+
+    </nav>
+
+</header>
+
+
+<div class="espaço"></div>
+
+
+<main class="reportage-container">
+
+    <h1>Resultados da pesquisa</h1>
+
+
+    {% if termo %}
+
+        <p>
+            Resultados encontrados para:
+            <strong>{{ termo }}</strong>
+        </p>
+
+
+        {% if resultados %}
+
+            {% for resultado in resultados %}
+
+                <div class="resultado">
+
+                    <h2>
+                        <a href="{{ resultado.url }}">
+                            {{ resultado.titulo }}
+                        </a>
+                    </h2>
+
+                    <p>
+                        {{ resultado.descricao }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <p>
+                Nenhum resultado encontrado para
+                <strong>{{ termo }}</strong>.
+            </p>
+
+        {% endif %}
+
+
+    {% else %}
+
+        <p>
+            Digite alguma coisa para pesquisar.
+        </p>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+
+    © 2026 Memória Potiguar | IFRN - Caicó
+
+</footer>
+
+
+</body>
+
+</html>

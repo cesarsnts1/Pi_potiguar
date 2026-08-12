@@ -1,317 +1,530 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Memória Potiguar - Velha Barra de Santana</title>
-    <!-- Reaproveitando seus estilos base e a barra que ajustamos -->
+
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/barra.css">
-    <style>
-        /* Estilos específicos e rústicos para a página da Homenagem */
-        .article-banner {
-            position: relative;
-            width: 100%;
-            height: 450px;
-            background: linear-gradient(rgba(102, 44, 9, 0.6), rgba(61, 43, 31, 0.85)), url("/static/img/recanto2.jpg") no-repeat center center;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #ffffff;
-            padding: 20px;
-        }
-
-        .banner-title h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-            margin-bottom: 10px;
-        }
-
-        .banner-title p {
-            font-size: 1.3rem;
-            color: #fde68a;
-            font-style: italic;
-        }
-
-        .reportage-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .meta-info {
-            border-bottom: 2px solid #c18d6a;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-            color: #662c09;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .story-text {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: #3d2b1f;
-            text-align: justify;
-        }
-
-        .story-text p {
-            margin-bottom: 25px;
-            text-indent: 20px;
-        }
-
-        .story-text h2 {
-            color: #662c09;
-            font-size: 1.8rem;
-            margin: 40px 0 20px 0;
-            border-left: 5px solid #c18d6a;
-            padding-left: 15px;
-        }
-
-        /* Bloco de citação de moradores antigos (Dá tom de notícia/documentário) */
-        .interview-quote {
-            background-color: #ebd9c5;
-            border-left: 4px solid #662c09;
-            padding: 20px;
-            margin: 30px 0;
-            font-style: italic;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .interview-quote span {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #662c09;
-            font-style: normal;
-            font-size: 0.95rem;
-        }
-
-        /* Seção Multimídia: Galeria de Fotos Rústica */
-        .media-section-title {
-            text-align: center;
-            color: #662c09;
-            margin: 60px 0 30px 0;
-            font-size: 2rem;
-            position: relative;
-        }
-
-        .media-section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 3px;
-            background: #c18d6a;
-            margin: 10px auto 0 auto;
-        }
-
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .gallery-item {
-            background: #ffffff;
-            padding: 10px;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            border: 1px solid #ebd9c5;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 2px;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item img:hover {
-            transform: scale(1.02);
-        }
-
-        .gallery-item p {
-            font-size: 0.85rem;
-            color: #662c09;
-            margin-top: 8px;
-            text-align: center;
-            font-style: italic;
-        }
-
-        /* Seção Multimídia: Vídeos e Documentários */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            margin-bottom: 60px;
-        }
-
-        .video-card {
-            background: #662c09;
-            padding: 12px;
-            border-radius: 8px;
-            color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* Proporção 16:9 para vídeos */
-            height: 0;
-            overflow: hidden;
-            border-radius: 4px;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .video-card h4 {
-            margin-top: 12px;
-            font-size: 1.1rem;
-            color: #fde68a;
-        }
-
-        .video-card p {
-            font-size: 0.85rem;
-            color: #ebd9c5;
-            margin-top: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .banner-title h1 { font-size: 2.2rem; }
-            .video-grid { grid-template-columns: 1fr; }
-        }
-    </style>
 </head>
+
 <body>
 
-    <!-- Header Ajustado com Barra de Pesquisa à Direita -->
+    <!-- HEADER -->
     <header>
+
         <div class="logo">
             <a href="/index">
-                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}"
+                     alt="Logo Memória Potiguar">
             </a>
-        </div> 
-        
+        </div>
+
         <nav>
+
             <form action="/buscar" method="GET" class="search-form">
-                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <input type="text"
+                       name="q"
+                       placeholder="Pesquisar..."
+                       aria-label="Pesquisar">
+
                 <button type="submit">🔍</button>
             </form>
-    
+
             <a href="/index">Início</a>
             <a href="/sobre">Sobre</a>
             <a href="/login" class="Adm">Administração</a>
+
         </nav>
+
     </header>
 
-    <!-- Espaço para compensar o header fixed -->
+
+    <!-- ESPAÇO DO HEADER FIXO -->
     <div class="espaço"></div>
 
-    <!-- Banner Principal da Reportagem -->
+
+    <!-- BANNER PRINCIPAL -->
     <section class="article-banner">
+
         <div class="banner-title">
+
             <h1>Velha Barra de Santana</h1>
-            <p>A história da cidade sertaneja que aceitou submergir para dar vida ao progresso</p>
+
+            <p>
+                O distrito é coberto pelas águas da grande Barragem de Oiticica.
+            </p>
+
         </div>
+
     </section>
 
-    <!-- Corpo da Grande Notícia / Reportagem -->
+
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="reportage-container">
-        
+
+
+        <!-- INFORMAÇÕES -->
         <div class="meta-info">
-            <span>Por: <strong>Dossiê Memória Potiguar</strong></span>
-            <span>Edição Especial: Homenagem Histórica</span>
+
+            <span>
+                Por: <strong>Dossiê Memória Potiguar</strong>
+            </span>
+
+            <span>
+                Edição Especial: Homenagem Histórica
+            </span>
+
         </div>
 
+
+        <!-- HISTÓRIA -->
         <article class="story-text">
+
+
+            <!-- ========================= -->
+            <!-- CAPÍTULO I -->
+            <!-- ========================= -->
+
+            <h2>
+                O Nascimento nas Várzeas do Rio Piranhas
+            </h2>
+
             <p>
-                No coração da região do Seridó, sob as águas calmas e profundas da Barragem de Oiticica, repousa um pedaço inestimável da identidade do Rio Grande do Norte. A Velha Barra de Santana, outrora um vibrante e acolhedor distrito pertencente ao município de Jucurutu, modificou radicalmente sua geografia em nome de uma promessa de segurança hídrica para milhares de potiguares. 
+                Velha Barra de Santana uma simples comunidade, porém com grandes
+                histórias e muitos momentos para contar, hoje um distrito coberto
+                pelas águas, porém que já foi um lugar com cultura, devoções,
+                sabores e momentos únicos. Uma história que teve início lá no
+                século XX, o sertão ainda lembra do seu grande surgimento.
             </p>
 
             <p>
-                Fundada em fortes laços de comunidade, fé e apego à terra, a comunidade viu suas antigas casas de fachada colonial, sua praça central e a icônica capela histórica serem desocupadas para dar lugar ao leito do imenso reservatório. Contudo, o que para a engenharia representa metros cúbicos de água acumulada, para o povo dali significa um relicário de recordações que o tempo e a inundação não conseguem apagar.
+                Localizada no território da cidade de Jucurutu, teve como início
+                pequenas fazendas de gado, desenvolvendo-se ali mesmo. Quem chegava
+                se admirava com o pequeno refúgio que ali se encontrava, um pedaço
+                de fertilidade nas margens do Rio Piranhas, um verdadeiro paraíso
+                encontrado nas barreiras produtivas e nas terras em relevo nas
+                encostas do rio.
             </p>
 
-            <div class="interview-quote">
-                "A gente via as paredes caindo e parecia que um pedaço da infância da gente estava indo junto. Mas sabíamos que a água ia trazer vida para quem sofre com a seca. A Barra não morreu, ela só mudou de lugar e agora vive guardada nos nossos corações."
-                <span>— Maria das Dores, 72 anos, antiga moradora do distrito.</span>
+            <p>
+                Antes de ganhar as feições de vila, o povoamento formou-se em volta
+                de fazendas de gado ligadas à expansão pastoril dos séculos anteriores.
+            </p>
+
+
+            <!-- IMAGEM -->
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
+                     alt="Antiga Barra de Santana">
+
+                <p>
+                    Velha Barra de Santana antes da demolição.
+                </p>
+
             </div>
 
-            <h2>Fé, Tradição e o Adeus à Antiga Capela</h2>
+
             <p>
-                O centro espiritual e social da Velha Barra sempre girou em torno de sua tradicional festa padroeira e dos encontros em frente à Capela de Santana. As procissões e as cavalgadas que cortavam o chão batido do sertão eram o reflexo de uma cultura viva, marcada pela resiliência e a alegria típica do povo seridoense.
+                O vilarejo foi ganhando corpo aos poucos, estabelecendo-se como um
+                verdadeiro refúgio de fertilidade em meio à aridez da Caatinga.
+                As primeiras famílias, com sobrenomes tradicionais que iam desde
+                Lopes e Bezerra até Medeiros e Santos, chegaram atraídas pelo
+                paraíso que representava o Rio Piranhas.
             </p>
+
             <p>
-                O processo de transição para a Nova Barra de Santana foi longo e carregado de emoção. Cada tijolo deixado para trás carregava histórias de batizados, casamentos e o luto compartilhado no antigo cemitério local. A mudança exigiu coragem para recomeçar, mas fincou na nova estrutura urbana a promessa de que as tradições e a devoção à Santana jamais seriam esquecidas.
+                A fertilidade das barreiras, a riqueza das terras e o relevo das
+                encostas do rio garantiam o cultivo que o sertão plano tantas vezes
+                negava. O coração da localidade bateu forte a partir da construção
+                de sua capela, um ponto de profunda devoção à Senhora Santana que
+                desenhou o contorno urbano da vila.
             </p>
+
+
+            <!-- IMAGEM -->
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
+                     alt="Capela de Santana">
+
+                <p>
+                    Capela de Santana.
+                </p>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- CAPÍTULO II -->
+            <!-- ========================= -->
+
+            <h2>
+                O Cotidiano Sertanejo e a Economia da Sobrevivência
+            </h2>
+
+            <p>
+                Para entender como se vivia na antiga Barra, é preciso compreender
+                o ritmo das águas e das secas. Os moradores se mantinham através
+                de uma economia essencialmente baseada na agricultura familiar e
+                na pecuária de subsistência.
+            </p>
+
+
+            <!-- IMAGEM -->
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
+                     alt="Cotidiano da antiga Barra de Santana">
+
+                <p>
+                    O cotidiano da antiga Barra de Santana.
+                </p>
+
+            </div>
+
+
+            <p>
+                A lavoura ia desde o cultivo de milho, feijão e, principalmente,
+                o algodão, o chamado "ouro branco" do Nordeste, que garantia o
+                sustento das famílias.
+            </p>
+
+            <p>
+                A criação de pequenos rebanhos de bovinos e caprinos também
+                fornecia leite e carne para o consumo e para o comércio local.
+                Sem as correrias da cidade grande, o cotidiano era marcado pelas
+                conversas nas calçadas ao entardecer, pelas feiras livres e pelas
+                tradicionais festas da padroeira, que reuniam parentes vindos
+                de diferentes lugares.
+            </p>
+
+
+            <!-- ========================= -->
+            <!-- CAPÍTULO III -->
+            <!-- ========================= -->
+
+            <h2>
+                Os Generais da Resistência e as Trincheiras no Canteiro de Obras
+            </h2>
+
+
+            <!-- IMAGEM -->
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
+                     alt="Construção da Barragem de Oiticica">
+
+                <p>
+                    Primeiros indícios da construção da barragem.
+                </p>
+
+            </div>
+
+
+            <p>
+                A chegada das máquinas para a construção da Barragem de Oiticica
+                mudou a rotina de Barra de Santana e trouxe aos moradores o medo
+                de perder suas casas, terras e histórias. Diante da possibilidade
+                de serem retirados sem garantias, a comunidade começou a se
+                organizar para defender seus direitos.
+            </p>
+
+            <p>
+                Moradores, agricultores, estudantes e famílias inteiras participaram
+                de reuniões e manifestações, contando também com o apoio do
+                Movimento dos Atingidos por Barragens (MAB), da CODEPEME e de
+                setores da Igreja Católica.
+            </p>
+
+            <p>
+                A luta aconteceu por meio de ocupações, bloqueios de estradas,
+                manifestações e participação em audiências públicas, sempre
+                buscando melhores condições para o reassentamento.
+            </p>
+
+
+            <!-- IMAGEM -->
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
+                     alt="Primeiras manifestações">
+
+                <p>
+                    Primeiras manifestações.
+                </p>
+
+            </div>
+
+
+            <p>
+                A principal reivindicação era que a Nova Barra de Santana fosse
+                construída antes da retirada das famílias, garantindo moradia,
+                terras para produção e a preservação dos laços comunitários.
+                Com muita mobilização, os moradores conseguiram pressionar o
+                poder público e fortalecer a luta pelo reassentamento.
+            </p>
+
+            <p>
+                Mesmo sabendo que a antiga comunidade seria coberta pelas águas,
+                os moradores lutaram para que sua história e sua identidade não
+                fossem esquecidas. Assim, a resistência de Barra de Santana
+                tornou-se parte importante da história da construção da Barragem
+                de Oiticica.
+            </p>
+
+
+            <!-- ========================= -->
+            <!-- CAPÍTULO IV -->
+            <!-- ========================= -->
+
+            <h2>
+                A Saída das Famílias e a Nova Barra de Santana
+            </h2>
+
+
+            <p>
+                Com o avanço da construção da Barragem de Oiticica, chegou o
+                momento mais difícil para os moradores de Barra de Santana:
+                deixar suas casas e suas terras. Famílias que viveram durante
+                muitos anos na comunidade precisaram se despedir de seus lares,
+                das plantações, da capela e dos lugares onde construíram suas
+                histórias.
+            </p>
+
+
+            <!-- IMAGEM -->
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='img/colagem.png') }}"
+                     alt="Saída das famílias de Barra de Santana">
+
+                <p>
+                    A saída das famílias da antiga Barra de Santana.
+                </p>
+
+            </div>
+
+
+            <p>
+                A mudança não significava apenas trocar de endereço. Para muitos
+                moradores, era deixar para trás uma parte importante de suas vidas.
+                Casas foram desocupadas e, pouco a pouco, a antiga comunidade foi
+                sendo deixada para trás para dar lugar às águas da barragem.
+            </p>
+
+
+            <p>
+                As famílias foram então reassentadas na Nova Barra de Santana,
+                construída para receber os moradores atingidos pela obra. O novo
+                distrito trouxe novas casas, ruas e espaços comunitários,
+                permitindo que as famílias continuassem próximas e mantivessem
+                parte da convivência que existia na antiga comunidade.
+            </p>
+
+
+            <!-- IMAGEM -->
+            <div class="gallery-item">
+
+                <img src="{{ url_for('static', filename='img/historia.jpg') }}"
+                     alt="Nova Barra de Santana">
+
+                <p>
+                    A Nova Barra de Santana, novo lar das famílias reassentadas.
+                </p>
+
+            </div>
+
+
+            <p>
+                Mesmo em um novo lugar, as lembranças da antiga Barra continuaram
+                vivas. As festas, a devoção a Senhora Santana, as histórias dos
+                moradores e os laços entre as famílias passaram a fazer parte da
+                memória de uma comunidade que hoje permanece debaixo das águas.
+            </p>
+
+
+            <p>
+                A Nova Barra de Santana representa um novo começo, mas a antiga
+                comunidade nunca foi esquecida. Sua história continua viva nas
+                lembranças de cada família que um dia chamou aquele lugar de lar.
+            </p>
+
+
         </article>
 
-        <!-- SEÇÃO MULTIMÍDIA: GALERIA DE FOTOS EXTENSA -->
-        <h3 class="media-section-title">Mural de Memórias (Fotos)</h3>
-        
+
+        <!-- ========================= -->
+        <!-- TRECHO FINAL -->
+        <!-- ========================= -->
+
+        <p>
+            Fundada em fortes laços de comunidade, fé e apego à terra, a comunidade
+            viu suas antigas casas, sua praça central e a histórica capela serem
+            desocupadas para dar lugar ao leito do imenso reservatório. Contudo,
+            o que para a engenharia representa metros cúbicos de água acumulada,
+            para o povo dali significa um relicário de recordações que o tempo e
+            a inundação não conseguem apagar.
+        </p>
+
+
+        <!-- CITAÇÃO -->
+        <div class="interview-quote">
+
+            "A gente via as paredes caindo e parecia que um pedaço da infância
+            da gente estava indo junto. Mas sabíamos que a água ia trazer vida
+            para quem sofre com a seca. A Barra não morreu, ela só mudou de
+            lugar e agora vive guardada nos nossos corações."
+
+            <span>
+                — Maria das Dores, antiga moradora do distrito.
+            </span>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- GALERIA -->
+        <!-- ========================= -->
+
+        <h3 class="media-section-title">
+            Mural de Memórias (Fotos)
+        </h3>
+
+
         <section class="photo-gallery">
+
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}" alt="Antiga Capela">
-                <p>A histórica Capela de Santana antes das águas.</p>
+
+                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
+                     alt="Antiga Capela">
+
+                <p>
+                    A histórica Capela de Santana antes das águas.
+                </p>
+
             </div>
+
+
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/historia.jpg') }}" alt="Casario Antigo">
-                <p>Fachadas do antigo casario da comunidade.</p>
+
+                <img src="{{ url_for('static', filename='img/historia.jpg') }}"
+                     alt="Casario Antigo">
+
+                <p>
+                    Fachadas do antigo casario da comunidade.
+                </p>
+
             </div>
+
+
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/dunas.jpg') }}" alt="Área da barragem">
-                <p>Região do Seridó que hoje abriga o reservatório.</p>
+
+                <img src="{{ url_for('static', filename='img/dunas.jpg') }}"
+                     alt="Área da barragem">
+
+                <p>
+                    Região do Seridó que hoje abriga o reservatório.
+                </p>
+
             </div>
+
+
             <div class="gallery-item">
-                <!-- Substitua pelo caminho correto da imagem se tiver uma específica -->
-                <img src="{{ url_for('static', filename='img/colagem.png') }}" alt="Mudança dos moradores">
-                <p>Registros da transição e do cotidiano dos moradores.</p>
+
+                <img src="{{ url_for('static', filename='img/colagem.png') }}"
+                     alt="Mudança dos moradores">
+
+                <p>
+                    Registros da transição e do cotidiano dos moradores.
+                </p>
+
             </div>
+
         </section>
 
-        <!-- SEÇÃO MULTIMÍDIA: ESPAÇO AMPLIADO PARA VÍDEOS -->
-        <h3 class="media-section-title">Registros em Vídeo e Documentários</h3>
-        
+
+        <!-- ========================= -->
+        <!-- VÍDEOS -->
+        <!-- ========================= -->
+
+        <h3 class="media-section-title">
+            Registros em Vídeo e Documentários
+        </h3>
+
+
         <section class="video-grid">
-            <!-- Vídeo 1 -->
+
+
             <div class="video-card">
+
                 <div class="video-wrapper">
-                    <!-- Substitua o link do src pelo link do YouTube incorporado do seu projeto (ex: https://www.youtube.com/embed/CÓDIGO) -->
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Documentário Velha Barra" allowfullscreen></iframe>
+
+                    <iframe
+                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        title="Documentário Velha Barra"
+                        allowfullscreen>
+                    </iframe>
+
                 </div>
-                <h4>Memórias da Velha Barra - O Documentário</h4>
-                <p>Relatos emocionantes dos moradores locais sobre os últimos dias antes da inundação planejada.</p>
+
+                <h4>
+                    Memórias da Velha Barra - O Documentário
+                </h4>
+
+                <p>
+                    Relatos emocionantes dos moradores locais sobre os últimos
+                    dias antes da inundação planejada.
+                </p>
+
             </div>
 
-            <!-- Vídeo 2 -->
+
             <div class="video-card">
+
                 <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="A Nova Barra de Santana" allowfullscreen></iframe>
+
+                    <iframe
+                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        title="A Nova Barra de Santana"
+                        allowfullscreen>
+                    </iframe>
+
                 </div>
-                <h4>A Construção de um Novo Amanhã</h4>
-                <p>Registro em vídeo mostrando o surgimento da Nova Barra de Santana e a transferência das famílias.</p>
+
+                <h4>
+                    A Construção de um Novo Amanhã
+                </h4>
+
+                <p>
+                    Registro em vídeo mostrando o surgimento da Nova Barra de
+                    Santana e a transferência das famílias.
+                </p>
+
             </div>
+
+
         </section>
+
 
     </main>
 
-    <!-- Rodapé Padrão -->
+
+    <!-- ========================= -->
+    <!-- RODAPÉ -->
+    <!-- ========================= -->
+
     <footer>
+
         © 2026 Memória Potiguar | IFRN - Caicó
+
     </footer>
 
+
 </body>
+
 </html>

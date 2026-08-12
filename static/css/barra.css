@@ -7,6 +7,14 @@
     text-align: center;
 }
 
+
+.gallery-item + p {
+    margin-top: 40px;
+}
+
+.gallery-item + h2 {
+    margin-top: 60px;
+}
 .tribute-container {
     max-width: 800px;
     margin: 0 auto;
