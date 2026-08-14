@@ -76,11 +76,6 @@ def zorro():
 # ROTAS DETALHADAS - HISTÓRICO
 # ============================================================
 
-@app.route('/detalhe/novabarra')
-def novabarra():
-    return render_template(
-        'detalhes/historico/novabarra.html'
-    )
 
 
 @app.route('/detalhe/casafortecuo')
@@ -121,6 +116,43 @@ def casapedra():
 # ============================================================
 # ROTAS DETALHADAS - CULTURAL
 # ============================================================
+@app.route('/detalhe/serra')
+def serra():
+    return render_template(
+        'detalhes/cultural/serra.html'
+    )
+
+@app.route('/detalhe/nova_barra')
+def nova_barra():
+    return render_template(
+        'detalhes/cultural/nova_barra.html'
+    )
+
+@app.route('/detalhe/mercado_publico')
+def mercado_publico():
+    return render_template(
+        'detalhes/cultural/mercado_publico.html'
+    )
+
+
+@app.route('/detalhe/festa_da_barra')
+def festa_da_barra():
+    return render_template(
+        'detalhes/cultural/festa_da_barra.html'
+    )
+
+@app.route('/detalhe/calvagada')
+def calvagada():
+    return render_template(
+        'detalhes/cultural/calvagada.html'
+    )
+
+@app.route('/detalhe/barragem')
+def barragem():
+    return render_template(
+        'detalhes/cultural/barragem.html'
+    )
+
 
 @app.route('/detalhe/casacultura')
 def casacultura():

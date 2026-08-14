@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cavalgada de Santana - Detalhes</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+</head>
+<body class="body-conteudo pagina-detalhe">
+
+    <header>
+        <div class="logo">
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
+        </div> 
+        
+        <nav>
+            
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit">
+                    🔍
+                </button>
+            </form>
+    
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/login" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <main class="detalhe-container">
+
+        <h1 class="detalhe-titulo">Cavalgada de Santana</h1>
+        <p class="detalhe-subtitulo"> Principal instituição de preservação da memória e da cultura sertaneja no interior potiguar</p>
+
+        <section class="galeria-secao">
+            <h2>Galeria do Lugar</h2>
+            <div class="galeria-grid">
+                <img src="{{ url_for('static', filename='img/tapera.png') }}" alt="Foto 1 do Museu Do Seridó">
+                <img src="{{ url_for('static', filename='img/tapera1.png') }}" alt="Foto 2 do Museu Do Seridó">
+                <img src="{{ url_for('static', filename='img/tapera2.png') }}" alt="Foto 3 do Museu Do Seridó">
+                <img src="{{ url_for('static', filename='img/tapera2.png') }}" alt="Foto 4 do Museu Do Seridó">
+            </div>
+        </section>
+
+        <section class="info-secao">
+            <h2>História e Cultura</h2>
+            <p>
+                A Barragem de Oiticica é uma das principais obras de infraestrutura hídrica do Rio Grande do Norte e está localizada no município de Jucurutu, na região do Seridó Potiguar. Construída sobre o Rio Piranhas-Açu, a obra teve seu projeto elaborado pelo DNOCS ainda em 1952, mas as obras foram iniciadas oficialmente em 26 de junho de 2013. 
+            </p>
+            <p>
+                O empreendimento foi criado com o objetivo de ampliar a segurança hídrica e reduzir os impactos causados pelos períodos de estiagem que afetam o semiárido potiguar. Inaugurada em 19 de março de 2025, a barragem possui capacidade para armazenar cerca de 742 milhões de metros cúbicos de água, tornando-se o segundo maior reservatório do Rio Grande do Norte.
+A construção da barragem também provocou importantes transformações sociais e territoriais, principalmente com o reassentamento da antiga comunidade de Barra de Santana, que deu origem à Nova Barra de Santana. A implantação do reservatório envolveu o deslocamento de milhares de pessoas e a criação de novas estruturas para as famílias afetadas. Além de contribuir para o abastecimento de água de dezenas de municípios, a Barragem de Oiticica possui importância para atividades produtivas, agricultura irrigada, piscicultura e geração de energia, além de apresentar potencial para o turismo, lazer e contemplação da paisagem. Dessa forma, tornou-se um importante marco da história recente de Jucurutu e de todo o Seridó.
+
+            </p>
+        </section>
+
+        <section class="info-secao">
+            <h2>Localização</h2>
+            <p><strong>Endereço:</strong> Zona rural do município de Jucurutu, na região do Seridó do Rio Grande do Norte, construída sobre o leito do Rio Piranhas-Açu. 
+            </p>
+            
+            <div id="mapa"></div>
+        </section>
+
+        <a href="javascript:history.back()" class="btn">← Voltar</a>
+
+    </main>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function inicializarMapa() {
+            var lat = -6.4578488;
+            var lng = -37.0943184;   
+            // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
+            var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // 2. CAMADA DE SATÉLITE: Imagens reais (Esri World Imagery)
+            var mapaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Inicializa o mapa adicionando a versão comum por padrão
+            var mapa = L.map('mapa', {
+                center: [lat, lng],
+                zoom: 14,
+                layers: [mapaComum] // Mapa inicial
+            });
+
+            // Adiciona o marcador com texto fixo
+            L.marker([lat, lng])
+                .addTo(mapa)
+                .bindPopup("<br>Muséu Do Seridó, Caicó- RN")
+                .openPopup();
+
+            // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
+            var mapasDisponiveis = {
+                "Mapa Padrão": mapaComum,
+                "Satélite": mapaSatelite
+            };
+
+            // Adiciona o botão de escolha na tela
+            L.control.layers(mapasDisponiveis, null, { collapsed: false }).addTo(mapa);
+
+            // Ajuste automático antiquebra de tamanho
+            setTimeout(function() {
+                mapa.invalidateSize();
+            }, 300);
+        }
+
+        window.onload = inicializarMapa;
+    </script>
+</body>
+</html>

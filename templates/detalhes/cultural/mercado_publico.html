@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado Público de Caico - Detalhes</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+</head>
+<body class="body-conteudo pagina-detalhe">
+
+    <header>
+        <div class="logo">
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
+        </div> 
+        
+        <nav>
+            
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit">
+                    🔍
+                </button>
+            </form>
+    
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/login" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <main class="detalhe-container">
+
+        <h1 class="detalhe-titulo">Mercado Público de Caico</h1>
+        <p class="detalhe-subtitulo">Formação rochosa em formato de uma casa.
+            </p></p>
+
+        <section class="galeria-secao">
+            <h2>Galeria do Lugar</h2>
+            <div class="galeria-grid">
+                <img src="{{ url_for('static', filename='img/casapedra.png') }}" alt="Foto 1 da Casa de Pedra">
+                <img src="{{ url_for('static', filename='img/casadepedra3.png') }}" alt="Foto 2 da Casa de Pedra">
+                <img src="{{ url_for('static', filename='img/casadepedra2.jpg') }}" alt="Foto 3 da Casa de Pedra">
+                <img src="{{ url_for('static', filename='img/casadepedra4.png') }}" alt="Foto 4 da Casa de Pedra">
+            </div>
+        </section>
+
+        <section class="info-secao">
+            <h2>História e Cultura</h2>
+            <p>
+                Uma caverna natural de formação geológica (mármore). Fica a aproximadamente 300 metros de extensão e possui galerias internas que lembram cômodos (como salão principal e "quartos"). É cercada pela vegetação de caatinga e seu topo serve como mirante.
+            </p>
+            <p>
+                No interior, há formações curiosas e inscrições rupestres. Porém, o local apresenta fragilidades como falta de sinalização, lixo e pichações.  É comum o acesso via trilhas a partir da região da Pedra do Navio. É recomendado o uso de tênis ou botas, pois a formação rochosa pode ser pontiaguda.
+                Caso for visitar, manter cuidado com urtigas, colmeias de abelhas e terrenos irregulares. A vegetação ao redor é composta por espécies típicas da Caatinga, como mandacaru, xique-xique e jurema-preta. Dependendo da época do ano, também é possível observar aves, pequenos répteis e mamíferos adaptados ao clima semiárido, como Préas, Tejus, Mocós, e com sorte, a coruja Jacurutu que nomeia a cidade.
+            </p>
+        </section>
+
+        <section class="info-secao">
+            <h2>Localização</h2>
+            <p><strong>Endereço:</strong> Nas proxímidades de Jucurutu - RN</p>
+            
+            <div id="mapa"></div>
+        </section>
+
+        <a href="javascript:history.back()" class="btn">← Voltar</a>
+
+    </main>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function inicializarMapa() {
+            var lat = -6.013829;
+            var lng = -37.020790;
+
+            // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
+            var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // 2. CAMADA DE SATÉLITE: Imagens reais (Esri World Imagery)
+            var mapaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Inicializa o mapa adicionando a versão comum por padrão
+            var mapa = L.map('mapa', {
+                center: [lat, lng],
+                zoom: 14,
+                layers: [mapaComum] // Mapa inicial
+            });
+
+            // Adiciona o marcador com texto fixo
+            L.marker([lat, lng])
+                .addTo(mapa)
+                .bindPopup(" <br>Casa de Pedra, Jucurutu - RN")
+                .openPopup();
+
+            // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
+            var mapasDisponiveis = {
+                "Mapa Padrão": mapaComum,
+                "Satélite": mapaSatelite
+            };
+
+            // Adiciona o botão de escolha na tela
+            L.control.layers(mapasDisponiveis, null, { collapsed: false }).addTo(mapa);
+
+            // Ajuste automático antiquebra de tamanho
+            setTimeout(function() {
+                mapa.invalidateSize();
+            }, 300);
+        }
+
+        window.onload = inicializarMapa;
+    </script>
+</body>
+</html>
