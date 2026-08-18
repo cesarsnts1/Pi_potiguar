@@ -77,20 +77,17 @@ def zorro():
 # ============================================================
 
 
-
 @app.route('/detalhe/casafortecuo')
 def casafortecuo():
     return render_template(
         'detalhes/historico/casafortecuo.html'
     )
 
-
 @app.route('/detalhe/casteloengady')
 def casteloengady():
     return render_template(
         'detalhes/historico/casteloengady.html'
     )
-
 
 @app.route('/detalhe/museuserido')
 def museuserido():
@@ -111,6 +108,7 @@ def casapedra():
     return render_template(
         'detalhes/historico/casapedra.html'
     )
+
 
 
 # ============================================================
@@ -167,6 +165,11 @@ def artesanato():
         'detalhes/cultural/artesanato.html'
     )
 
+@app.route('/detalhe/arcotriunfo')
+def arcotriunfo():
+    return render_template(
+        'detalhes/cultural/arcotriunfo.html'
+    )
 
 # ============================================================
 # ROTAS DETALHADAS - EVENTOS
