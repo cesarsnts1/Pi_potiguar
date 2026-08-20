@@ -181,6 +181,12 @@ def festa_padroeira():
         'detalhes/evento/festa_padroeira.html'
     )
 
+@app.route('/detalhe/festasantana')
+def festasantana():
+    return render_template(
+        'detalhes/evento/festasantana.html'
+    )
+
 
 # ============================================================
 # BARRA DE PESQUISA
