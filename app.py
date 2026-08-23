@@ -109,7 +109,11 @@ def casapedra():
         'detalhes/historico/casapedra.html'
     )
 
-
+@app.route('/detalhe/igrejarosario')
+def igrejarosario():
+    return render_template(
+        'detalhes/historico/igrejarosario.html'
+    )
 
 # ============================================================
 # ROTAS DETALHADAS - CULTURAL
@@ -185,6 +189,12 @@ def festa_padroeira():
 def festasantana():
     return render_template(
         'detalhes/evento/festasantana.html'
+    )
+
+@app.route('/detalhe/festarosario')
+def festarosario():
+    return render_template(
+        'detalhes/evento/festarosario.html'
     )
 
 
