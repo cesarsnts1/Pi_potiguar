@@ -1,0 +1,29 @@
+body { background: #f8f5f1; }
+.sugestao-page { max-width: 1100px; margin: 0 auto; padding: 54px 24px 70px; }
+.sugestao-intro { max-width: 760px; margin: 0 auto 34px; text-align: center; }
+.eyebrow { display: inline-block; background: #8b3d08; color: #fff; padding: 7px 13px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+.sugestao-intro h1 { color: #3b2417; font-size: clamp(2rem, 4vw, 3.2rem); margin: 16px 0 12px; line-height: 1.12; }
+.sugestao-intro p { color: #75685f; line-height: 1.75; }
+.sugestao-card { background: #fff; border: 1px solid #e8e0d8; border-radius: 18px; box-shadow: 0 12px 35px rgba(74, 46, 28, .08); overflow: hidden; }
+.card-heading { padding: 26px 32px; border-bottom: 1px solid #eee7e1; display: flex; justify-content: space-between; gap: 20px; align-items: end; }
+.card-heading span { color: #8b3d08; font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+.card-heading h2 { color: #3b2417; margin-top: 4px; }
+.card-heading p { color: #8b8179; font-size: 13px; }
+.sugestao-form { padding: 32px; }
+.form-grid.two { display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; }
+.field { margin-bottom: 22px; }
+.field label { display: block; margin-bottom: 8px; color: #49372d; font-weight: 600; font-size: 14px; }
+.field input, .field select, .field textarea { width: 100%; border: 1px solid #d8d0ca; background: #fff; border-radius: 10px; padding: 13px 14px; font: inherit; color: #3d2b1f; outline: none; transition: .2s; }
+.field textarea { resize: vertical; min-height: 150px; line-height: 1.6; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: #8b3d08; box-shadow: 0 0 0 3px rgba(139, 61, 8, .10); }
+.field small { display: block; margin-top: 7px; color: #91857d; }
+.form-actions { border-top: 1px solid #eee7e1; padding-top: 24px; display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
+.btn-primary, .btn-secondary { border: 0; border-radius: 999px; padding: 12px 22px; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; }
+.btn-primary { background: #7b3107; color: #fff; }
+.btn-primary:hover { background: #5f2505; }
+.btn-secondary { color: #6f4a34; background: #f3ece6; }
+.form-alert { max-width: 1100px; margin: 0 auto 20px; padding: 14px 18px; border-radius: 10px; font-size: 14px; }
+.form-alert.success { background: #e7f7ec; color: #27613a; border: 1px solid #bfe5ca; }
+.form-alert.danger { background: #fff0f0; color: #9d2d2d; border: 1px solid #f0c7c7; }
+.nav-active { color: #fde0c3; }
+@media (max-width: 760px) { .form-grid.two { grid-template-columns: 1fr; gap: 0; } .card-heading { align-items: flex-start; flex-direction: column; } .sugestao-form, .card-heading { padding: 22px; } .form-actions { flex-direction: column-reverse; align-items: stretch; } .btn-primary, .btn-secondary { text-align: center; } }

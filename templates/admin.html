@@ -24,10 +24,12 @@
             <a href="/index">
                 <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
             </a>
+        </div>
 
         <nav>
             <a href="{{ url_for('index') }}">Início</a>
             <a href="{{ url_for('sobre') }}">Sobre</a>
+            <a href="{{ url_for('sugestao') }}">Sugerir local</a>
             <a href="{{ url_for('admin') }}" class="Adm">Administração</a>
         </nav>
     </header>
@@ -176,6 +178,58 @@
 
             </form>
 
+        </section>
+
+        <section class="admin-card sugestoes-admin">
+            <div class="admin-card-header sugestoes-header">
+                <h2>Sugestões enviadas pelos visitantes</h2>
+                <p>Analise os locais sugeridos. Ao aprovar, o item também é cadastrado em pontos turísticos.</p>
+            </div>
+
+            <div class="sugestoes-lista">
+                {% if sugestoes %}
+                    {% for sugestao in sugestoes %}
+                        <article class="sugestao-admin-card">
+                            {% if sugestao.imagem %}
+                                <div class="sugestao-imagem">
+                                    <img src="{{ sugestao.imagem }}" alt="Imagem sugerida de {{ sugestao.nome }}" onerror="this.parentElement.style.display='none'">
+                                </div>
+                            {% endif %}
+                            <div class="sugestao-conteudo">
+                                <div class="sugestao-topo">
+                                    <div>
+                                        <span class="sugestao-categoria">{{ sugestao.categoria_nome or 'Sem categoria' }}</span>
+                                        <h3>{{ sugestao.nome }}</h3>
+                                    </div>
+                                    <span class="status-badge status-{{ sugestao.status|lower }}">{{ sugestao.status }}</span>
+                                </div>
+                                <p class="sugestao-local">⌖ {{ sugestao.localizacao }}</p>
+                                <p class="sugestao-desc">{{ sugestao.descricao }}</p>
+                                {% if sugestao.nome_sugerente or sugestao.contato %}
+                                    <p class="sugestao-autor"><strong>Enviado por:</strong> {{ sugestao.nome_sugerente or 'Não informado' }}{% if sugestao.contato %} · {{ sugestao.contato }}{% endif %}</p>
+                                {% endif %}
+                                <p class="sugestao-data">Recebida em {{ sugestao.criado_em.strftime('%d/%m/%Y às %H:%M') if sugestao.criado_em else '' }}</p>
+
+                                {% if sugestao.status == 'Pendente' %}
+                                    <div class="sugestao-acoes">
+                                        <form method="POST" action="{{ url_for('recusar_sugestao', sugestao_id=sugestao.id) }}">
+                                            <button type="submit" class="btn-recusar">Recusar</button>
+                                        </form>
+                                        <form method="POST" action="{{ url_for('aprovar_sugestao', sugestao_id=sugestao.id) }}">
+                                            <button type="submit" class="btn-aprovar">Aprovar e cadastrar</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <div class="sugestoes-vazio">
+                        <strong>Nenhuma sugestão recebida ainda.</strong>
+                        <span>Quando um visitante enviar um local, ele aparecerá aqui.</span>
+                    </div>
+                {% endif %}
+            </div>
         </section>
 
     </main>

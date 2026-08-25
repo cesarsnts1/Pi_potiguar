@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 senha = generate_password_hash("281207")
 
 HOST = "localhost"
-PORT = 3307
+PORT = 3306
 USER = "root"
 PASSWORD = ""
 
@@ -54,6 +54,23 @@ CREATE TABLE IF NOT EXISTS pontos_turisticos (
 )
 """)
 
+
+# TABELA DE SUGESTÕES ENVIADAS PELOS VISITANTES
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS sugestoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    categoria_id INT NULL,
+    localizacao VARCHAR(200) NOT NULL,
+    descricao TEXT NOT NULL,
+    imagem VARCHAR(500),
+    nome_sugerente VARCHAR(150),
+    contato VARCHAR(180),
+    status VARCHAR(30) NOT NULL DEFAULT 'Pendente',
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+)
+""")
 
 # TABELA ADMINISTRADORES
 cursor.execute("""

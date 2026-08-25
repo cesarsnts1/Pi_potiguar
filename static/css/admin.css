@@ -315,3 +315,28 @@
 
     font-size:14px;
 }
+/* ========================= SUGESTÕES NO ADMIN ========================= */
+.admin-container { max-width: 1050px; }
+.sugestoes-admin { margin-top: 32px; }
+.sugestoes-header { text-align: left; background: #5f2a0b; }
+.sugestoes-lista { padding: 24px; display: grid; gap: 18px; }
+.sugestao-admin-card { display: grid; grid-template-columns: 180px 1fr; background: #fff; border: 1px solid #eadfd5; border-radius: 14px; overflow: hidden; box-shadow: 0 5px 18px rgba(65, 38, 20, .05); }
+.sugestao-imagem { min-height: 100%; background: #f1e8df; }
+.sugestao-imagem img { width: 100%; height: 100%; min-height: 210px; object-fit: cover; display: block; }
+.sugestao-conteudo { padding: 20px; min-width: 0; }
+.sugestao-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
+.sugestao-categoria { display: inline-block; color: #8a3b0a; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.sugestao-topo h3 { color: #39261b; font-size: 1.2rem; }
+.sugestao-local { color: #765642; font-weight: 600; font-size: 13px; margin: 8px 0; }
+.sugestao-desc { color: #665a52; line-height: 1.6; font-size: 14px; white-space: pre-line; }
+.sugestao-autor, .sugestao-data { margin-top: 10px; font-size: 12px; color: #8c7f76; overflow-wrap: anywhere; }
+.status-badge { border-radius: 999px; padding: 5px 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.status-pendente { background: #fff1c7; color: #8a5d00; }
+.status-aprovada { background: #dcf7e4; color: #22723b; }
+.status-recusada { background: #fde1e1; color: #9f3030; }
+.sugestao-acoes { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eee5dd; }
+.btn-aprovar, .btn-recusar { border: 0; border-radius: 999px; padding: 9px 16px; font-family: inherit; font-weight: 600; cursor: pointer; }
+.btn-aprovar { background: #16783a; color: #fff; }
+.btn-recusar { background: #f3e6e2; color: #8d2d23; }
+.sugestoes-vazio { padding: 30px; text-align: center; color: #78695f; display: flex; flex-direction: column; gap: 4px; }
+@media (max-width: 700px) { .sugestao-admin-card { grid-template-columns: 1fr; } .sugestao-imagem img { height: 200px; min-height: 0; } .sugestao-topo { flex-direction: column; } .sugestao-acoes { justify-content: stretch; flex-direction: column; } .sugestao-acoes form, .sugestao-acoes button { width: 100%; } }

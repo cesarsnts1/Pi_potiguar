@@ -309,3 +309,61 @@
 .credito-imagem:hover .seta{
     transform:translateX(4px);
 }
+/* ========================================================================== 
+   NOVO DESIGN DAS PÁGINAS DE LUGARES — REFERÊNCIA MEMÓRIA POTIGUAR
+   ========================================================================== */
+.pagina-detalhe { background: #fff; color: #514943; }
+.pagina-detalhe::before { display: none; }
+.pagina-detalhe .spacer { height: 90px; }
+.lugar-hero { max-width: 1180px; min-height: 300px; margin: 0 auto; background-color: #574a40; background-size: cover; background-position: center; color: #fff; display: flex; align-items: center; }
+.lugar-hero-inner { width: 100%; padding: 42px 38px; display: flex; align-items: center; justify-content: space-between; gap: 45px; }
+.lugar-hero-copy { max-width: 720px; text-shadow: 0 2px 8px rgba(0,0,0,.34); }
+.lugar-categoria { display: inline-block; padding: 8px 13px; background: #8a3a08; border-radius: 7px; font-size: 12px; font-weight: 700; letter-spacing: .02em; text-shadow: none; }
+.lugar-hero h1 { font-size: clamp(2.1rem, 4vw, 3.1rem); line-height: 1.05; margin: 14px 0 10px; font-weight: 700; }
+.lugar-hero p { font-size: 1rem; line-height: 1.6; color: #f5f1ed; }
+.lugar-localizacao { margin-top: 18px; font-size: 13px; font-weight: 600; }
+.lugar-thumb { flex: 0 0 260px; height: 148px; border: 2px solid rgba(255,255,255,.95); border-radius: 11px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,.22); background: #fff; }
+.lugar-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.lugar-tabs { max-width: 1180px; margin: 0 auto; background: #fff; border-bottom: 1px solid #e9e6e2; box-shadow: 0 2px 4px rgba(0,0,0,.03); }
+.lugar-tabs-inner { display: flex; align-items: stretch; overflow-x: auto; padding: 0 18px; scrollbar-width: thin; }
+.lugar-tabs a { flex: 1 0 auto; min-width: 145px; padding: 17px 14px 15px; color: #544d48; text-decoration: none; text-align: center; font-size: 12px; font-weight: 500; border-bottom: 3px solid transparent; white-space: nowrap; transition: .2s; }
+.lugar-tabs a span { margin-right: 7px; color: #665b54; }
+.lugar-tabs a:hover, .lugar-tabs a.active { color: #713006; border-bottom-color: #713006; }
+
+.pagina-detalhe .detalhe-container { max-width: 1180px; margin: 0 auto; padding: 22px 22px 50px; background: #fff; }
+.lugar-layout { display: grid; grid-template-columns: 155px minmax(0, 1fr); gap: 24px; align-items: start; }
+.lugar-sidebar { position: sticky; top: 112px; border: 1px solid #dedad6; border-radius: 9px; padding: 16px 13px; background: #fff; }
+.lugar-sidebar strong { display: block; font-size: 10px; color: #67605b; margin-bottom: 10px; }
+.lugar-sidebar a { display: flex; gap: 8px; align-items: flex-start; padding: 8px 0; color: #8b8580; text-decoration: none; font-size: 10px; line-height: 1.25; }
+.lugar-sidebar a span { color: #b6aea8; }
+.lugar-sidebar a.active { color: #713006; font-weight: 600; }
+.lugar-sidebar a.active span { color: #713006; }
+.lugar-conteudo { min-width: 0; }
+.pagina-detalhe .info-secao, .pagina-detalhe .galeria-secao { background: #fff; padding: 0 0 28px; border-radius: 0; box-shadow: none; margin-bottom: 22px; border-bottom: 1px solid #eeeae6; scroll-margin-top: 125px; }
+.pagina-detalhe .info-secao h2, .pagina-detalhe .galeria-secao h2 { color: #713006; font-size: 20px; margin: 0 0 13px; padding: 0; border: 0; display: flex; align-items: center; gap: 10px; }
+.secao-icone { font-size: 17px; }
+.pagina-detalhe .info-secao p { color: #6a625d; font-size: 13px; line-height: 1.68; margin-bottom: 12px; text-align: left; }
+.pagina-detalhe .galeria-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; margin-top: 12px; }
+.pagina-detalhe .galeria-grid img { height: 180px; border-radius: 8px; }
+.pagina-detalhe #mapa { height: 330px; border-radius: 8px; margin-top: 12px; }
+.anchor-proxy { display: block; position: relative; top: -130px; visibility: hidden; }
+.pagina-detalhe .btn-voltar-detalhe { margin: 8px 0 0 179px !important; padding: 10px 20px; background: #713006; color: #fff; border-radius: 999px; font-size: 13px; }
+.pagina-detalhe .btn-voltar-detalhe:hover { background: #512104; }
+
+@media (max-width: 850px) {
+    .pagina-detalhe .spacer { height: 145px; }
+    .lugar-hero-inner { padding: 34px 24px; }
+    .lugar-thumb { display: none; }
+    .lugar-layout { grid-template-columns: 1fr; }
+    .lugar-sidebar { display: none; }
+    .pagina-detalhe .btn-voltar-detalhe { margin-left: 0 !important; }
+    .pagina-detalhe .galeria-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+    .lugar-hero { min-height: 280px; }
+    .lugar-hero h1 { font-size: 2rem; }
+    .lugar-tabs a { min-width: 135px; }
+    .pagina-detalhe .detalhe-container { padding: 20px 16px 42px; }
+    .pagina-detalhe .galeria-grid { grid-template-columns: 1fr; }
+}

@@ -8,6 +8,36 @@ app.secret_key = 'chave_secreta_potiguar'
 
 
 # ============================================================
+# SUPORTE ÀS SUGESTÕES DE LUGARES
+# ============================================================
+
+def garantir_tabela_sugestoes():
+    """Cria a tabela de sugestões caso o banco já exista sem a migração nova."""
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS sugestoes (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nome VARCHAR(150) NOT NULL,
+            categoria_id INT NULL,
+            localizacao VARCHAR(200) NOT NULL,
+            descricao TEXT NOT NULL,
+            imagem VARCHAR(500) NULL,
+            nome_sugerente VARCHAR(150) NULL,
+            contato VARCHAR(180) NULL,
+            status VARCHAR(30) NOT NULL DEFAULT 'Pendente',
+            criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+        )
+        """
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
+# ============================================================
 # ROTAS PÚBLICAS GERAIS
 # ============================================================
 
@@ -125,6 +155,7 @@ def serra():
     )
 
 @app.route('/detalhe/nova_barra')
+@app.route('/detalhe/novabarra')
 def nova_barra():
     return render_template(
         'detalhes/cultural/nova_barra.html'
@@ -182,7 +213,7 @@ def arcotriunfo():
 @app.route('/detalhe/festa_padroeira')
 def festa_padroeira():
     return render_template(
-        'detalhes/evento/festa_padroeira.html'
+        'detalhes/evento/festapadroeira.html'
     )
 
 @app.route('/detalhe/festasantana')
@@ -318,6 +349,53 @@ def buscar():
 
 
 # ============================================================
+# SUGESTÕES DE LUGARES
+# ============================================================
+
+@app.route('/sugestao', methods=['GET', 'POST'])
+def sugestao():
+    garantir_tabela_sugestoes()
+
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM categorias ORDER BY nome')
+    categorias = cursor.fetchall()
+
+    if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        categoria_id = request.form.get('categoria') or None
+        localizacao = request.form.get('endereco', '').strip()
+        descricao = request.form.get('descricao', '').strip()
+        imagem = request.form.get('imagem', '').strip() or None
+        nome_sugerente = request.form.get('nome_sugerente', '').strip() or None
+        contato = request.form.get('contato', '').strip() or None
+
+        if not nome or not localizacao or not descricao:
+            cursor.close()
+            conn.close()
+            flash('Preencha nome, localização e descrição.', 'danger')
+            return redirect('/sugestao')
+
+        cursor.execute(
+            """
+            INSERT INTO sugestoes
+            (nome, categoria_id, localizacao, descricao, imagem, nome_sugerente, contato)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """,
+            (nome, categoria_id, localizacao, descricao, imagem, nome_sugerente, contato)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+        flash('Sugestão enviada! Ela ficará disponível para análise da administração.', 'success')
+        return redirect('/sugestao')
+
+    cursor.close()
+    conn.close()
+    return render_template('sugestao.html', categorias=categorias)
+
+
+# ============================================================
 # AUTENTICAÇÃO E CADASTRO
 # ============================================================
 
@@ -407,6 +485,7 @@ def login_requerido(f):
 @login_requerido
 def admin():
 
+    garantir_tabela_sugestoes()
     conn = conectar()
 
     cursor = conn.cursor(
@@ -425,13 +504,24 @@ def admin():
 
     categorias = cursor.fetchall()
 
+    cursor.execute(
+        """
+        SELECT s.*, c.nome AS categoria_nome
+        FROM sugestoes s
+        LEFT JOIN categorias c ON c.id = s.categoria_id
+        ORDER BY s.criado_em DESC, s.id DESC
+        """
+    )
+    sugestoes = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
     return render_template(
         'admin.html',
         lugares=lugares,
-        categorias=categorias
+        categorias=categorias,
+        sugestoes=sugestoes
     )
 
 
@@ -498,6 +588,55 @@ def adicionar_lugar():
         cursor.close()
         conn.close()
 
+    return redirect('/admin')
+
+
+# ============================================================
+# AÇÕES DAS SUGESTÕES NO PAINEL ADMIN
+# ============================================================
+
+@app.route('/admin/sugestao/<int:sugestao_id>/aprovar', methods=['POST'])
+@login_requerido
+def aprovar_sugestao(sugestao_id):
+    garantir_tabela_sugestoes()
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM sugestoes WHERE id = %s', (sugestao_id,))
+    item = cursor.fetchone()
+
+    if not item:
+        cursor.close()
+        conn.close()
+        flash('Sugestão não encontrada.', 'danger')
+        return redirect('/admin')
+
+    cursor.execute(
+        """
+        INSERT INTO pontos_turisticos
+        (nome, descricao, localizacao, nome_imagem, categoria_id)
+        VALUES (%s, %s, %s, %s, %s)
+        """,
+        (item['nome'], item['descricao'], item['localizacao'], item['imagem'], item['categoria_id'])
+    )
+    cursor.execute("UPDATE sugestoes SET status = 'Aprovada' WHERE id = %s", (sugestao_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    flash('Sugestão aprovada e adicionada aos lugares cadastrados.', 'success')
+    return redirect('/admin')
+
+
+@app.route('/admin/sugestao/<int:sugestao_id>/recusar', methods=['POST'])
+@login_requerido
+def recusar_sugestao(sugestao_id):
+    garantir_tabela_sugestoes()
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE sugestoes SET status = 'Recusada' WHERE id = %s", (sugestao_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    flash('Sugestão marcada como recusada.', 'success')
     return redirect('/admin')
 
 

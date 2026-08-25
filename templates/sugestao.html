@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugerir um lugar - Memória Potiguar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sugestao.css') }}">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+        </a>
+    </div>
+    <nav>
+        <form action="/buscar" method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+            <button type="submit">⌕</button>
+        </form>
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('sobre') }}">Sobre</a>
+        <a href="{{ url_for('sugestao') }}" class="nav-active">Sugerir local</a>
+        <a href="{{ url_for('login') }}" class="Adm">Administração</a>
+    </nav>
+</header>
+<div class="spacer"></div>
+
+<main class="sugestao-page">
+    <section class="sugestao-intro">
+        <span class="eyebrow">MEMÓRIA COLABORATIVA</span>
+        <h1>Conhece um lugar que merece estar aqui?</h1>
+        <p>Envie uma sugestão de ponto histórico, cultural, gastronômico ou evento do Rio Grande do Norte. A equipe poderá analisar sua indicação pelo painel administrativo.</p>
+    </section>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="form-alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section class="sugestao-card">
+        <div class="card-heading">
+            <div>
+                <span>FORMULÁRIO</span>
+                <h2>Sugerir novo local</h2>
+            </div>
+            <p>Campos com * são obrigatórios.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('sugestao') }}" class="sugestao-form">
+            <div class="form-grid two">
+                <div class="field">
+                    <label for="nome">Nome do lugar *</label>
+                    <input id="nome" name="nome" type="text" required placeholder="Ex: Capelinha do Serrote da Cruz">
+                </div>
+                <div class="field">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria" name="categoria">
+                        <option value="">Selecione...</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="endereco">Localização / endereço *</label>
+                <input id="endereco" name="endereco" type="text" required placeholder="Ex: Caicó, Rio Grande do Norte">
+            </div>
+
+            <div class="field">
+                <label for="descricao">Por que esse lugar deve aparecer no site? *</label>
+                <textarea id="descricao" name="descricao" rows="7" required placeholder="Conte a história, importância cultural, curiosidades e outras informações que ajudem na análise."></textarea>
+            </div>
+
+            <div class="field">
+                <label for="imagem">Link de uma imagem</label>
+                <input id="imagem" name="imagem" type="url" placeholder="https://exemplo.com/foto.jpg">
+                <small>Opcional. Se possível, use uma imagem pública e informe uma fonte confiável.</small>
+            </div>
+
+            <div class="form-grid two">
+                <div class="field">
+                    <label for="nome_sugerente">Seu nome</label>
+                    <input id="nome_sugerente" name="nome_sugerente" type="text" placeholder="Opcional">
+                </div>
+                <div class="field">
+                    <label for="contato">Contato</label>
+                    <input id="contato" name="contato" type="text" placeholder="E-mail ou outro contato (opcional)">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('index') }}" class="btn-secondary">Voltar ao início</a>
+                <button type="submit" class="btn-primary">Enviar sugestão</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer>© 2026 Memória Potiguar | IFRN - Caicó</footer>
+</body>
+</html>
