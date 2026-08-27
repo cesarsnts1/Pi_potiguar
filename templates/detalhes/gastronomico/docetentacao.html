@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doce tentação - Detalhes</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+</head>
+<body class="body-conteudo pagina-detalhe">
+
+    <header>
+        <div class="logo">
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
+        </div> 
+        
+        <nav>
+            
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit">
+                    
+                </button>
+            </form>
+    
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/sugestao">Sugerir local</a>
+            <a href="/login" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+        <div class="spacer"></div>
+
+    <main class="detalhe-container">
+
+        <h1 class="detalhe-titulo">Doce tentação</h1>
+        <p class="detalhe-subtitulo">Café, doceria e restaurante em um só.</p>
+<section class="galeria-secao">
+<h2>Galeria do Lugar</h2>
+
+<div class="galeria-grid">
+
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/doce3.png') }}"
+         alt="Foto 1 do Recanto da Tapera">
+
+    <a class="credito-imagem"
+       href=link
+       rel="noopener noreferrer">
+
+        <span>Instagram @docetentacao_jucurutu</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/doce2.png') }}"
+         alt="Foto 2 do Recanto da Tapera">
+
+    <a class="credito-imagem"
+       href=link
+       rel="noopener noreferrer">
+
+        <span>Instagram @docetentacao_jucurutu</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/doce1.png') }}"
+         alt="Foto 3 do Recanto da Tapera">
+
+    <a class="credito-imagem"
+       href=link
+       rel = "noopener noreferrer">
+
+        <span>Instagram @docetentacao_jucurutu</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+    </div>
+    </section>
+        <section class="info-secao">
+            <h2>História e Cultura</h2>
+            <p>
+                A Doce Tentação é um dos estabelecimentos gastronômicos de destaque de Jucurutu, combinando a tradição de uma doceria e café com uma proposta mais ampla de restaurante.
+            </p>
+            <p>
+                 A Doce Tentação, localizada na região central de Jucurutu, no Rio Grande do Norte, é um estabelecimento gastronômico que combina as características de doceria, café e restaurante. Formalizado em 2015 originalmente como “Doce Tentação, Doceria e Café”, o empreendimento ampliou sua proposta ao longo dos anos, passando a oferecer refeições completas, pratos à la carte, carnes, frutos do mar, sobremesas e bebidas.
+                  O estabelecimento se destaca pela qualidade da comida, pelo atendimento e pelo ambiente, além de disponibilizar serviços como delivery, retirada de pedidos e reservas. Embora não existam dados oficiais sobre a quantidade de turistas atendidos, suas avaliações positivas em plataformas como Google e Tripadvisor indicam a presença de visitantes de outras localidades. Inserida na dinâmica turística de Jucurutu,
+                   a Doce Tentação também se beneficia do aumento do fluxo de pessoas durante festividades religiosas, culturais e outros eventos do município. Dessa forma, o estabelecimento contribui para a valorização da gastronomia local e se enquadra principalmente no segmento de turismo gastronômico. 
+
+        </section>
+
+        <section class="info-secao">
+            <h2>Localização</h2>
+            <p><strong>Endereço:</strong> Travessa Tiradentes, na região central de Jucurutu, Rio Grande do Norte, Número 21.
+
+</p>
+            
+            <div id="mapa"></div>
+        </section>
+
+        <a href="javascript:history.back()" class="btn">← Voltar</a>
+
+    </main>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function inicializarMapa() {
+            var lat = -6.0700581;
+            var lng = -37.0542504;   
+
+            // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
+            var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // 2. CAMADA DE SATÉLITE: Imagens reais (Esri World Imagery)
+            var mapaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Inicializa o mapa adicionando a versão comum por padrão
+            var mapa = L.map('mapa', {
+                center: [lat, lng],
+                zoom: 14,
+                layers: [mapaComum] // Mapa inicial
+            });
+
+            // Adiciona o marcador com texto fixo
+            L.marker([lat, lng])
+                .addTo(mapa)
+                .bindPopup("<br>Recanto Da Tapera, Jucurutu - RN")
+                .openPopup();
+
+            // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
+            var mapasDisponiveis = {
+                "Mapa Padrão": mapaComum,
+                "Satélite": mapaSatelite
+            };
+
+            // Adiciona o botão de escolha na tela
+            L.control.layers(mapasDisponiveis, null, { collapsed: false }).addTo(mapa);
+
+            // Ajuste automático antiquebra de tamanho
+            setTimeout(function() {
+                mapa.invalidateSize();
+            }, 300);
+        }
+
+        window.onload = inicializarMapa;
+    </script>
+    <script src="{{ url_for('static', filename='js/detalhe.js') }}"></script>
+</body>
+</html>

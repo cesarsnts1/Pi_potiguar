@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa da mina - Detalhes</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+</head>
+<body class="body-conteudo pagina-detalhe">
+
+    <header>
+        <div class="logo">
+            <a href="/index">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+            </a>
+        </div> 
+        
+        <nav>
+            
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit">
+                    
+                </button>
+            </form>
+    
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/sugestao">Sugerir local</a>
+            <a href="/login" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+        <div class="spacer"></div>
+
+    <main class="detalhe-container">
+
+        <h1 class="detalhe-titulo">Mapa da mina</h1>
+        <p class="detalhe-subtitulo">O Restaurante às margens da RN-118.</p>
+<section class="galeria-secao">
+<h2>Galeria do Lugar</h2>
+
+<div class="galeria-grid">
+
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/mapa1.png') }}"
+         alt="Foto 1 do Recanto da Tapera">
+
+    <a class="credito-imagem"
+       href=link
+       rel="noopener noreferrer">
+
+        <span>Imagem disponibilizada pelo Google Maps</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/mapa2.png') }}"
+         alt="Foto 2 do Recanto da Tapera">
+
+    <a class="credito-imagem"
+       href=link
+       rel="noopener noreferrer">
+
+        <span>Imagem disponibilizada pelo Google Maps</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+
+<div class="galeria-item">
+    <img src="{{ url_for('static', filename='img/mapa3.png') }}"
+         alt="Foto 3 do Recanto da Tapera">
+
+    <a class="credito-imagem"
+       href=link
+       rel = "noopener noreferrer">
+
+        <span>Imagem disponibilizada pelo Google Maps</span>
+        <span class="seta">↗</span>
+
+    </a>
+</div>
+    </div>
+    </section>
+        <section class="info-secao">
+            <h2>História e Cultura</h2>
+            <p>
+               O Restaurante Mapa da Mina é um estabelecimento gastronômico de Jucurutu que se destaca principalmente por sua localização estratégica às margens da RN-118 e por funcionar como ponto de alimentação para moradores e pessoas que circulam pela região.
+
+            <p>
+                 O Restaurante Mapa, às margens da estrada, se destaca pelo fácil acesso e por atender tanto moradores quanto pessoas que circulam pela região. Sua origem está ligada à venda de marmitas e almoços para trabalhadores de uma mina próxima à cidade, atividade que posteriormente deu origem ao restaurante. Atualmente, o estabelecimento é conhecido pela variedade de opções gastronômicas, incluindo refeições, filés, churrasco, petiscos, pizzas, sobremesas, bebidas e marmitas. Além da comida caseira, destacam-se o atendimento, o ambiente tranquilo, a limpeza e o amplo estacionamento. Por sua localização e características, o Mapa da Mina sendo um interessante ponto gastronômico para se conhecer em Jucurutu. 
+
+        </section>
+
+        <section class="info-secao">
+            <h2>Localização</h2>
+            <p><strong>Endereço:</strong> localizado na RN-118, nº 274, em Jucurutu (RN)
+
+
+</p>
+            
+            <div id="mapa"></div>
+        </section>
+
+        <a href="javascript:history.back()" class="btn">← Voltar</a>
+
+    </main>
+
+    <footer>
+        © 2026 Memória Potiguar | IFRN - Caicó
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function inicializarMapa() {
+            var lat = -6.0700581;
+            var lng = -37.0542504;   
+
+            // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
+            var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // 2. CAMADA DE SATÉLITE: Imagens reais (Esri World Imagery)
+            var mapaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            // Inicializa o mapa adicionando a versão comum por padrão
+            var mapa = L.map('mapa', {
+                center: [lat, lng],
+                zoom: 14,
+                layers: [mapaComum] // Mapa inicial
+            });
+
+            // Adiciona o marcador com texto fixo
+            L.marker([lat, lng])
+                .addTo(mapa)
+                .bindPopup("<br>Recanto Da Tapera, Jucurutu - RN")
+                .openPopup();
+
+            // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
+            var mapasDisponiveis = {
+                "Mapa Padrão": mapaComum,
+                "Satélite": mapaSatelite
+            };
+
+            // Adiciona o botão de escolha na tela
+            L.control.layers(mapasDisponiveis, null, { collapsed: false }).addTo(mapa);
+
+            // Ajuste automático antiquebra de tamanho
+            setTimeout(function() {
+                mapa.invalidateSize();
+            }, 300);
+        }
+
+        window.onload = inicializarMapa;
+    </script>
+    <script src="{{ url_for('static', filename='js/detalhe.js') }}"></script>
+</body>
+</html>

@@ -44,7 +44,7 @@ def garantir_tabela_sugestoes():
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('detalhes/index.html')
 
 
 @app.route('/sobre')
@@ -100,6 +100,18 @@ def zorro():
     return render_template(
         'detalhes/gastronomico/zorro.html'
     )
+
+@app.route('/detalhe/docetentacao')
+def docetentacao():
+    return render_template(
+        'detalhes/gastronomico/docetentacao.html')
+
+@app.route('/detalhe/mapamina')
+def mapamina():
+    return render_template(
+        'detalhes/gastronomico/mapamina.html')
+
+
 
 
 # ============================================================
