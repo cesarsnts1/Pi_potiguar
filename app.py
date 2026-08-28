@@ -73,8 +73,12 @@ def barra_santana():
 
 
 @app.route('/evento')
-def eventos():
+def evento():
     return render_template('evento.html')
+
+@app.route('/sugestao')
+def sugestaos():
+    return render_template('sugestao.html')
 
 
 # ============================================================

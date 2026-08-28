@@ -3,5 +3,9 @@ Werkzeug>=2.3.0
 mysql-connector-python>=8.0.0
 
 #py -m venv venv
-#pip install -r requirements.txt venv\Scripts\activate
+#pip install -r requirements.txt 
+#venv\Scripts\activate
 #py app.py
+#git add .
+#git commit -m "Escreva aqui uma mensagem descritiva sobre o que fez"
+#git push origin main

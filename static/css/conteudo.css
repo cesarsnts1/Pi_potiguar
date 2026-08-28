@@ -1,13 +1,50 @@
 /* ==========================================================================
-   ESTRUTURA DAS PÁGINAS DE CONTEÚDO (FLEXBOX)
+   VARIÁVEIS GLOBAIS & CONFIGURAÇÕES
    ========================================================================== */
-   .body-conteudo {
-    background-color: #f5e6d3;
+   :root {
+    /* Cores Principais */
+    --color-primary: #713006;
+    --color-primary-dark: #4a1f05;
+    --color-primary-light: #8a3a08;
+    --color-brand: #662c09;
+
+    /* Neutros */
+    --color-bg-body: #f5e6d3;
+    --color-bg-surface: #ffffff;
+    --color-bg-hero: #574a40;
+    --color-bg-placeholder: #eee6dc;
+
+    /* Textos */
+    --color-text-main: #514943;
+    --color-text-heading: #713006;
+    --color-text-muted: #666666;
+    --color-text-light: #f5f1ed;
+
+    /* Bordas e Sombras */
+    --border-color: #eeeae6;
+    --border-accent: #c18d6a;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 15px;
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+    /* Transições */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.35s ease;
+}
+
+/* ==========================================================================
+   ESTRUTURA DAS PÁGINAS DE CONTEÚDO
+   ========================================================================== */
+.body-conteudo {
+    background-color: var(--color-bg-body);
     color: #333;
 }
 
 .body-conteudo header {
-    background: #662c09;
+    background: var(--color-brand);
 }
 
 .faixa-imagem {
@@ -21,39 +58,41 @@
     display: block;
 }
 
+/* Grid Autogerenciável para Cards */
 .container-flex-cards {
     padding: 50px 8%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
 }
 
-/* Remove os estilos padrões de link para o card inteiro */
 .card-link {
     text-decoration: none;
     color: inherit;
-    width: calc(33.333% - 20px);
-    min-width: 300px;
     display: flex;
+    border-radius: var(--radius-lg);
+}
+
+.card-link:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 4px;
 }
 
 .card {
-    background: white;
-    border-radius: 15px;
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
     display: flex;
     flex-direction: column;
     width: 100%;
     cursor: pointer;
 }
 
-/* Efeito hover aplicado via card-link para o card flutuar de forma estável */
 .card-link:hover .card {
     transform: translateY(-8px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg);
 }
 
 .card img {
@@ -67,124 +106,380 @@
     flex-grow: 1;
 }
 
-.card-content h1 {
-    color: #662c09;
-    margin-bottom: 10px;
-}
-
+.card-content h1,
 .card-content h3 {
-    color: #662c09;
+    color: var(--color-brand);
     margin-bottom: 10px;
 }
 
 .card-content p {
-    font-size: 14px;
-    color: #666;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
 }
 
+/* Botões */
 .btn {
     display: inline-block;
     margin: 20px 8%;
-    background: #662c09;
-    color: white;
+    background: var(--color-brand);
+    color: var(--color-bg-surface);
     padding: 10px 20px;
     border-radius: 25px;
     text-decoration: none;
-    transition: 0.3s;
+    transition: background-color var(--transition-fast);
 }
 
 .btn:hover {
-    background: #4a1f05;
+    background: var(--color-primary-dark);
+}
+
+.btn:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
 }
 
 /* ==========================================================================
-   PÁGINA DE DETALHES ESPECÍFICA (CORREÇÃO DE LAYOUT)
+   DESIGN PÁGINAS DE LUGARES / DETALHES (MEMÓRIA POTIGUAR)
    ========================================================================== */
-.detalhe-container {
-    padding: 10rem 8% 40px 8%;
-    max-width: 1200px;
+.pagina-detalhe {
+    background: var(--color-bg-surface);
+    color: var(--color-text-main);
+}
+
+.pagina-detalhe::before {
+    display: none;
+}
+
+.pagina-detalhe .spacer {
+    height: 90px;
+}
+
+/* Hero Component */
+.lugar-hero {
+    max-width: 1180px;
+    min-height: 300px;
     margin: 0 auto;
+    background-color: var(--color-bg-hero);
+    background-size: cover;
+    background-position: center;
+    color: var(--color-bg-surface);
+    display: flex;
+    align-items: center;
+}
+
+.lugar-hero-inner {
+    width: 100%;
+    padding: 42px 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 45px;
+}
+
+.lugar-hero-copy {
+    max-width: 720px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.34);
+}
+
+.lugar-categoria {
+    display: inline-block;
+    padding: 8px 13px;
+    background: var(--color-primary-light);
+    border-radius: 7px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-shadow: none;
+}
+
+.lugar-hero h1 {
+    font-size: clamp(2.1rem, 4vw, 3.1rem);
+    line-height: 1.05;
+    margin: 14px 0 10px;
+    font-weight: 700;
+}
+
+.lugar-hero p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-light);
+}
+
+.lugar-localizacao {
+    margin-top: 18px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.lugar-thumb {
+    flex: 0 0 260px;
+    height: 148px;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    border-radius: 11px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+    background: var(--color-bg-surface);
+}
+
+.lugar-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Navegação por Abas */
+.lugar-tabs {
+    max-width: 1180px;
+    margin: 0 auto;
+    background: var(--color-bg-surface);
+    border-bottom: 1px solid #e9e6e2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.lugar-tabs-inner {
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    padding: 0 18px;
+    scrollbar-width: thin;
+}
+
+.lugar-tabs a {
+    flex: 1 0 auto;
+    min-width: 145px;
+    padding: 17px 14px 15px;
+    color: #544d48;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.lugar-tabs a span {
+    margin-right: 7px;
+    color: #665b54;
+}
+
+.lugar-tabs a:hover,
+.lugar-tabs a.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+/* Content & Sidebar Layout */
+.detalhe-container {
+    padding: 22px 22px 50px;
+    max-width: 1180px;
+    margin: 0 auto;
+    background: var(--color-bg-surface);
 }
 
 .detalhe-titulo {
-    color: #662c09;
+    color: var(--color-brand);
     font-size: 2.5rem;
     margin-bottom: 5px;
 }
 
 .detalhe-subtitulo {
     font-size: 1.1rem;
-    color: #666;
+    color: var(--color-text-muted);
     font-style: italic;
     margin-bottom: 40px;
 }
 
-.info-secao, .galeria-secao {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
+.lugar-layout {
+    display: grid;
+    grid-template-columns: 155px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
 }
 
-.info-secao h2, .galeria-secao h2 {
-    color: #662c09;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #f5e6d3;
-    padding-bottom: 8px;
+.lugar-sidebar {
+    position: sticky;
+    top: 112px;
+    border: 1px solid #dedad6;
+    border-radius: 9px;
+    padding: 16px 13px;
+    background: var(--color-bg-surface);
+}
+
+.lugar-sidebar strong {
+    display: block;
+    font-size: 0.625rem;
+    color: #67605b;
+    margin-bottom: 10px;
+}
+
+.lugar-sidebar a {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 8px 0;
+    color: #8b8580;
+    text-decoration: none;
+    font-size: 0.625rem;
+    line-height: 1.25;
+}
+
+.lugar-sidebar a span {
+    color: #b6aea8;
+}
+
+.lugar-sidebar a.active {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.lugar-sidebar a.active span {
+    color: var(--color-primary);
+}
+
+.lugar-conteudo {
+    min-width: 0;
+}
+
+.info-secao,
+.galeria-secao {
+    background: var(--color-bg-surface);
+    padding: 0 0 28px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--border-color);
+    scroll-margin-top: 125px;
+}
+
+.info-secao h2,
+.galeria-secao h2 {
+    color: var(--color-primary);
+    font-size: 1.25rem;
+    margin: 0 0 13px;
+    padding: 0;
+    border: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.secao-icone {
+    font-size: 1.0625rem;
 }
 
 .info-secao p {
-    line-height: 1.6;
-    margin-bottom: 15px;
-    color: #444;
+    color: #6a625d;
+    font-size: 0.8125rem;
+    line-height: 1.68;
+    margin-bottom: 12px;
+    text-align: left;
 }
 
+.anchor-proxy {
+    display: block;
+    position: relative;
+    top: -130px;
+    visibility: hidden;
+}
+
+.pagina-detalhe .btn-voltar-detalhe {
+    margin: 8px 0 0 179px !important;
+    padding: 10px 20px;
+    background: var(--color-primary);
+    color: var(--color-bg-surface);
+    border-radius: 999px;
+    font-size: 0.8125rem;
+}
+
+.pagina-detalhe .btn-voltar-detalhe:hover {
+    background: #512104;
+}
+
+/* ==========================================================================
+   GALERIA COM CRÉDITO EM HOVER
+   ========================================================================== */
 .galeria-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 13px;
+    margin-top: 12px;
 }
 
-.galeria-grid img {
+.galeria-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.galeria-item img {
     width: 100%;
     height: 220px;
     object-fit: cover;
-    border-radius: 10px;
-    transition: transform 0.3s, box-shadow 0.3s;
+    display: block;
+    transition: transform var(--transition-normal);
 }
 
-.galeria-grid img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.galeria-item:hover img {
+    transform: scale(1.08);
+}
+
+.credito-imagem {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-bg-surface);
+    text-decoration: none;
+    font-size: 0.8125rem;
+    transform: translateY(100%);
+    transition: transform var(--transition-normal), background var(--transition-fast);
+}
+
+.galeria-item:hover .credito-imagem {
+    transform: translateY(0);
+}
+
+.credito-imagem:hover {
+    background: rgba(0, 0, 0, 0.82);
+}
+
+.seta {
+    font-size: 1rem;
+    transition: transform var(--transition-fast);
+}
+
+.credito-imagem:hover .seta {
+    transform: translateX(4px);
 }
 
 .mapa-placeholder {
-    background: #eee6dc;
-    border: 2px dashed #c18d6a;
+    background: var(--color-bg-placeholder);
+    border: 2px dashed var(--border-accent);
     border-radius: 10px;
     padding: 40px;
     text-align: center;
-    color: #662c09;
+    color: var(--color-brand);
     font-weight: 500;
     margin-top: 15px;
 }
 
-.detalhe-container .btn {
-    margin: 20px 0 0 0;
-}
-
 /* ==========================================================================
-   INTEGRAÇÃO CORRETA DO MAPA REAL (ANTI-QUEBRA DO LEAFLET)
+   MAPA LEAFLET
    ========================================================================== */
 #mapa {
     width: 100%;
-    height: 380px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-top: 15px;
-    border: 1px solid #eee6dc;
+    height: 330px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    margin-top: 12px;
+    border: 1px solid var(--color-bg-placeholder);
     z-index: 1;
 }
 
@@ -192,178 +487,82 @@
     max-width: none !important;
     max-height: none !important;
     background: none !important;
-    display: inline !important; 
+    display: inline !important;
 }
 
 .leaflet-container {
-    font-family: 'Poppins', sans-serif !important;
+    font-family: inherit !important;
 }
 
 .leaflet-popup-content-wrapper {
     border-radius: 10px !important;
     padding: 6px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.15) !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15) !important;
 }
 
 .leaflet-popup-content b {
-    color: #662c09 !important;
-    font-size: 15px;
+    color: var(--color-brand) !important;
+    font-size: 0.9375rem;
     display: block;
     margin-bottom: 4px;
 }
 
 .leaflet-bar a {
-    background-color: #ffffff !important;
-    color: #662c09 !important;
-    transition: 0.2s;
+    background-color: var(--color-bg-surface) !important;
+    color: var(--color-brand) !important;
+    transition: background-color var(--transition-fast);
 }
 
 .leaflet-bar a:hover {
-    background-color: #f5e6d3 !important;
-    color: #4a1f05 !important;
+    background-color: var(--color-bg-body) !important;
+    color: var(--color-primary-dark) !important;
 }
 
 /* ==========================================================================
    RESPONSIVIDADE (MEDIA QUERIES)
    ========================================================================== */
-@media (max-width: 900px) {
-    .card-link {
-        width: calc(50% - 15px);
+@media (max-width: 850px) {
+    .pagina-detalhe .spacer {
+        height: 145px;
+    }
+    .lugar-hero-inner {
+        padding: 34px 24px;
+    }
+    .lugar-thumb,
+    .lugar-sidebar {
+        display: none;
+    }
+    .lugar-layout {
+        grid-template-columns: 1fr;
+    }
+    .pagina-detalhe .btn-voltar-detalhe {
+        margin-left: 0 !important;
     }
 }
 
 @media (max-width: 768px) {
-    .card-link {
-        width: 100%;
-    }
     .faixa-imagem img {
         height: 300px;
     }
     .detalhe-container {
-        padding-top: 8rem;
+        padding-top: 2rem;
     }
     #mapa {
-        height: 280px; 
+        height: 280px;
     }
 }
-/* ======================================================================  GALERIA COM CRÉDITO EM HOVER
-====================================================================== */
 
-.galeria-item{
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    cursor: pointer;
-}
-
-.galeria-item img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-
-    transition: transform .35s ease;
-}
-
-.galeria-item:hover img{
-    transform: scale(1.08);
-}
-
-.credito-imagem{
-
-    position:absolute;
-    left:0;
-    bottom:0;
-
-    width:100%;
-    padding:12px 15px;
-
-    background:rgba(0,0,0,.72);
-    backdrop-filter:blur(4px);
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    color:white;
-    text-decoration:none;
-
-    font-size:13px;
-
-    transform:translateY(100%);
-    transition:.35s ease;
-}
-
-.galeria-item:hover .credito-imagem{
-    transform:translateY(0);
-}
-
-.credito-imagem:hover{
-    background:rgba(0,0,0,.82);
-}
-
-.seta{
-    font-size:16px;
-    transition:.3s;
-}
-
-.credito-imagem:hover .seta{
-    transform:translateX(4px);
-}
-/* ========================================================================== 
-   NOVO DESIGN DAS PÁGINAS DE LUGARES — REFERÊNCIA MEMÓRIA POTIGUAR
-   ========================================================================== */
-.pagina-detalhe { background: #fff; color: #514943; }
-.pagina-detalhe::before { display: none; }
-.pagina-detalhe .spacer { height: 90px; }
-.lugar-hero { max-width: 1180px; min-height: 300px; margin: 0 auto; background-color: #574a40; background-size: cover; background-position: center; color: #fff; display: flex; align-items: center; }
-.lugar-hero-inner { width: 100%; padding: 42px 38px; display: flex; align-items: center; justify-content: space-between; gap: 45px; }
-.lugar-hero-copy { max-width: 720px; text-shadow: 0 2px 8px rgba(0,0,0,.34); }
-.lugar-categoria { display: inline-block; padding: 8px 13px; background: #8a3a08; border-radius: 7px; font-size: 12px; font-weight: 700; letter-spacing: .02em; text-shadow: none; }
-.lugar-hero h1 { font-size: clamp(2.1rem, 4vw, 3.1rem); line-height: 1.05; margin: 14px 0 10px; font-weight: 700; }
-.lugar-hero p { font-size: 1rem; line-height: 1.6; color: #f5f1ed; }
-.lugar-localizacao { margin-top: 18px; font-size: 13px; font-weight: 600; }
-.lugar-thumb { flex: 0 0 260px; height: 148px; border: 2px solid rgba(255,255,255,.95); border-radius: 11px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,.22); background: #fff; }
-.lugar-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-.lugar-tabs { max-width: 1180px; margin: 0 auto; background: #fff; border-bottom: 1px solid #e9e6e2; box-shadow: 0 2px 4px rgba(0,0,0,.03); }
-.lugar-tabs-inner { display: flex; align-items: stretch; overflow-x: auto; padding: 0 18px; scrollbar-width: thin; }
-.lugar-tabs a { flex: 1 0 auto; min-width: 145px; padding: 17px 14px 15px; color: #544d48; text-decoration: none; text-align: center; font-size: 12px; font-weight: 500; border-bottom: 3px solid transparent; white-space: nowrap; transition: .2s; }
-.lugar-tabs a span { margin-right: 7px; color: #665b54; }
-.lugar-tabs a:hover, .lugar-tabs a.active { color: #713006; border-bottom-color: #713006; }
-
-.pagina-detalhe .detalhe-container { max-width: 1180px; margin: 0 auto; padding: 22px 22px 50px; background: #fff; }
-.lugar-layout { display: grid; grid-template-columns: 155px minmax(0, 1fr); gap: 24px; align-items: start; }
-.lugar-sidebar { position: sticky; top: 112px; border: 1px solid #dedad6; border-radius: 9px; padding: 16px 13px; background: #fff; }
-.lugar-sidebar strong { display: block; font-size: 10px; color: #67605b; margin-bottom: 10px; }
-.lugar-sidebar a { display: flex; gap: 8px; align-items: flex-start; padding: 8px 0; color: #8b8580; text-decoration: none; font-size: 10px; line-height: 1.25; }
-.lugar-sidebar a span { color: #b6aea8; }
-.lugar-sidebar a.active { color: #713006; font-weight: 600; }
-.lugar-sidebar a.active span { color: #713006; }
-.lugar-conteudo { min-width: 0; }
-.pagina-detalhe .info-secao, .pagina-detalhe .galeria-secao { background: #fff; padding: 0 0 28px; border-radius: 0; box-shadow: none; margin-bottom: 22px; border-bottom: 1px solid #eeeae6; scroll-margin-top: 125px; }
-.pagina-detalhe .info-secao h2, .pagina-detalhe .galeria-secao h2 { color: #713006; font-size: 20px; margin: 0 0 13px; padding: 0; border: 0; display: flex; align-items: center; gap: 10px; }
-.secao-icone { font-size: 17px; }
-.pagina-detalhe .info-secao p { color: #6a625d; font-size: 13px; line-height: 1.68; margin-bottom: 12px; text-align: left; }
-.pagina-detalhe .galeria-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; margin-top: 12px; }
-.pagina-detalhe .galeria-grid img { height: 180px; border-radius: 8px; }
-.pagina-detalhe #mapa { height: 330px; border-radius: 8px; margin-top: 12px; }
-.anchor-proxy { display: block; position: relative; top: -130px; visibility: hidden; }
-.pagina-detalhe .btn-voltar-detalhe { margin: 8px 0 0 179px !important; padding: 10px 20px; background: #713006; color: #fff; border-radius: 999px; font-size: 13px; }
-.pagina-detalhe .btn-voltar-detalhe:hover { background: #512104; }
-
-@media (max-width: 850px) {
-    .pagina-detalhe .spacer { height: 145px; }
-    .lugar-hero-inner { padding: 34px 24px; }
-    .lugar-thumb { display: none; }
-    .lugar-layout { grid-template-columns: 1fr; }
-    .lugar-sidebar { display: none; }
-    .pagina-detalhe .btn-voltar-detalhe { margin-left: 0 !important; }
-    .pagina-detalhe .galeria-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
 @media (max-width: 560px) {
-    .lugar-hero { min-height: 280px; }
-    .lugar-hero h1 { font-size: 2rem; }
-    .lugar-tabs a { min-width: 135px; }
-    .pagina-detalhe .detalhe-container { padding: 20px 16px 42px; }
-    .pagina-detalhe .galeria-grid { grid-template-columns: 1fr; }
+    .lugar-hero {
+        min-height: 280px;
+    }
+    .lugar-hero h1 {
+        font-size: 2rem;
+    }
+    .lugar-tabs a {
+        min-width: 135px;
+    }
+    .detalhe-container {
+        padding: 20px 16px 42px;
+    }
 }
