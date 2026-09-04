@@ -39,12 +39,12 @@
 
     <div class="spacer"></div>
 
-    <main class="detalhe-container">
+    <main class="detalhe-container" data-categoria="CULTURAL">
 
         <h1 class="detalhe-titulo">Barragem de Oiticica</h1>
         <p class="detalhe-subtitulo"> A Barragem de Oiticica é uma das principais obras de infraestrutura hídrica do Rio Grande do Norte </p>
 
-        <section class="galeria-secao">
+        <section class="galeria-secao" data-secao="galeria">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
                 <img src="{{ url_for('static', filename='img/barragem1.png') }}" alt="Foto 1 do Museu Do Seridó">
@@ -54,19 +54,27 @@
             </div>
         </section>
 
-        <section class="info-secao">
-            <h2>História e Cultura</h2>
-            <p>
-                A Barragem de Oiticica é uma das principais obras de infraestrutura hídrica do Rio Grande do Norte e está localizada no município de Jucurutu, na região do Seridó Potiguar. Construída sobre o Rio Piranhas-Açu, a obra teve seu projeto elaborado pelo DNOCS ainda em 1952, mas as obras foram iniciadas oficialmente em 26 de junho de 2013. 
-            </p>
-            <p>
-                O empreendimento foi criado com o objetivo de ampliar a segurança hídrica e reduzir os impactos causados pelos períodos de estiagem que afetam o semiárido potiguar. Inaugurada em 19 de março de 2025, a barragem possui capacidade para armazenar cerca de 742 milhões de metros cúbicos de água, tornando-se o segundo maior reservatório do Rio Grande do Norte.
-A construção da barragem também provocou importantes transformações sociais e territoriais, principalmente com o reassentamento da antiga comunidade de Barra de Santana, que deu origem à Nova Barra de Santana. A implantação do reservatório envolveu o deslocamento de milhares de pessoas e a criação de novas estruturas para as famílias afetadas. Além de contribuir para o abastecimento de água de dezenas de municípios, a Barragem de Oiticica possui importância para atividades produtivas, agricultura irrigada, piscicultura e geração de energia, além de apresentar potencial para o turismo, lazer e contemplação da paisagem. Dessa forma, tornou-se um importante marco da história recente de Jucurutu e de todo o Seridó.
-
-            </p>
+                <section class="info-secao resumo-secao" data-secao="resumo">
+            <h2>Resumo</h2>
+            <p>A Barragem de Oiticica, em Jucurutu, é uma das principais obras de infraestrutura hídrica do Rio Grande do Norte e tem papel importante no abastecimento e na segurança hídrica do Seridó.</p>
         </section>
 
-        <section class="info-secao">
+        <section class="info-secao historia-secao" data-secao="historia">
+            <h2>História</h2>
+            <p>O empreendimento foi criado com o objetivo de ampliar a segurança hídrica e reduzir os impactos causados pelos períodos de estiagem que afetam o semiárido potiguar. Inaugurada em 19 de março de 2025, a barragem possui capacidade para armazenar cerca de 742 milhões de metros cúbicos de água, tornando-se o segundo maior reservatório do Rio Grande do Norte. A construção da barragem também provocou importantes transformações sociais e territoriais, principalmente com o reassentamento da antiga comunidade de Barra de Santana, que deu origem à Nova Barra de Santana.</p>
+            <p>A implantação do reservatório envolveu o deslocamento de milhares de pessoas e a criação de novas estruturas para as famílias afetadas. Além de contribuir para o abastecimento de água de dezenas de municípios, a Barragem de Oiticica possui importância para atividades produtivas, agricultura irrigada, piscicultura e geração de energia, além de apresentar potencial para o turismo, lazer e contemplação da paisagem. Dessa forma, tornou-se um importante marco da história recente de Jucurutu e de todo o Seridó.</p>
+        </section>
+
+        <section class="info-secao curiosidades-secao" data-secao="curiosidades">
+            <h2>Curiosidades</h2>
+            <ul class="curiosidades-lista">
+                <li>Inaugurada em 19 de março de 2025, a barragem possui capacidade para armazenar cerca de 742 milhões de metros cúbicos de água, tornando-se o segundo maior reservatório do Rio Grande do Norte.</li>
+                <li>A construção da barragem também provocou importantes transformações sociais e territoriais, principalmente com o reassentamento da antiga comunidade de Barra de Santana, que deu origem à Nova Barra de Santana.</li>
+                <li>Além de contribuir para o abastecimento de água de dezenas de municípios, a Barragem de Oiticica possui importância para atividades produtivas, agricultura irrigada, piscicultura e geração de energia, além de apresentar potencial para o turismo, lazer e contemplação da paisagem.</li>
+            </ul>
+        </section>
+
+        <section class="info-secao localizacao-secao" data-secao="localizacao">
             <h2>Localização</h2>
             <p><strong>Endereço:</strong> Zona rural do município de Jucurutu, na região do Seridó do Rio Grande do Norte, construída sobre o leito do Rio Piranhas-Açu. 
             </p>

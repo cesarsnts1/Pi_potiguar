@@ -162,6 +162,28 @@
             </div>
         </a>
     
+    
+
+        {# Lugares cadastrados pelo painel administrativo (MySQL) #}
+        {% for lugar in lugares_banco|default([]) %}
+        <a href="{{ url_for('lugar_dinamico', lugar_id=lugar.id) }}" class="card-link card-banco">
+            <div class="card{% if not lugar.nome_imagem %} sem-imagem{% endif %}">
+                {% if lugar.nome_imagem %}
+                    {% if lugar.nome_imagem.startswith('http://') or lugar.nome_imagem.startswith('https://') %}
+                        <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.closest('.card').classList.add('sem-imagem'); this.style.display='none';">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/' ~ lugar.nome_imagem) }}" alt="{{ lugar.nome }}" onerror="this.closest('.card').classList.add('sem-imagem'); this.style.display='none';">
+                    {% endif %}
+                {% endif %}
+                <div class="card-content">
+                    <span class="card-banco-tag">NOVO REGISTRO</span>
+                    <h3>{{ lugar.nome }}</h3>
+                    <p>{{ (lugar.resumo or lugar.descricao or lugar.historia or 'Lugar registrado na Memória Potiguar.')|truncate(180) }}</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
     </section>
 
    <a href="/index" class="btn">← Voltar para Categorias</a>

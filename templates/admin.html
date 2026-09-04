@@ -3,253 +3,601 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memória Potiguar - Painel de Administração</title>
-
-    <!-- Fonte -->
+    <title>Administração | Memória Potiguar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
-
-<body>
-
-    <!-- HEADER -->
-    <header>
-        <div class="logo">
-            <a href="/index">
-                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
+<body class="admin-body">
+    <div class="admin-shell">
+        <aside class="admin-sidebar" id="adminSidebar">
+            <a href="{{ url_for('index') }}" class="admin-brand" aria-label="Voltar ao Memória Potiguar">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Memória Potiguar">
             </a>
-        </div>
 
-        <nav>
-            <a href="{{ url_for('index') }}">Início</a>
-            <a href="{{ url_for('sobre') }}">Sobre</a>
-            <a href="{{ url_for('sugestao') }}">Sugerir local</a>
-            <a href="{{ url_for('admin') }}" class="Adm">Administração</a>
-        </nav>
-    </header>
-
-    <div class="spacer"></div>
-
-    <!-- CONTEÚDO -->
-    <main class="admin-container">
-
-        <!-- ALERTAS FLASK -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert-success-potiguar">
-                        <strong>Sucesso!</strong> {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <!-- CARD -->
-        <section class="admin-card">
-
-            <div class="admin-card-header">
-                <h2>Adicionar Novo Lugar Histórico</h2>
-
-                <p>
-                    Insira as informações para registrar um novo ponto
-                    de cultura, história ou gastronomia do RN.
-                </p>
+            <div class="admin-user-card">
+                <div class="admin-avatar">{{ session.get('admin_usuario', 'A')[:1]|upper }}</div>
+                <div>
+                    <span>Administrador</span>
+                    <strong>{{ session.get('admin_usuario', 'Admin') }}</strong>
+                </div>
             </div>
 
-            <!-- FORMULÁRIO -->
-            <form
-                id="placeForm"
-                method="POST"
-                action="{{ url_for('adicionar_lugar') }}"
-                class="form-potiguar"
-            >
+            <nav class="admin-menu" aria-label="Navegação do painel">
+                <button class="admin-menu-item active" type="button" data-target="visao-geral">
+                    <span class="menu-icon">⌂</span>
+                    <span>Visão geral</span>
+                </button>
+                <button class="admin-menu-item" type="button" data-target="novo-lugar">
+                    <span class="menu-icon">＋</span>
+                    <span>Novo lugar</span>
+                </button>
+                <button class="admin-menu-item" type="button" data-target="gerenciar-lugares">
+                    <span class="menu-icon">⌘</span>
+                    <span>Gerenciar lugares</span>
+                    {% if dashboard.total_lugares %}
+                        <span class="menu-badge menu-badge-neutral">{{ dashboard.total_lugares }}</span>
+                    {% endif %}
+                </button>
+                <button class="admin-menu-item" type="button" data-target="sugestoes">
+                    <span class="menu-icon">✦</span>
+                    <span>Sugestões</span>
+                    {% if dashboard.sugestoes_pendentes %}
+                        <span class="menu-badge">{{ dashboard.sugestoes_pendentes }}</span>
+                    {% endif %}
+                </button>
+            </nav>
 
-                <!-- NOME + CATEGORIA -->
-                <div class="form-row">
+            <div class="admin-sidebar-footer">
+                <a href="{{ url_for('index') }}">← Voltar ao site</a>
+                <small>Memória Potiguar · IFRN Caicó</small>
+            </div>
+        </aside>
 
-                    <div class="form-group flex-2">
-                        <label for="placeName">Nome do Lugar *</label>
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button class="sidebar-toggle" type="button" id="sidebarToggle" aria-label="Abrir menu">☰</button>
+                <div>
+                    <span class="topbar-kicker">PAINEL ADMINISTRATIVO</span>
+                    <h1 id="adminPageTitle">Visão geral</h1>
+                </div>
+                <a class="view-site-btn" href="{{ url_for('index') }}">Ver site <span>↗</span></a>
+            </header>
 
-                        <input
-                            type="text"
-                            id="placeName"
-                            name="nome"
-                            required
-                            autocomplete="off"
-                            placeholder="Ex: Capela de Santana"
-                            class="input-potiguar"
-                        >
-                    </div>
-
-                    <div class="form-group flex-1">
-                        <label for="placeCategory">Categoria *</label>
-
-                        <select
-                            id="placeCategory"
-                            name="categoria"
-                            required
-                            class="input-potiguar select-potiguar"
-                        >
-                            <option value="">Selecione...</option>
-
-                            {% for categoria in categorias %}
-                                <option value="{{ categoria.id }}">
-                                    {{ categoria.nome }}
-                                </option>
+            <main class="admin-content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-stack">
+                            {% for category, message in messages %}
+                                <div class="admin-flash admin-flash-{{ category }}">
+                                    <span>✓</span>
+                                    <p>{{ message }}</p>
+                                </div>
                             {% endfor %}
-                        </select>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <section class="admin-section active" id="visao-geral" data-title="Visão geral">
+                    <div class="dashboard-hero">
+                        <div>
+                            <span class="dashboard-eyebrow">MEMÓRIA EM MOVIMENTO</span>
+                            <h2>Olá, {{ session.get('admin_usuario', 'administrador') }}.</h2>
+                            <p>Acompanhe o conteúdo do projeto, as sugestões recebidas e os novos cadastros em um só lugar.</p>
+                        </div>
+                        <div class="auto-data-badge">
+                            <span class="auto-pulse"></span>
+                            Dados gerados automaticamente
+                        </div>
                     </div>
 
-                </div>
-
-                <!-- ENDEREÇO -->
-                <div class="form-group">
-                    <label for="placeAddress">
-                        Endereço / Localização *
-                    </label>
-
-                    <input
-                        type="text"
-                        id="placeAddress"
-                        name="endereco"
-                        required
-                        autocomplete="street-address"
-                        placeholder="Ex: Zona Rural, Caicó - RN"
-                        class="input-potiguar"
-                    >
-                </div>
-
-                <!-- DESCRIÇÃO -->
-                <div class="form-group">
-                    <label for="placeDesc">
-                        História / Descrição do Lugar *
-                    </label>
-
-                    <textarea
-                        id="placeDesc"
-                        name="descricao"
-                        rows="6"
-                        required
-                        placeholder="Escreva aqui os detalhes históricos, memórias e relevância cultural deste local..."
-                        class="input-potiguar textarea-potiguar"
-                    ></textarea>
-                </div>
-
-                <!-- IMAGEM -->
-                <div class="form-group">
-                    <label for="placeImg">
-                        URL da Imagem *
-                    </label>
-
-                    <input
-                        type="url"
-                        id="placeImg"
-                        name="imagem"
-                        required
-                        placeholder="https://site.com/imagem.jpg"
-                        class="input-potiguar"
-                    >
-                </div>
-
-                <!-- BOTÕES -->
-                <div class="form-actions-potiguar">
-
-                    <a
-                        href="{{ url_for('index') }}"
-                        class="btn-cancelar"
-                    >
-                        Cancelar
-                    </a>
-
-                    <button
-                        type="submit"
-                        class="btn-enviar-potiguar"
-                    >
-                        Registrar Lugar
-                    </button>
-
-                </div>
-
-            </form>
-
-        </section>
-
-        <section class="admin-card sugestoes-admin">
-            <div class="admin-card-header sugestoes-header">
-                <h2>Sugestões enviadas pelos visitantes</h2>
-                <p>Analise os locais sugeridos. Ao aprovar, o item também é cadastrado em pontos turísticos.</p>
-            </div>
-
-            <div class="sugestoes-lista">
-                {% if sugestoes %}
-                    {% for sugestao in sugestoes %}
-                        <article class="sugestao-admin-card">
-                            {% if sugestao.imagem %}
-                                <div class="sugestao-imagem">
-                                    <img src="{{ sugestao.imagem }}" alt="Imagem sugerida de {{ sugestao.nome }}" onerror="this.parentElement.style.display='none'">
-                                </div>
-                            {% endif %}
-                            <div class="sugestao-conteudo">
-                                <div class="sugestao-topo">
-                                    <div>
-                                        <span class="sugestao-categoria">{{ sugestao.categoria_nome or 'Sem categoria' }}</span>
-                                        <h3>{{ sugestao.nome }}</h3>
-                                    </div>
-                                    <span class="status-badge status-{{ sugestao.status|lower }}">{{ sugestao.status }}</span>
-                                </div>
-                                <p class="sugestao-local">⌖ {{ sugestao.localizacao }}</p>
-                                <p class="sugestao-desc">{{ sugestao.descricao }}</p>
-                                {% if sugestao.nome_sugerente or sugestao.contato %}
-                                    <p class="sugestao-autor"><strong>Enviado por:</strong> {{ sugestao.nome_sugerente or 'Não informado' }}{% if sugestao.contato %} · {{ sugestao.contato }}{% endif %}</p>
-                                {% endif %}
-                                <p class="sugestao-data">Recebida em {{ sugestao.criado_em.strftime('%d/%m/%Y às %H:%M') if sugestao.criado_em else '' }}</p>
-
-                                {% if sugestao.status == 'Pendente' %}
-                                    <div class="sugestao-acoes">
-                                        <form method="POST" action="{{ url_for('recusar_sugestao', sugestao_id=sugestao.id) }}">
-                                            <button type="submit" class="btn-recusar">Recusar</button>
-                                        </form>
-                                        <form method="POST" action="{{ url_for('aprovar_sugestao', sugestao_id=sugestao.id) }}">
-                                            <button type="submit" class="btn-aprovar">Aprovar e cadastrar</button>
-                                        </form>
-                                    </div>
-                                {% endif %}
+                    <div class="stats-grid">
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-brown">⌖</div>
+                            <div class="stat-copy">
+                                <span>Lugares cadastrados</span>
+                                <strong>{{ dashboard.total_lugares }}</strong>
+                                <small>conteúdos no banco</small>
                             </div>
                         </article>
-                    {% endfor %}
-                {% else %}
-                    <div class="sugestoes-vazio">
-                        <strong>Nenhuma sugestão recebida ainda.</strong>
-                        <span>Quando um visitante enviar um local, ele aparecerá aqui.</span>
+
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-gold">◫</div>
+                            <div class="stat-copy">
+                                <span>Categorias</span>
+                                <strong>{{ dashboard.total_categorias }}</strong>
+                                <small>formas de explorar</small>
+                            </div>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-orange">✦</div>
+                            <div class="stat-copy">
+                                <span>Sugestões pendentes</span>
+                                <strong>{{ dashboard.sugestoes_pendentes }}</strong>
+                                <small>aguardando análise</small>
+                            </div>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-icon stat-icon-green">✓</div>
+                            <div class="stat-copy">
+                                <span>Sugestões aprovadas</span>
+                                <strong>{{ dashboard.sugestoes_aprovadas }}</strong>
+                                <small>já incorporadas</small>
+                            </div>
+                        </article>
                     </div>
+
+                    <div class="dashboard-grid">
+                        <section class="dashboard-card category-overview">
+                            <div class="dashboard-card-head">
+                                <div>
+                                    <span class="card-kicker">CONTEÚDO</span>
+                                    <h3>Lugares por categoria</h3>
+                                </div>
+                                <span class="card-total">{{ dashboard.total_lugares }} total</span>
+                            </div>
+
+                            <div class="category-bars">
+                                {% if dashboard.categorias_resumo %}
+                                    {% for categoria in dashboard.categorias_resumo %}
+                                        <div class="category-bar-item">
+                                            <div class="category-bar-top">
+                                                <span>{{ categoria.nome }}</span>
+                                                <strong>{{ categoria.total }}</strong>
+                                            </div>
+                                            <div class="category-track">
+                                                <span style="width: {{ categoria.percentual }}%"></span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="dashboard-empty">Nenhuma categoria cadastrada.</div>
+                                {% endif %}
+                            </div>
+                        </section>
+
+                        <section class="dashboard-card quick-actions-card">
+                            <div class="dashboard-card-head">
+                                <div>
+                                    <span class="card-kicker">ATALHOS</span>
+                                    <h3>Ações rápidas</h3>
+                                </div>
+                            </div>
+                            <div class="quick-actions">
+                                <button type="button" class="quick-action" data-go="novo-lugar">
+                                    <span class="quick-action-icon">＋</span>
+                                    <span><strong>Cadastrar lugar</strong><small>Adicionar novo ponto ao banco</small></span>
+                                    <b>→</b>
+                                </button>
+                                <button type="button" class="quick-action" data-go="gerenciar-lugares">
+                                    <span class="quick-action-icon">⌘</span>
+                                    <span><strong>Gerenciar lugares</strong><small>Visualizar ou remover cadastros</small></span>
+                                    <b>→</b>
+                                </button>
+                                <button type="button" class="quick-action" data-go="sugestoes">
+                                    <span class="quick-action-icon">✦</span>
+                                    <span><strong>Analisar sugestões</strong><small>{{ dashboard.sugestoes_pendentes }} pendente(s)</small></span>
+                                    <b>→</b>
+                                </button>
+                                <a class="quick-action" href="{{ url_for('sugestao') }}">
+                                    <span class="quick-action-icon">◎</span>
+                                    <span><strong>Ver formulário público</strong><small>Conferir experiência do visitante</small></span>
+                                    <b>↗</b>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
+
+                    <section class="dashboard-card recent-card">
+                        <div class="dashboard-card-head">
+                            <div>
+                                <span class="card-kicker">RECENTES</span>
+                                <h3>Últimos lugares cadastrados</h3>
+                            </div>
+                            <button type="button" class="text-button" data-go="novo-lugar">Adicionar novo +</button>
+                        </div>
+
+                        {% if dashboard.ultimos_lugares %}
+                            <div class="recent-list">
+                                {% for lugar in dashboard.ultimos_lugares %}
+                                    <article class="recent-row">
+                                        <div class="recent-thumb">
+                                            {% if lugar.nome_imagem %}
+                                                <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                <span style="display:none">{{ lugar.nome[:1]|upper }}</span>
+                                            {% else %}
+                                                <span>{{ lugar.nome[:1]|upper }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="recent-main">
+                                            <strong>{{ lugar.nome }}</strong>
+                                            <span>{{ lugar.localizacao or 'Localização não informada' }}</span>
+                                        </div>
+                                        <span class="recent-id">#{{ lugar.id }}</span>
+                                    </article>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="dashboard-empty dashboard-empty-large">
+                                <span>⌖</span>
+                                <strong>Ainda não há lugares cadastrados.</strong>
+                                <button type="button" data-go="novo-lugar">Cadastrar o primeiro</button>
+                            </div>
+                        {% endif %}
+                    </section>
+                </section>
+
+                <section class="admin-section" id="novo-lugar" data-title="Cadastrar novo lugar">
+                    <div class="section-heading">
+                        <div>
+                            <span class="dashboard-eyebrow">NOVO CONTEÚDO</span>
+                            <h2>Cadastrar um lugar</h2>
+                            <p>Preencha as informações abaixo. Ao registrar, o lugar é salvo no MySQL e já aparece automaticamente no site.</p>
+                        </div>
+                        <span class="section-step">01</span>
+                    </div>
+
+                    <section class="form-card-modern">
+                        <form id="placeForm" method="POST" action="{{ url_for('adicionar_lugar') }}" class="form-potiguar">
+                            <div class="form-row">
+                                <div class="form-group flex-2">
+                                    <label for="placeName">Nome do lugar <em>*</em></label>
+                                    <input type="text" id="placeName" name="nome" required autocomplete="off" placeholder="Ex.: Capela de Santana" class="input-potiguar">
+                                </div>
+
+                                <div class="form-group flex-1">
+                                    <label for="placeCategory">Categoria <em>*</em></label>
+                                    <select id="placeCategory" name="categoria" required class="input-potiguar select-potiguar">
+                                        <option value="">Selecione...</option>
+                                        {% for categoria in categorias %}
+                                            <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="placeAddress">Endereço / Localização <em>*</em></label>
+                                <input type="text" id="placeAddress" name="endereco" required autocomplete="street-address" placeholder="Ex.: Zona Rural, Caicó - RN" class="input-potiguar">
+                                <small>Use uma localização curta e clara para o visitante.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="placeSummary">Resumo <em>*</em></label>
+                                <textarea id="placeSummary" name="resumo" rows="4" required maxlength="700" placeholder="Faça um resumo curto para apresentar o lugar nos cards e no início da página..." class="input-potiguar textarea-potiguar"></textarea>
+                                <div class="textarea-helper"><span>Texto curto que aparece primeiro para o visitante</span><span id="summaryCount">0 caracteres</span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="placeHistory">História <em>*</em></label>
+                                <textarea id="placeHistory" name="historia" rows="8" required placeholder="Conte a história, a importância e as principais informações do lugar..." class="input-potiguar textarea-potiguar"></textarea>
+                                <div class="textarea-helper"><span>Você pode separar a história em parágrafos usando uma linha em branco</span><span id="historyCount">0 caracteres</span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="placeCuriosities">Curiosidades</label>
+                                <textarea id="placeCuriosities" name="curiosidades" rows="5" placeholder="Digite uma curiosidade por linha. Ex.:\nÉ uma das construções mais antigas da região.\nFoi restaurada em determinado período." class="input-potiguar textarea-potiguar"></textarea>
+                                <div class="textarea-helper"><span>Uma curiosidade por linha; o site transforma cada linha em um item</span><span id="curiosityCount">0 caracteres</span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="placeImg">URL da imagem <em>*</em></label>
+                                <input type="url" id="placeImg" name="imagem" required placeholder="https://site.com/imagem.jpg" class="input-potiguar">
+                                <small>Informe um endereço direto de imagem para representar o local.</small>
+                            </div>
+
+                            <div class="form-actions-potiguar">
+                                <button type="button" class="btn-secondary" data-go="visao-geral">Cancelar</button>
+                                <button type="submit" class="btn-enviar-potiguar">Registrar lugar <span>→</span></button>
+                            </div>
+                        </form>
+                    </section>
+                </section>
+
+                <section class="admin-section" id="gerenciar-lugares" data-title="Gerenciar lugares">
+                    <div class="section-heading manage-heading">
+                        <div>
+                            <span class="dashboard-eyebrow">CONTEÚDO PUBLICADO</span>
+                            <h2>Gerenciar lugares</h2>
+                            <p>Veja os lugares cadastrados no MySQL. Ao remover um cadastro, ele também deixa de aparecer nas categorias, na pesquisa e na página dinâmica do site.</p>
+                        </div>
+                        <div class="manage-total">
+                            <strong>{{ dashboard.total_lugares }}</strong>
+                            <span>lugar(es)</span>
+                        </div>
+                    </div>
+
+                    <section class="dashboard-card places-manager-card">
+                        <div class="places-manager-head">
+                            <div>
+                                <span class="card-kicker">BANCO DE DADOS</span>
+                                <h3>Lugares cadastrados</h3>
+                            </div>
+                            <button type="button" class="text-button" data-go="novo-lugar">Adicionar novo +</button>
+                        </div>
+
+                        {% if lugares %}
+                            <div class="places-manager-list">
+                                {% for lugar in lugares %}
+                                    <article class="place-manager-row">
+                                        <div class="place-manager-thumb">
+                                            {% if lugar.nome_imagem %}
+                                                <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                <span style="display:none">{{ lugar.nome[:1]|upper }}</span>
+                                            {% else %}
+                                                <span>{{ lugar.nome[:1]|upper }}</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="place-manager-copy">
+                                            <div class="place-manager-title-line">
+                                                <strong>{{ lugar.nome }}</strong>
+                                                <span>#{{ lugar.id }}</span>
+                                            </div>
+                                            <p>{{ lugar.localizacao or 'Localização não informada' }}</p>
+                                            <small>{{ lugar.categoria_nome or 'Sem categoria' }}</small>
+                                        </div>
+
+                                        <div class="place-manager-actions">
+                                            <a class="btn-open-place" href="{{ url_for('lugar_dinamico', lugar_id=lugar.id) }}" target="_blank" rel="noopener">Ver página ↗</a>
+                                            <a class="btn-edit-place" href="{{ url_for('admin', editar=lugar.id) }}#editar-lugar">Editar</a>
+                                            <form method="POST" action="{{ url_for('remover_lugar', lugar_id=lugar.id) }}" class="remove-place-form" data-place-name="{{ lugar.nome }}">
+                                                <button type="submit" class="btn-remove-place">Remover</button>
+                                            </form>
+                                        </div>
+                                    </article>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="dashboard-empty dashboard-empty-large">
+                                <span>⌖</span>
+                                <strong>Nenhum lugar cadastrado no MySQL.</strong>
+                                <button type="button" data-go="novo-lugar">Cadastrar o primeiro</button>
+                            </div>
+                        {% endif %}
+                    </section>
+                </section>
+
+                {% if lugar_edicao %}
+                <section class="admin-section edit-place-section" id="editar-lugar" data-title="Editar lugar">
+                    <div class="section-heading">
+                        <div>
+                            <span class="dashboard-eyebrow">EDIÇÃO DE CONTEÚDO</span>
+                            <h2>Editar {{ lugar_edicao.nome }}</h2>
+                            <p>Altere as informações abaixo. Ao salvar, o MySQL e a página pública do lugar são atualizados automaticamente.</p>
+                        </div>
+                        <span class="section-step edit-step">✎</span>
+                    </div>
+
+                    <div class="edit-place-summary">
+                        <div class="edit-place-summary-copy">
+                            <span>EDITANDO REGISTRO #{{ lugar_edicao.id }}</span>
+                            <strong>{{ lugar_edicao.nome }}</strong>
+                            <small>{{ lugar_edicao.categoria_nome or 'Sem categoria' }} · {{ lugar_edicao.localizacao or 'Sem localização' }}</small>
+                        </div>
+                        <div class="edit-place-summary-actions">
+                            <a href="{{ url_for('lugar_dinamico', lugar_id=lugar_edicao.id) }}" target="_blank" rel="noopener">Ver página atual ↗</a>
+                            <a href="{{ url_for('admin') }}#gerenciar-lugares" class="edit-cancel-link">Cancelar edição</a>
+                        </div>
+                    </div>
+
+                    <section class="form-card-modern edit-form-card">
+                        <form id="editPlaceForm" method="POST" action="{{ url_for('editar_lugar', lugar_id=lugar_edicao.id) }}" class="form-potiguar">
+                            <div class="form-row">
+                                <div class="form-group flex-2">
+                                    <label for="editPlaceName">Nome do lugar <em>*</em></label>
+                                    <input type="text" id="editPlaceName" name="nome" required autocomplete="off" value="{{ lugar_edicao.nome }}" class="input-potiguar">
+                                </div>
+
+                                <div class="form-group flex-1">
+                                    <label for="editPlaceCategory">Categoria <em>*</em></label>
+                                    <select id="editPlaceCategory" name="categoria" required class="input-potiguar select-potiguar">
+                                        <option value="">Selecione...</option>
+                                        {% for categoria in categorias %}
+                                            <option value="{{ categoria.id }}" {% if categoria.id == lugar_edicao.categoria_id %}selected{% endif %}>{{ categoria.nome }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPlaceAddress">Endereço / Localização <em>*</em></label>
+                                <input type="text" id="editPlaceAddress" name="endereco" required value="{{ lugar_edicao.localizacao or '' }}" class="input-potiguar">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPlaceSummary">Resumo <em>*</em></label>
+                                <textarea id="editPlaceSummary" name="resumo" rows="4" required maxlength="700" class="input-potiguar textarea-potiguar">{{ lugar_edicao.resumo or '' }}</textarea>
+                                <div class="textarea-helper"><span>Texto curto de apresentação</span><span id="editSummaryCount">0 caracteres</span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPlaceHistory">História <em>*</em></label>
+                                <textarea id="editPlaceHistory" name="historia" rows="9" required class="input-potiguar textarea-potiguar">{{ lugar_edicao.historia or lugar_edicao.descricao or '' }}</textarea>
+                                <div class="textarea-helper"><span>Separe os parágrafos com uma linha em branco</span><span id="editHistoryCount">0 caracteres</span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPlaceCuriosities">Curiosidades</label>
+                                <textarea id="editPlaceCuriosities" name="curiosidades" rows="6" class="input-potiguar textarea-potiguar">{{ lugar_edicao.curiosidades or '' }}</textarea>
+                                <div class="textarea-helper"><span>Uma curiosidade por linha</span><span id="editCuriosityCount">0 caracteres</span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPlaceImg">Imagem</label>
+                                <input type="text" id="editPlaceImg" name="imagem" value="{{ lugar_edicao.nome_imagem or '' }}" placeholder="URL da imagem ou caminho já usado pelo projeto" class="input-potiguar">
+                                <small>Você pode manter a imagem atual, trocar a URL/caminho ou deixar vazio.</small>
+                            </div>
+
+                            {% if lugar_edicao.nome_imagem %}
+                            <div class="edit-image-preview">
+                                <span>Imagem atual</span>
+                                <img src="{{ lugar_edicao.nome_imagem }}" alt="Imagem atual de {{ lugar_edicao.nome }}" onerror="this.closest('.edit-image-preview').style.display='none'">
+                            </div>
+                            {% endif %}
+
+                            <div class="form-actions-potiguar">
+                                <a class="btn-secondary edit-back-button" href="{{ url_for('admin') }}#gerenciar-lugares">Cancelar</a>
+                                <button type="submit" class="btn-enviar-potiguar">Salvar alterações <span>✓</span></button>
+                            </div>
+                        </form>
+                    </section>
+                </section>
                 {% endif %}
-            </div>
-        </section>
 
-    </main>
+                <section class="admin-section" id="sugestoes" data-title="Sugestões dos visitantes">
+                    <div class="section-heading suggestions-heading">
+                        <div>
+                            <span class="dashboard-eyebrow">PARTICIPAÇÃO DO PÚBLICO</span>
+                            <h2>Sugestões dos visitantes</h2>
+                            <p>Analise as contribuições recebidas. Ao aprovar uma sugestão, o lugar é cadastrado automaticamente.</p>
+                        </div>
+                        <div class="suggestion-summary">
+                            <strong>{{ dashboard.sugestoes_pendentes }}</strong>
+                            <span>pendente(s)</span>
+                        </div>
+                    </div>
 
-    <!-- FOOTER -->
-    <footer>
-        © 2026 Memória Potiguar | IFRN - Caicó
-    </footer>
+                    <div class="suggestion-toolbar">
+                        <span>{{ dashboard.total_sugestoes }} sugestão(ões) recebida(s)</span>
+                        <div class="suggestion-legend">
+                            <span><i class="legend-dot dot-pending"></i>Pendente</span>
+                            <span><i class="legend-dot dot-approved"></i>Aprovada</span>
+                            <span><i class="legend-dot dot-rejected"></i>Recusada</span>
+                        </div>
+                    </div>
 
-    <!-- SCRIPT -->
+                    <div class="sugestoes-lista">
+                        {% if sugestoes %}
+                            {% for sugestao in sugestoes %}
+                                <article class="sugestao-admin-card">
+                                    <div class="sugestao-imagem">
+                                        {% if sugestao.imagem %}
+                                            <img src="{{ sugestao.imagem }}" alt="Imagem sugerida de {{ sugestao.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                            <span class="suggestion-placeholder" style="display:none">{{ sugestao.nome[:1]|upper }}</span>
+                                        {% else %}
+                                            <span class="suggestion-placeholder">{{ sugestao.nome[:1]|upper }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="sugestao-conteudo">
+                                        <div class="sugestao-topo">
+                                            <div>
+                                                <span class="sugestao-categoria">{{ sugestao.categoria_nome or 'Sem categoria' }}</span>
+                                                <h3>{{ sugestao.nome }}</h3>
+                                            </div>
+                                            <span class="status-badge status-{{ sugestao.status|lower }}">{{ sugestao.status }}</span>
+                                        </div>
+
+                                        <p class="sugestao-local">⌖ {{ sugestao.localizacao }}</p>
+                                        <p class="sugestao-desc">{{ sugestao.descricao }}</p>
+
+                                        <div class="suggestion-meta">
+                                            <span><strong>Enviado por</strong>{{ sugestao.nome_sugerente or 'Não informado' }}</span>
+                                            {% if sugestao.contato %}<span><strong>Contato</strong>{{ sugestao.contato }}</span>{% endif %}
+                                            <span><strong>Recebida</strong>{{ sugestao.criado_em.strftime('%d/%m/%Y às %H:%M') if sugestao.criado_em else 'Data não informada' }}</span>
+                                        </div>
+
+                                        {% if sugestao.status == 'Pendente' %}
+                                            <div class="sugestao-acoes">
+                                                <form method="POST" action="{{ url_for('recusar_sugestao', sugestao_id=sugestao.id) }}">
+                                                    <button type="submit" class="btn-recusar">Recusar</button>
+                                                </form>
+                                                <form method="POST" action="{{ url_for('aprovar_sugestao', sugestao_id=sugestao.id) }}">
+                                                    <button type="submit" class="btn-aprovar">Aprovar e cadastrar <span>✓</span></button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        {% else %}
+                            <div class="sugestoes-vazio">
+                                <span class="empty-icon">✦</span>
+                                <strong>Nenhuma sugestão recebida ainda.</strong>
+                                <p>Quando um visitante enviar um local, ele aparecerá automaticamente aqui.</p>
+                                <a href="{{ url_for('sugestao') }}">Abrir página de sugestões ↗</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
     <script>
-        const form = document.getElementById("placeForm");
+        const menuItems = document.querySelectorAll('.admin-menu-item[data-target]');
+        const sections = document.querySelectorAll('.admin-section');
+        const pageTitle = document.getElementById('adminPageTitle');
+        const sidebar = document.getElementById('adminSidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
 
-        form.addEventListener("submit", () => {
-            const btn = document.querySelector(".btn-enviar-potiguar");
+        function openSection(id, updateHash = true) {
+            const target = document.getElementById(id);
+            if (!target) return;
 
-            btn.innerText = "Salvando...";
-            btn.disabled = true;
+            sections.forEach(section => section.classList.toggle('active', section.id === id));
+            menuItems.forEach(item => item.classList.toggle('active', item.dataset.target === id));
+            pageTitle.textContent = target.dataset.title || 'Administração';
+
+            if (updateHash) history.replaceState(null, '', `#${id}`);
+            sidebar.classList.remove('open');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        menuItems.forEach(item => item.addEventListener('click', () => openSection(item.dataset.target)));
+        document.querySelectorAll('[data-go]').forEach(item => item.addEventListener('click', () => openSection(item.dataset.go)));
+
+        sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+
+        const initialSection = window.location.hash.replace('#', '');
+        if (initialSection && document.getElementById(initialSection)) {
+            openSection(initialSection, false);
+        } else if (document.getElementById('editar-lugar')) {
+            openSection('editar-lugar', false);
+        }
+
+        const counters = [
+            ['placeSummary', 'summaryCount'],
+            ['placeHistory', 'historyCount'],
+            ['placeCuriosities', 'curiosityCount'],
+            ['editPlaceSummary', 'editSummaryCount'],
+            ['editPlaceHistory', 'editHistoryCount'],
+            ['editPlaceCuriosities', 'editCuriosityCount']
+        ];
+        counters.forEach(([fieldId, countId]) => {
+            const field = document.getElementById(fieldId);
+            const count = document.getElementById(countId);
+            if (!field || !count) return;
+            const updateCount = () => count.textContent = `${field.value.length} caracteres`;
+            field.addEventListener('input', updateCount);
+            updateCount();
+        });
+
+        ['placeForm', 'editPlaceForm'].forEach(formId => {
+            const form = document.getElementById(formId);
+            if (!form) return;
+            form.addEventListener('submit', () => {
+                const btn = form.querySelector('.btn-enviar-potiguar');
+                if (!btn) return;
+                btn.innerHTML = 'Salvando...';
+                btn.disabled = true;
+            });
+        });
+
+        document.querySelectorAll('.remove-place-form').forEach(removeForm => {
+            removeForm.addEventListener('submit', event => {
+                const name = removeForm.dataset.placeName || 'este lugar';
+                const confirmed = window.confirm(`Remover "${name}"?
+
+O cadastro será apagado do MySQL e deixará de aparecer no site.`);
+                if (!confirmed) event.preventDefault();
+            });
         });
     </script>
-
 </body>
 </html>

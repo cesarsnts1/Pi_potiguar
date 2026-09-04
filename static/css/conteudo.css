@@ -566,3 +566,176 @@
         padding: 20px 16px 42px;
     }
 }
+/* ========================================================================== 
+   BLOCOS ORGANIZADOS DAS PÁGINAS DE DETALHES
+   ========================================================================== */
+.resumo-secao {
+    background: #fbf7f2;
+    border: 1px solid #eadfd5;
+    border-left: 4px solid var(--color-primary);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 30px;
+}
+
+.resumo-secao h2 {
+    margin-bottom: 10px;
+}
+
+.resumo-secao p {
+    margin: 0;
+    color: #514943;
+    font-size: 0.94rem;
+    line-height: 1.75;
+    font-weight: 500;
+}
+
+.historia-secao p {
+    max-width: 82ch;
+    font-size: 0.88rem;
+    line-height: 1.82;
+}
+
+.curiosidades-secao {
+    padding-bottom: 30px;
+}
+
+.curiosidades-lista {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0 0;
+    padding: 0;
+}
+
+.curiosidades-lista li {
+    position: relative;
+    min-height: 118px;
+    padding: 18px 17px 18px 42px;
+    border: 1px solid #e7ddd4;
+    border-radius: 11px;
+    background: #fffdfb;
+    color: #625a54;
+    font-size: 0.78rem;
+    line-height: 1.62;
+    box-shadow: 0 4px 12px rgba(75, 45, 25, 0.045);
+}
+
+.curiosidades-lista li::before {
+    content: "✦";
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+}
+
+.localizacao-secao > p {
+    display: inline-block;
+    margin-bottom: 2px;
+    padding: 10px 13px;
+    border-radius: 8px;
+    background: #fbf7f2;
+    color: #594f48;
+}
+
+@media (max-width: 980px) {
+    .curiosidades-lista {
+        grid-template-columns: 1fr;
+    }
+
+    .curiosidades-lista li {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .resumo-secao {
+        padding: 18px 17px;
+    }
+
+    .historia-secao p,
+    .resumo-secao p {
+        font-size: 0.84rem;
+    }
+}
+
+
+/* Separação visual das informações nas páginas detalhadas */
+.lugar-conteudo {
+    display: grid;
+    gap: 18px;
+}
+
+.info-secao,
+.galeria-secao {
+    margin-bottom: 0;
+    padding: 22px 24px;
+    border: 1px solid #eee4da;
+    border-radius: 14px;
+    background: #fffdfa;
+    box-shadow: 0 5px 18px rgba(82, 50, 29, .045);
+}
+
+.info-secao p:last-child,
+.galeria-secao > *:last-child {
+    margin-bottom: 0;
+}
+
+.resumo-secao {
+    border-left: 4px solid var(--color-primary);
+    background: #fffaf4;
+}
+
+.curiosidades-lista {
+    display: grid;
+    gap: 10px;
+    margin: 5px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.curiosidades-lista li {
+    position: relative;
+    padding: 12px 14px 12px 36px;
+    border-radius: 10px;
+    background: #f8efe6;
+    color: #65584f;
+    font-size: .8125rem;
+    line-height: 1.55;
+}
+
+.curiosidades-lista li::before {
+    content: "✦";
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    color: var(--color-primary);
+}
+
+.card-banco-tag {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
+.card.sem-imagem::before {
+    content: "Memória Potiguar";
+    min-height: 150px;
+    display: grid;
+    place-items: center;
+    background: #efe0d1;
+    color: #713006;
+    font-weight: 700;
+}
+
+@media (max-width: 720px) {
+    .info-secao,
+    .galeria-secao {
+        padding: 18px;
+    }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lugar.nome }} - Memória Potiguar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+</head>
+<body class="body-conteudo pagina-detalhe pagina-detalhe-dinamica">
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar"></a>
+        </div>
+        <nav>
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit" aria-label="Buscar">⌕</button>
+            </form>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('sobre') }}">Sobre</a>
+            <a href="{{ url_for('sugestao') }}">Sugerir local</a>
+            <a href="{{ url_for('login') }}" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <main class="detalhe-container" data-categoria="{{ (lugar.categoria_nome or 'LUGAR')|upper }}">
+        <h1 class="detalhe-titulo">{{ lugar.nome }}</h1>
+        <p class="detalhe-subtitulo">{{ lugar.resumo or lugar.descricao or 'Conheça este lugar e sua importância para a memória potiguar.' }}</p>
+
+        <section class="info-secao resumo-secao" data-secao="resumo">
+            <h2>Resumo</h2>
+            <p>{{ lugar.resumo or lugar.descricao }}</p>
+        </section>
+
+        <section class="info-secao historia-secao" data-secao="historia">
+            <h2>História</h2>
+            {% set historia_texto = lugar.historia or lugar.descricao %}
+            {% for paragrafo in historia_texto.replace('\r\n', '\n').split('\n\n') if paragrafo.strip() %}
+                <p>{{ paragrafo.strip() }}</p>
+            {% endfor %}
+        </section>
+
+        {% if lugar.curiosidades %}
+        <section class="info-secao curiosidades-secao" data-secao="curiosidades">
+            <h2>Curiosidades</h2>
+            <ul class="curiosidades-lista">
+                {% for curiosidade in lugar.curiosidades.split('\n') if curiosidade.strip() %}
+                    <li>{{ curiosidade.strip().lstrip('-• ') }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        <section class="info-secao localizacao-secao" data-secao="localizacao">
+            <h2>Localização</h2>
+            <p><strong>Endereço:</strong> {{ lugar.localizacao or 'Localização não informada.' }}</p>
+        </section>
+
+        {% if lugar.nome_imagem %}
+        <section class="galeria-secao" data-secao="galeria">
+            <h2>Galeria do Lugar</h2>
+            <div class="galeria-grid">
+                <div class="galeria-item">
+                    {% if lugar.nome_imagem.startswith('http://') or lugar.nome_imagem.startswith('https://') %}
+                        <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/' ~ lugar.nome_imagem) }}" alt="{{ lugar.nome }}">
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <a href="javascript:history.back()" class="btn">← Voltar</a>
+    </main>
+
+    <footer>© 2026 Memória Potiguar | IFRN - Caicó</footer>
+    <script src="{{ url_for('static', filename='js/detalhe.js') }}"></script>
+</body>
+</html>

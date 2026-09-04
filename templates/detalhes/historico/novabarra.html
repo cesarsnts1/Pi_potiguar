@@ -39,12 +39,12 @@
 
     <div class="spacer"></div>
 
-    <main class="detalhe-container">
+    <main class="detalhe-container" data-categoria="HISTÓRICO">
 
         <h1 class="detalhe-titulo">Nova Barra de Santana</h1>
         <p class="detalhe-subtitulo">O autêntico sabor e tradição do Seridó</p>
 
-        <section class="galeria-secao">
+        <section class="galeria-secao" data-secao="galeria">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
                 <img src="{{ url_for('static', filename='img/tapera.png') }}" alt="Foto 1 do Recanto da Tapera">
@@ -53,23 +53,27 @@
             </div>
         </section>
 
-        <section class="info-secao">
-            <h2>História e Cultura</h2>
-            <p>
-                O Recanto da Tapera é um excelente exemplo de preservação histórica aliada à gastronomia. 
-                É um casarão centenário transformado em um restaurante de culinária regional.
-            </p>
-            <p>
-                O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e 
-                Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, 
-                revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica 
-                culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional. 
-                É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência 
-                cultural genuína em Jucurutu.
-            </p>
+                <section class="info-secao resumo-secao" data-secao="resumo">
+            <h2>Resumo</h2>
+            <p>O Recanto da Tapera é um excelente exemplo de preservação histórica aliada à gastronomia. É um casarão centenário transformado em um restaurante de culinária regional.</p>
         </section>
 
-        <section class="info-secao">
+        <section class="info-secao historia-secao" data-secao="historia">
+            <h2>História</h2>
+            <p>O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e Chico Bezerra, um ponto de encontro para família e amigos. Após ficar fechado e em ruínas por anos, revitalizado em 2020 pela família e reaberto como restaurante. O local é famoso por resgatar a autêntica culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional.</p>
+            <p>É um espaço que une história, afeto e boa comida, sendo altamente recomendado para quem busca uma experiência cultural genuína em Jucurutu.</p>
+        </section>
+
+        <section class="info-secao curiosidades-secao" data-secao="curiosidades">
+            <h2>Curiosidades</h2>
+            <ul class="curiosidades-lista">
+                <li>O casarão foi construído em 1835 e por gerações foi a residência da família de Paulina Freitas e Chico Bezerra, um ponto de encontro para família e amigos.</li>
+                <li>O local é famoso por resgatar a autêntica culinária do Seridó, com pratos como carne de sol, nata e doces caseiros, valorizando a identidade regional.</li>
+                <li>Após ficar fechado e em ruínas por anos, revitalizado em 2020 pela família e reaberto como restaurante.</li>
+            </ul>
+        </section>
+
+        <section class="info-secao localizacao-secao" data-secao="localizacao">
             <h2>Localização</h2>
             <p><strong>Endereço:</strong> Sítio Tapera, 6908, Zona Rural de Jucurutu - RN</p>
             

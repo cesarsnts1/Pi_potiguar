@@ -40,7 +40,10 @@ CREATE TABLE IF NOT EXISTS pontos_turisticos (
     id INT AUTO_INCREMENT PRIMARY KEY,
 
     nome VARCHAR(150) NOT NULL,
+    resumo TEXT NULL,
     descricao TEXT NOT NULL,
+    historia LONGTEXT NULL,
+    curiosidades TEXT NULL,
     localizacao VARCHAR(200),
 
     nome_imagem VARCHAR(150),

@@ -39,12 +39,12 @@
 
     <div class="spacer"></div>
 
-    <main class="detalhe-container">
+    <main class="detalhe-container" data-categoria="CULTURAL">
 
         <h1 class="detalhe-titulo">Cavalgada de Santana</h1>
         <p class="detalhe-subtitulo"> A Cavalgada de Sant’Ana é uma importante manifestação cultural e religiosa</p>
 
-        <section class="galeria-secao">
+        <section class="galeria-secao" data-secao="galeria">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
                 <img src="{{ url_for('static', filename='img/cavalgada2.jpg') }}" alt="Foto 1 do Museu Do Seridó">
@@ -54,19 +54,27 @@
             </div>
         </section>
 
-        <section class="info-secao">
-            <h2>História e Cultura</h2>
-            <p>
-                A Cavalgada de Sant’Ana é uma importante manifestação cultural e religiosa do Seridó Potiguar, integrada às festividades de Sant’Ana de Caicó. Sua tradição remonta à década de 1950, quando moradores das zonas rurais participavam do cortejo a cavalo durante as celebrações da padroeira. Com o passar dos anos, a prática tornou-se menos frequente, mas foi retomada por um grupo de caicoenses em 2002, passando a ser realizada no primeiro domingo da Festa de Sant’Ana. Atualmente, reúne cavaleiros da zona rural, moradores de Caicó, pessoas de cidades vizinhas e admiradores da cultura sertaneja.
-            </p>
-
-            <p>
-                A cavalgada acontece principalmente em Caicó, com participação de cavaleiros que também partem de Acari, a cerca de 65 quilômetros da cidade, seguindo até a região da Praça da Matriz. Além de representar a fé e a devoção a Sant’Ana, o evento valoriza costumes ligados à vida rural e à cultura do vaqueiro nordestino. A Festa de Sant’Ana de Caicó, da qual a cavalgada faz parte, é reconhecida pelo IPHAN como Patrimônio Cultural do Brasil desde 2010 e teve seu título revalidado em 2025, reforçando a importância cultural e religiosa da celebração para o Seridó.
-
-            </p>
+                <section class="info-secao resumo-secao" data-secao="resumo">
+            <h2>Resumo</h2>
+            <p>A Cavalgada de Sant’Ana é uma importante manifestação cultural e religiosa do Seridó Potiguar, integrada às festividades de Sant’Ana de Caicó. Sua tradição remonta à década de 1950, quando moradores das zonas rurais participavam do cortejo a cavalo durante as celebrações da padroeira.</p>
         </section>
 
-        <section class="info-secao">
+        <section class="info-secao historia-secao" data-secao="historia">
+            <h2>História</h2>
+            <p>Com o passar dos anos, a prática tornou-se menos frequente, mas foi retomada por um grupo de caicoenses em 2002, passando a ser realizada no primeiro domingo da Festa de Sant’Ana. Atualmente, reúne cavaleiros da zona rural, moradores de Caicó, pessoas de cidades vizinhas e admiradores da cultura sertaneja. A cavalgada acontece principalmente em Caicó, com participação de cavaleiros que também partem de Acari, a cerca de 65 quilômetros da cidade, seguindo até a região da Praça da Matriz.</p>
+            <p>Além de representar a fé e a devoção a Sant’Ana, o evento valoriza costumes ligados à vida rural e à cultura do vaqueiro nordestino. A Festa de Sant’Ana de Caicó, da qual a cavalgada faz parte, é reconhecida pelo IPHAN como Patrimônio Cultural do Brasil desde 2010 e teve seu título revalidado em 2025, reforçando a importância cultural e religiosa da celebração para o Seridó.</p>
+        </section>
+
+        <section class="info-secao curiosidades-secao" data-secao="curiosidades">
+            <h2>Curiosidades</h2>
+            <ul class="curiosidades-lista">
+                <li>A Festa de Sant’Ana de Caicó, da qual a cavalgada faz parte, é reconhecida pelo IPHAN como Patrimônio Cultural do Brasil desde 2010 e teve seu título revalidado em 2025, reforçando a importância cultural e religiosa da celebração para o Seridó.</li>
+                <li>Com o passar dos anos, a prática tornou-se menos frequente, mas foi retomada por um grupo de caicoenses em 2002, passando a ser realizada no primeiro domingo da Festa de Sant’Ana.</li>
+                <li>A cavalgada acontece principalmente em Caicó, com participação de cavaleiros que também partem de Acari, a cerca de 65 quilômetros da cidade, seguindo até a região da Praça da Matriz.</li>
+            </ul>
+        </section>
+
+        <section class="info-secao localizacao-secao" data-secao="localizacao">
             <h2>Localização</h2>
             <p><strong>Endereço:</strong> Zona rural do município de Jucurutu, na região do Seridó do Rio Grande do Norte, construída sobre o leito do Rio Piranhas-Açu. 
             </p>

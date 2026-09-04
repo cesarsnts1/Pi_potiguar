@@ -39,13 +39,13 @@
 
     <div class="spacer"></div>
 
-    <main class="detalhe-container">
+    <main class="detalhe-container" data-categoria="CULTURAL">
 
         <h1 class="detalhe-titulo">Mercado Público de Caico</h1>
         <p class="detalhe-subtitulo">O Mercado Público de Caicó é um importante patrimônio histórico e comercial da cidade de Caicó.
             </p></p>
 
-        <section class="galeria-secao">
+        <section class="galeria-secao" data-secao="galeria">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
                 <img src="{{ url_for('static', filename='img/mercado2.png') }}" alt="Foto 1 da Casa de Pedra">
@@ -55,18 +55,27 @@
             </div>
         </section>
 
-        <section class="info-secao">
-            <h2>História e Cultura</h2>
-            <p>
-                O Mercado Público de Caicó é um importante patrimônio histórico e comercial da cidade de Caicó, na região do Seridó Potiguar. O atual prédio foi inaugurado em 23 de fevereiro de 1918, durante a administração do intendente Celso Dantas, após um período de construção iniciado anos antes. Ao longo de mais de um século, o mercado tornou-se parte importante da história e da vida cotidiana dos caicoenses, mantendo sua função comercial e preservando características da arquitetura e da tradição local. Em 2019, o espaço passou por ações de revitalização dentro do projeto “Lugares de Charme”, buscando valorizar sua estrutura e importância cultural.
-            </p>
-            <p>
-                Localizado na região central de Caicó, o mercado está integrado à dinâmica do comércio e da tradicional feira livre da cidade. Em seu interior e arredores, são encontrados produtos alimentícios, artesanato, artigos ligados à cultura sertaneja e elementos da gastronomia regional. O espaço também recebe visitantes interessados em conhecer os costumes e produtos típicos do Seridó, especialmente durante os períodos de grandes eventos, como a Festa de Sant’Ana e o Carnaval de Caicó. Dessa forma, o Mercado Público permanece como um importante ponto de encontro, comércio e preservação da cultura seridoense.
-
-            </p>
+                <section class="info-secao resumo-secao" data-secao="resumo">
+            <h2>Resumo</h2>
+            <p>O Mercado Público de Caicó é um importante patrimônio histórico e comercial da cidade de Caicó, na região do Seridó Potiguar. O atual prédio foi inaugurado em 23 de fevereiro de 1918, durante a administração do intendente Celso Dantas, após um período de construção iniciado anos antes.</p>
         </section>
 
-        <section class="info-secao">
+        <section class="info-secao historia-secao" data-secao="historia">
+            <h2>História</h2>
+            <p>Ao longo de mais de um século, o mercado tornou-se parte importante da história e da vida cotidiana dos caicoenses, mantendo sua função comercial e preservando características da arquitetura e da tradição local. Em 2019, o espaço passou por ações de revitalização dentro do projeto “Lugares de Charme”, buscando valorizar sua estrutura e importância cultural. Localizado na região central de Caicó, o mercado está integrado à dinâmica do comércio e da tradicional feira livre da cidade.</p>
+            <p>Em seu interior e arredores, são encontrados produtos alimentícios, artesanato, artigos ligados à cultura sertaneja e elementos da gastronomia regional. O espaço também recebe visitantes interessados em conhecer os costumes e produtos típicos do Seridó, especialmente durante os períodos de grandes eventos, como a Festa de Sant’Ana e o Carnaval de Caicó. Dessa forma, o Mercado Público permanece como um importante ponto de encontro, comércio e preservação da cultura seridoense.</p>
+        </section>
+
+        <section class="info-secao curiosidades-secao" data-secao="curiosidades">
+            <h2>Curiosidades</h2>
+            <ul class="curiosidades-lista">
+                <li>Ao longo de mais de um século, o mercado tornou-se parte importante da história e da vida cotidiana dos caicoenses, mantendo sua função comercial e preservando características da arquitetura e da tradição local.</li>
+                <li>Em 2019, o espaço passou por ações de revitalização dentro do projeto “Lugares de Charme”, buscando valorizar sua estrutura e importância cultural.</li>
+                <li>Localizado na região central de Caicó, o mercado está integrado à dinâmica do comércio e da tradicional feira livre da cidade.</li>
+            </ul>
+        </section>
+
+        <section class="info-secao localizacao-secao" data-secao="localizacao">
             <h2>Localização</h2>
             <p><strong>Endereço:</strong> Nas proxímidades de Jucurutu - RN</p>
             

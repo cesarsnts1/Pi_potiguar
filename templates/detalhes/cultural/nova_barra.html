@@ -39,13 +39,13 @@
 
     <div class="spacer"></div>
 
-    <main class="detalhe-container">
+    <main class="detalhe-container" data-categoria="CULTURAL">
 
-        <h1 class="detalhe-titulo">Nova de Barra de Santana</h1>
+        <h1 class="detalhe-titulo">Nova Barra de Santana</h1>
         <p class="detalhe-subtitulo"> A Nova Barra de Santana é um núcleo urbano planejado.
             </p></p>
 
-        <section class="galeria-secao">
+        <section class="galeria-secao" data-secao="galeria">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
                 <img src="{{ url_for('static', filename='img/nvb2.png') }}" alt="Foto 1 da Casa de Pedra">
@@ -55,18 +55,27 @@
             </div>
         </section>
 
-        <section class="info-secao">
-            <h2>História e Cultura</h2>
-            <p>
-                A Nova Barra de Santana é um núcleo urbano planejado e construído para reassentar a população da antiga comunidade de Barra de Santana, em Jucurutu, afetada pela construção da Barragem de Oiticica. O novo espaço foi planejado para garantir moradia e infraestrutura às famílias atingidas, contando com casas, escola, creche, igreja, cemitério, posto de saúde, centro comercial, praças e áreas de lazer. Cerca de 217 famílias foram reassentadas na Nova Barra de Santana, que passou a representar uma nova etapa na história da comunidade após a transformação do território original pelo reservatório.
-
-            </p>
-            <p>
-                Localizada no município de Jucurutu, na região do Seridó Potiguar, a Nova Barra de Santana foi construída como parte das medidas de reassentamento relacionadas à Barragem de Oiticica. O processo também envolveu a transferência planejada dos restos mortais do antigo cemitério para o novo cemitério da comunidade, seguindo procedimentos legais e com acompanhamento das famílias. Atualmente, o núcleo preserva elementos importantes da vida comunitária, como a religiosidade, os espaços de convivência e as atividades comerciais, tornando-se um símbolo da adaptação e da continuidade da comunidade diante das transformações provocadas pela construção da barragem.
-            </p>
+                <section class="info-secao resumo-secao" data-secao="resumo">
+            <h2>Resumo</h2>
+            <p>A Nova Barra de Santana é um núcleo urbano planejado em Jucurutu para reassentar famílias da antiga comunidade de Barra de Santana afetadas pela construção da Barragem de Oiticica.</p>
         </section>
 
-        <section class="info-secao">
+        <section class="info-secao historia-secao" data-secao="historia">
+            <h2>História</h2>
+            <p>Cerca de 217 famílias foram reassentadas na Nova Barra de Santana, que passou a representar uma nova etapa na história da comunidade após a transformação do território original pelo reservatório. Localizada no município de Jucurutu, na região do Seridó Potiguar, a Nova Barra de Santana foi construída como parte das medidas de reassentamento relacionadas à Barragem de Oiticica. O processo também envolveu a transferência planejada dos restos mortais do antigo cemitério para o novo cemitério da comunidade, seguindo procedimentos legais e com acompanhamento das famílias.</p>
+            <p>Atualmente, o núcleo preserva elementos importantes da vida comunitária, como a religiosidade, os espaços de convivência e as atividades comerciais, tornando-se um símbolo da adaptação e da continuidade da comunidade diante das transformações provocadas pela construção da barragem.</p>
+        </section>
+
+        <section class="info-secao curiosidades-secao" data-secao="curiosidades">
+            <h2>Curiosidades</h2>
+            <ul class="curiosidades-lista">
+                <li>Localizada no município de Jucurutu, na região do Seridó Potiguar, a Nova Barra de Santana foi construída como parte das medidas de reassentamento relacionadas à Barragem de Oiticica.</li>
+                <li>Atualmente, o núcleo preserva elementos importantes da vida comunitária, como a religiosidade, os espaços de convivência e as atividades comerciais, tornando-se um símbolo da adaptação e da continuidade da comunidade diante das transformações provocadas pela construção da barragem.</li>
+                <li>Cerca de 217 famílias foram reassentadas na Nova Barra de Santana, que passou a representar uma nova etapa na história da comunidade após a transformação do território original pelo reservatório.</li>
+            </ul>
+        </section>
+
+        <section class="info-secao localizacao-secao" data-secao="localizacao">
             <h2>Localização</h2>
             <p><strong>Endereço:</strong> Nas proxímidades de Jucurutu - RN</p>
             

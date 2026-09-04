@@ -39,11 +39,11 @@
 
         <div class="spacer"></div>
 
-    <main class="detalhe-container">
+    <main class="detalhe-container" data-categoria="GASTRONÔMICO">
 
         <h1 class="detalhe-titulo">Doce tentação</h1>
         <p class="detalhe-subtitulo">Café, doceria e restaurante em um só.</p>
-<section class="galeria-secao">
+<section class="galeria-secao" data-secao="galeria">
 <h2>Galeria do Lugar</h2>
 
 <div class="galeria-grid">
@@ -51,7 +51,7 @@
 
 <div class="galeria-item">
     <img src="{{ url_for('static', filename='img/doce3.png') }}"
-         alt="Foto 1 do Recanto da Tapera">
+         alt="Foto 1 da Doce Tentação">
 
     <a class="credito-imagem"
        href=link
@@ -65,7 +65,7 @@
 
 <div class="galeria-item">
     <img src="{{ url_for('static', filename='img/doce2.png') }}"
-         alt="Foto 2 do Recanto da Tapera">
+         alt="Foto 2 da Doce Tentação">
 
     <a class="credito-imagem"
        href=link
@@ -79,7 +79,7 @@
 
 <div class="galeria-item">
     <img src="{{ url_for('static', filename='img/doce1.png') }}"
-         alt="Foto 3 do Recanto da Tapera">
+         alt="Foto 3 da Doce Tentação">
 
     <a class="credito-imagem"
        href=link
@@ -92,19 +92,27 @@
 </div>
     </div>
     </section>
-        <section class="info-secao">
-            <h2>História e Cultura</h2>
-            <p>
-                A Doce Tentação é um dos estabelecimentos gastronômicos de destaque de Jucurutu, combinando a tradição de uma doceria e café com uma proposta mais ampla de restaurante.
-            </p>
-            <p>
-                 A Doce Tentação, localizada na região central de Jucurutu, no Rio Grande do Norte, é um estabelecimento gastronômico que combina as características de doceria, café e restaurante. Formalizado em 2015 originalmente como “Doce Tentação, Doceria e Café”, o empreendimento ampliou sua proposta ao longo dos anos, passando a oferecer refeições completas, pratos à la carte, carnes, frutos do mar, sobremesas e bebidas.
-                  O estabelecimento se destaca pela qualidade da comida, pelo atendimento e pelo ambiente, além de disponibilizar serviços como delivery, retirada de pedidos e reservas. Embora não existam dados oficiais sobre a quantidade de turistas atendidos, suas avaliações positivas em plataformas como Google e Tripadvisor indicam a presença de visitantes de outras localidades. Inserida na dinâmica turística de Jucurutu,
-                   a Doce Tentação também se beneficia do aumento do fluxo de pessoas durante festividades religiosas, culturais e outros eventos do município. Dessa forma, o estabelecimento contribui para a valorização da gastronomia local e se enquadra principalmente no segmento de turismo gastronômico. 
-
+        <section class="info-secao resumo-secao" data-secao="resumo">
+            <h2>Resumo</h2>
+            <p>A Doce Tentação é um estabelecimento gastronômico de Jucurutu que reúne doceria, café e restaurante em um mesmo espaço, com opções para refeições, sobremesas e bebidas.</p>
         </section>
 
-        <section class="info-secao">
+        <section class="info-secao historia-secao" data-secao="historia">
+            <h2>História</h2>
+            <p>A Doce Tentação foi formalizada em 2015, originalmente como “Doce Tentação, Doceria e Café”. Com o passar dos anos, o empreendimento ampliou sua proposta e passou a funcionar também como restaurante.</p>
+            <p>Atualmente, o estabelecimento oferece refeições completas, pratos à la carte, carnes, frutos do mar, sobremesas e bebidas, além de serviços como delivery, retirada de pedidos e reservas. Por estar na região central de Jucurutu, também recebe parte do movimento gerado pelas festividades e eventos do município.</p>
+        </section>
+
+        <section class="info-secao curiosidades-secao" data-secao="curiosidades">
+            <h2>Curiosidades</h2>
+            <ul class="curiosidades-lista">
+                <li>O negócio foi formalizado em 2015 com o nome “Doce Tentação, Doceria e Café”.</li>
+                <li>A proposta foi ampliada e hoje combina doceria, café e restaurante no mesmo espaço.</li>
+                <li>O estabelecimento também trabalha com delivery, retirada de pedidos e reservas.</li>
+            </ul>
+        </section>
+
+        <section class="info-secao localizacao-secao" data-secao="localizacao">
             <h2>Localização</h2>
             <p><strong>Endereço:</strong> Travessa Tiradentes, na região central de Jucurutu, Rio Grande do Norte, Número 21.
 
@@ -147,7 +155,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup("<br>Recanto Da Tapera, Jucurutu - RN")
+                .bindPopup("<br>Doce Tentação, Jucurutu - RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito

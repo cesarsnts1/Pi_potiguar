@@ -4,25 +4,43 @@
 
     const titleEl = main.querySelector('.detalhe-titulo');
     const subtitleEl = main.querySelector('.detalhe-subtitulo');
-    const sections = Array.from(main.querySelectorAll(':scope > section'));
-    if (!titleEl || !sections.length) return;
+    if (!titleEl) return;
 
     const clean = (text) => (text || '').replace(/\s+/g, ' ').trim();
-    const normalize = (text) => clean(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const normalize = (text) => clean(text)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
     const title = clean(titleEl.textContent);
-    const subtitle = clean(subtitleEl ? subtitleEl.textContent : 'Conheça a história e a importância deste lugar para a memória potiguar.');
+    const subtitle = clean(
+        subtitleEl ? subtitleEl.textContent : 'Conheça este lugar e sua importância para a memória potiguar.'
+    );
 
-    const path = location.pathname.toLowerCase();
-    let category = 'CULTURAL';
-    if (path.includes('gastronom')) category = 'GASTRONÔMICO';
-    else if (path.includes('histor')) category = 'HISTÓRICO';
-    else if (path.includes('evento') || path.includes('festa')) category = 'EVENTO';
+    // A categoria agora vem marcada no próprio HTML de cada página.
+    // Há um fallback apenas para páginas antigas que ainda não tenham data-categoria.
+    let category = clean(main.dataset.categoria);
+    if (!category) {
+        const path = location.pathname.toLowerCase();
+        if (path.includes('gastronom')) category = 'GASTRONÔMICO';
+        else if (path.includes('evento') || path.includes('festa')) category = 'EVENTO';
+        else category = 'CULTURAL';
+    }
 
-    const gallerySection = sections.find(s => normalize(s.querySelector('h2')?.textContent).includes('galeria'));
+    const allSections = Array.from(main.querySelectorAll('section.info-secao, section.galeria-secao')); // aceita páginas antigas mesmo se alguma seção estiver aninhada
+    if (!allSections.length) return;
+
+    const gallerySection = allSections.find(section =>
+        section.dataset.secao === 'galeria' ||
+        normalize(section.querySelector('h2')?.textContent).includes('galeria')
+    );
     const firstImage = gallerySection?.querySelector('img') || main.querySelector('img');
     const heroImage = firstImage ? firstImage.getAttribute('src') : '';
 
-    const locationSection = sections.find(s => normalize(s.querySelector('h2')?.textContent).includes('localiza'));
+    const locationSection = allSections.find(section =>
+        section.dataset.secao === 'localizacao' ||
+        normalize(section.querySelector('h2')?.textContent).includes('localiza')
+    );
     let locationText = 'Rio Grande do Norte';
     if (locationSection) {
         const p = locationSection.querySelector('p');
@@ -32,7 +50,9 @@
     // HERO
     const hero = document.createElement('section');
     hero.className = 'lugar-hero';
-    if (heroImage) hero.style.backgroundImage = `linear-gradient(90deg, rgba(25,18,13,.75), rgba(25,18,13,.28)), url("${heroImage}")`;
+    if (heroImage) {
+        hero.style.backgroundImage = `linear-gradient(90deg, rgba(25,18,13,.78), rgba(25,18,13,.30)), url("${heroImage}")`;
+    }
     hero.innerHTML = `
         <div class="lugar-hero-inner">
             <div class="lugar-hero-copy">
@@ -45,69 +65,76 @@
         </div>`;
     main.parentNode.insertBefore(hero, main);
 
-    // TABS no padrão da referência
-    const tabsData = [
-        ['▣', 'Sobre', 'sobre'],
-        ['▤', 'História', 'historia'],
-        ['✦', 'Localização', 'localizacao'],
-        ['▦', 'Dados e Informações', 'dados'],
-        ['▧', 'Galeria', 'galeria'],
-        ['▣', 'Eventos Relacionados', 'eventos']
-    ];
+    function sectionKind(section) {
+        if (section.dataset.secao) return section.dataset.secao;
+        const text = normalize(section.querySelector('h2')?.textContent);
+        if (text.includes('resumo') || text.includes('sobre')) return 'resumo';
+        if (text.includes('hist')) return 'historia';
+        if (text.includes('curios')) return 'curiosidades';
+        if (text.includes('localiza')) return 'localizacao';
+        if (text.includes('galeria')) return 'galeria';
+        return 'outros';
+    }
+
+    const labels = {
+        resumo: ['▤', 'Resumo'],
+        historia: ['◷', 'História'],
+        curiosidades: ['✦', 'Curiosidades'],
+        localizacao: ['⌖', 'Localização'],
+        galeria: ['▧', 'Galeria']
+    };
+    const order = ['resumo', 'historia', 'curiosidades', 'localizacao', 'galeria'];
+
+    const sectionMap = new Map();
+    allSections.forEach(section => {
+        const kind = sectionKind(section);
+        if (kind !== 'outros' && !sectionMap.has(kind)) {
+            sectionMap.set(kind, section);
+            section.id = kind;
+            section.dataset.secao = kind;
+        }
+    });
+
+    // Só mostra abas para seções que realmente existem na página.
+    const availableTabs = order.filter(key => sectionMap.has(key));
+
     const tabs = document.createElement('nav');
     tabs.className = 'lugar-tabs';
-    tabs.innerHTML = `<div class="lugar-tabs-inner">${tabsData.map((t,i)=>`<a href="#${t[2]}" data-target="${t[2]}" class="${i===0?'active':''}"><span>${t[0]}</span>${t[1]}</a>`).join('')}</div>`;
+    tabs.setAttribute('aria-label', 'Navegação da página');
+    tabs.innerHTML = `<div class="lugar-tabs-inner">${availableTabs.map((key, index) => {
+        const [icon, label] = labels[key];
+        return `<a href="#${key}" class="${index === 0 ? 'active' : ''}"><span>${icon}</span>${label}</a>`;
+    }).join('')}</div>`;
     main.parentNode.insertBefore(tabs, main);
-
-    // Identifica e ordena as seções existentes
-    function kind(section) {
-        const txt = normalize(section.querySelector('h2')?.textContent);
-        if (txt.includes('localiza')) return 'localizacao';
-        if (txt.includes('galeria')) return 'galeria';
-        if (txt.includes('evento')) return 'eventos';
-        if (txt.includes('dado') || txt.includes('informac')) return 'dados';
-        if (txt.includes('hist') || txt.includes('cultura') || txt.includes('sobre') || txt.includes('conhe')) return 'sobre';
-        return 'sobre';
-    }
-    const order = {sobre:0, localizacao:1, dados:2, galeria:3, eventos:4};
-    sections.sort((a,b)=>order[kind(a)]-order[kind(b)]);
 
     const layout = document.createElement('div');
     layout.className = 'lugar-layout';
+
     const aside = document.createElement('aside');
     aside.className = 'lugar-sidebar';
-    aside.innerHTML = `<strong>NESTA PÁGINA</strong>${tabsData.map((t,i)=>`<a href="#${t[2]}" class="${i===0?'active':''}"><span>•</span>${t[1]}</a>`).join('')}`;
+    aside.innerHTML = `
+        <strong>NESTA PÁGINA</strong>
+        ${availableTabs.map((key, index) => {
+            const [, label] = labels[key];
+            return `<a href="#${key}" class="${index === 0 ? 'active' : ''}"><span>•</span>${label}</a>`;
+        }).join('')}`;
+
     const content = document.createElement('div');
     content.className = 'lugar-conteudo';
 
-    let hasSobre = false;
-    sections.forEach(section => {
-        const k = kind(section);
-        if (k === 'sobre' && !hasSobre) {
-            section.id = 'sobre';
-            hasSobre = true;
-            const h2 = section.querySelector('h2');
-            if (h2) h2.innerHTML = '<span class="secao-icone">▤</span> Sobre';
-        } else {
-            section.id = k;
+    order.forEach(key => {
+        const section = sectionMap.get(key);
+        if (!section) return;
+        const h2 = section.querySelector('h2');
+        if (h2 && labels[key]) {
+            h2.innerHTML = `<span class="secao-icone">${labels[key][0]}</span> ${labels[key][1]}`;
         }
         content.appendChild(section);
     });
 
-    // Âncoras auxiliares para abas que não têm uma seção própria.
-    if (hasSobre && !document.getElementById('historia')) {
-        const historyAnchor = document.createElement('span');
-        historyAnchor.id = 'historia';
-        historyAnchor.className = 'anchor-proxy';
-        content.querySelector('#sobre').prepend(historyAnchor);
-    }
-    ['dados','eventos'].forEach(id => {
-        if (!document.getElementById(id)) {
-            const proxy = document.createElement('span');
-            proxy.id = id;
-            proxy.className = 'anchor-proxy';
-            (content.querySelector('#sobre') || content).appendChild(proxy);
-        }
+    // Mantém qualquer seção extra, caso alguma página tenha conteúdo específico no futuro.
+    allSections.forEach(section => {
+        if (!content.contains(section)) content.appendChild(section);
     });
 
     layout.appendChild(aside);
@@ -117,16 +144,32 @@
     if (subtitleEl) subtitleEl.remove();
     main.prepend(layout);
 
-    const back = Array.from(main.querySelectorAll('a.btn')).find(a => normalize(a.textContent).includes('voltar'));
+    const back = Array.from(main.querySelectorAll('a.btn')).find(a =>
+        normalize(a.textContent).includes('voltar')
+    );
     if (back) {
         back.classList.add('btn-voltar-detalhe');
         main.appendChild(back);
     }
 
-    // Navegação ativa
-    const navLinks = document.querySelectorAll('.lugar-tabs a, .lugar-sidebar a');
-    navLinks.forEach(link => link.addEventListener('click', () => {
-        const target = link.getAttribute('href');
-        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === target));
-    }));
+    const navLinks = Array.from(document.querySelectorAll('.lugar-tabs a, .lugar-sidebar a'));
+    const activate = (hash) => {
+        navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === hash));
+    };
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => activate(link.getAttribute('href')));
+    });
+
+    // Atualiza o item ativo enquanto o visitante rola a página.
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+            const visible = entries
+                .filter(entry => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (visible?.target?.id) activate(`#${visible.target.id}`);
+        }, { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.35, 0.6] });
+
+        availableTabs.forEach(key => observer.observe(sectionMap.get(key)));
+    }
 })();
