@@ -60,17 +60,20 @@
             <p><strong>Endereço:</strong> {{ lugar.localizacao or 'Localização não informada.' }}</p>
         </section>
 
-        {% if lugar.nome_imagem %}
+        {% set imagens = [lugar.nome_imagem, lugar.nome_imagem2, lugar.nome_imagem3, lugar.nome_imagem4] %}
+        {% if imagens|select|list %}
         <section class="galeria-secao" data-secao="galeria">
             <h2>Galeria do Lugar</h2>
             <div class="galeria-grid">
+                {% for imagem in imagens if imagem %}
                 <div class="galeria-item">
-                    {% if lugar.nome_imagem.startswith('http://') or lugar.nome_imagem.startswith('https://') %}
-                        <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}">
+                    {% if imagem.startswith('http://') or imagem.startswith('https://') %}
+                        <img src="{{ imagem }}" alt="{{ lugar.nome }} - imagem {{ loop.index }}">
                     {% else %}
-                        <img src="{{ url_for('static', filename='img/' ~ lugar.nome_imagem) }}" alt="{{ lugar.nome }}">
+                        <img src="{{ url_for('static', filename='img/' ~ imagem) }}" alt="{{ lugar.nome }} - imagem {{ loop.index }}">
                     {% endif %}
                 </div>
+                {% endfor %}
             </div>
         </section>
         {% endif %}

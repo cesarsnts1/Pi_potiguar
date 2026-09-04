@@ -1,14 +1,9 @@
 import mysql.connector
-from werkzeug.security import generate_password_hash
-
-senha = generate_password_hash("281207")
-
-HOST = "localhost"
-PORT = 3306
-USER = "root"
-PASSWORD = ""
+from config import HOST, PORT, USER, PASSWORD, DATABASE
 
 
+# A conexao inicial nao informa o DATABASE porque este arquivo tambem
+# e responsavel por criar o banco caso ele ainda nao exista.
 conexao = mysql.connector.connect(
     host=HOST,
     port=PORT,
@@ -20,16 +15,18 @@ cursor = conexao.cursor()
 
 
 # CRIAR BANCO
-cursor.execute("CREATE DATABASE IF NOT EXISTS pi_potiguar")
-
-cursor.execute("USE pi_potiguar")
+# DATABASE vem de config.py, assim senha, porta, usuario e nome do banco
+# ficam configurados em um unico lugar.
+nome_banco_seguro = DATABASE.replace("`", "``")
+cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{nome_banco_seguro}`")
+cursor.execute(f"USE `{nome_banco_seguro}`")
 
 
 # TABELA CATEGORIAS
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL
+    nome VARCHAR(100) NOT NULL UNIQUE
 )
 """)
 
@@ -46,7 +43,10 @@ CREATE TABLE IF NOT EXISTS pontos_turisticos (
     curiosidades TEXT NULL,
     localizacao VARCHAR(200),
 
-    nome_imagem VARCHAR(150),
+    nome_imagem VARCHAR(500),
+    nome_imagem2 VARCHAR(500),
+    nome_imagem3 VARCHAR(500),
+    nome_imagem4 VARCHAR(500),
     tipo_imagem VARCHAR(50),
     imagem LONGBLOB,
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS pontos_turisticos (
 """)
 
 
-# TABELA DE SUGESTÕES ENVIADAS PELOS VISITANTES
+# TABELA DE SUGESTOES ENVIADAS PELOS VISITANTES
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS sugestoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,57 +75,10 @@ CREATE TABLE IF NOT EXISTS sugestoes (
 )
 """)
 
-# TABELA ADMINISTRADORES
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS administradores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario VARCHAR(100) NOT NULL,
-    senha VARCHAR(255) NOT NULL
-)
-""")
 
-
-# SENHA HASH
-senha_hash = generate_password_hash("281207")
-
-
-# INSERT ADMIN
-cursor.execute("""
-INSERT INTO administradores (usuario, senha)
-VALUES (%s, %s)
-""", (
-    "icaro.e@escolar.ifrn.edu.br",
-    "scrypt:32768:8:1$t57B6qMJ9d8IpOJm$07c05063f538f16fe85da54bd37d99667386d8443e6f1d0f3756a5c6168ab13ab04eaf9cbe7045a1a5c100b895484d922e80d01a6c6ad20a4dfbb831f8f3537b"
-))
-
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS categorias (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL UNIQUE
-)
-""")
-
-categorias_padrao = [
-    "Histórico",
-    "Cultural",
-    "Gastronômico",
-    "Eventos"
-]
-
-for categoria in categorias_padrao:
-    cursor.execute(
-        "SELECT id FROM categorias WHERE nome = %s",
-        (categoria,)
-    )
-
-    if cursor.fetchone() is None:
-        cursor.execute(
-            "INSERT INTO categorias(nome) " \
-            "VALUES(%s)",
-            (categoria,)
-        )
-
+# As credenciais do painel ficam em config.py
+# (ADMIN_MATRICULAS e ADMIN_SENHA).
+ # Mantem os nomes acentuados que o site ja utiliza.
 categorias_padrao = [
     "Histórico",
     "Cultural",
@@ -146,8 +99,9 @@ for categoria in categorias_padrao:
         )
 
 
-
-
 conexao.commit()
+cursor.close()
+conexao.close()
 
-print("Banco de dados criado com sucesso!")
+print(f"Banco '{DATABASE}' criado/verificado com sucesso!")
+print(f"MySQL: {USER}@{HOST}:{PORT}")

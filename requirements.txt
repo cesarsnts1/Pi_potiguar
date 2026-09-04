@@ -2,10 +2,52 @@ Flask>=2.3.0
 Werkzeug>=2.3.0
 mysql-connector-python>=8.0.0
 
-#py -m venv venv
-#pip install -r requirements.txt 
-#venv\Scripts\activate
-#py app.py
-#git add .
-#git commit -m "Escreva aqui uma mensagem descritiva sobre o que fez"
-#git push origin main
+# ============================================================
+# COMO RODAR O PROJETO + MYSQL (WINDOWS)
+# ============================================================
+#
+# 1) Crie o ambiente virtual:
+#    py -m venv venv
+#
+# 2) Ative o ambiente virtual:
+#    venv\Scripts\activate
+#
+# 3) Instale as dependencias:
+#    pip install -r requirements.txt
+#
+# 4) Antes de criar o banco, deixe o servidor MySQL ligado.
+#    Pode ser pelo MySQL instalado no Windows, XAMPP ou outro servidor MySQL.
+#
+# 5) CONFIGURACAO DO MYSQL:
+#    Todas as configuracoes ficam no arquivo: config.py
+#
+#    HOST = "localhost"
+#    PORT = 3306
+#    USER = "root"
+#    PASSWORD = ""
+#    DATABASE = "pi_potiguar"
+#
+#    IMPORTANTE:
+#    - Se o seu MySQL tiver senha, coloque-a em PASSWORD no config.py.
+#      Exemplo: PASSWORD = "minhasenha"
+#    - Se o seu MySQL usar outra porta, troque PORT no config.py.
+#      Exemplo: PORT = 3307
+#    - Se usar outro usuario, troque USER no config.py.
+#    - Nao precisa alterar db.py nem createdb.py: ambos usam o config.py.
+#
+# 6) Crie/verifique o banco e as tabelas MySQL:
+#    py createdb.py
+#
+#    Se aparecer "Banco 'pi_potiguar' criado/verificado com sucesso!", esta pronto.
+#    O script cria automaticamente o banco definido em DATABASE caso ele
+#    ainda nao exista e cria as tabelas necessarias.
+#
+# 7) Rode o site:
+#    py app.py
+#
+# ============================================================
+# COMANDOS GIT (OPCIONAL)
+# ============================================================
+# git add .
+# git commit -m "Escreva aqui uma mensagem descritiva sobre o que fez"
+# git push origin main

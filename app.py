@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash, session
-from werkzeug.security import check_password_hash
 from db import conectar
 from functools import wraps
 from pesquisa_lugares import LUGARES_PESQUISADOS, SEED_CHAVE
+from config import ADMIN_MATRICULAS, ADMIN_SENHA
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_potiguar'
@@ -56,6 +56,12 @@ def garantir_estrutura_pontos():
         alteracoes.append("ADD COLUMN historia LONGTEXT NULL AFTER descricao")
     if 'curiosidades' not in colunas:
         alteracoes.append("ADD COLUMN curiosidades TEXT NULL AFTER historia")
+    if 'nome_imagem2' not in colunas:
+        alteracoes.append("ADD COLUMN nome_imagem2 VARCHAR(500) NULL AFTER nome_imagem")
+    if 'nome_imagem3' not in colunas:
+        alteracoes.append("ADD COLUMN nome_imagem3 VARCHAR(500) NULL AFTER nome_imagem2")
+    if 'nome_imagem4' not in colunas:
+        alteracoes.append("ADD COLUMN nome_imagem4 VARCHAR(500) NULL AFTER nome_imagem3")
 
     for alteracao in alteracoes:
         cursor.execute(f"ALTER TABLE pontos_turisticos {alteracao}")
@@ -596,50 +602,25 @@ def login():
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
-
     if request.method == 'POST':
+        matricula_input = request.form.get('matricula', '').strip()
+        senha_input = request.form.get('password', '')
 
-        usuario_input = request.form.get('username')
-        senha_input = request.form.get('password')
+        # Ignora os slots ainda vazios do config.py.
+        matriculas_validas = {
+            matricula.strip()
+            for matricula in ADMIN_MATRICULAS
+            if matricula and matricula.strip()
+        }
 
-        conn = conectar()
-        cursor = conn.cursor(
-            dictionary=True,
-            buffered=True
-        )
-
-        cursor.execute(
-            '''
-            SELECT *
-            FROM administradores
-            WHERE usuario = %s
-            ''',
-            (usuario_input,)
-        )
-
-        admin = cursor.fetchone()
-
-        cursor.close()
-        conn.close()
-
-        if admin and check_password_hash(
-            admin['senha'],
-            senha_input
-        ):
-
-            session['admin_id'] = admin['id']
-            session['admin_usuario'] = admin['usuario']
-
+        if matricula_input in matriculas_validas and senha_input == ADMIN_SENHA:
+            session['admin_id'] = matricula_input
+            session['admin_usuario'] = matricula_input
+            session['admin_matricula'] = matricula_input
             return redirect('/admin')
 
-        else:
-
-            flash(
-                'Usuário ou senha incorretos.',
-                'danger'
-            )
-
-            return redirect('/cadastro')
+        flash('Matrícula ou senha incorretas.', 'danger')
+        return redirect('/cadastro')
 
     return render_template('cadastro.html')
 
@@ -782,7 +763,10 @@ def adicionar_lugar():
     resumo = request.form.get('resumo', '').strip()
     historia = request.form.get('historia', '').strip()
     curiosidades = request.form.get('curiosidades', '').strip()
-    nome_imagem = request.form.get('imagem', '').strip()
+    nome_imagem = (request.form.get('imagem1') or request.form.get('imagem') or '').strip()
+    nome_imagem2 = request.form.get('imagem2', '').strip()
+    nome_imagem3 = request.form.get('imagem3', '').strip()
+    nome_imagem4 = request.form.get('imagem4', '').strip()
 
     if not nome or not categoria_id or not localizacao or not resumo or not historia:
         flash('Preencha nome, categoria, localização, resumo e história.', 'danger')
@@ -806,9 +790,12 @@ def adicionar_lugar():
                 curiosidades,
                 localizacao,
                 nome_imagem,
+                nome_imagem2,
+                nome_imagem3,
+                nome_imagem4,
                 categoria_id
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ''',
             (
                 nome,
@@ -818,6 +805,9 @@ def adicionar_lugar():
                 curiosidades or None,
                 localizacao,
                 nome_imagem or None,
+                nome_imagem2 or None,
+                nome_imagem3 or None,
+                nome_imagem4 or None,
                 categoria_id
             )
         )
@@ -853,7 +843,10 @@ def editar_lugar(lugar_id):
     resumo = request.form.get('resumo', '').strip()
     historia = request.form.get('historia', '').strip()
     curiosidades = request.form.get('curiosidades', '').strip()
-    nome_imagem = request.form.get('imagem', '').strip()
+    nome_imagem = (request.form.get('imagem1') or request.form.get('imagem') or '').strip()
+    nome_imagem2 = request.form.get('imagem2', '').strip()
+    nome_imagem3 = request.form.get('imagem3', '').strip()
+    nome_imagem4 = request.form.get('imagem4', '').strip()
 
     if not nome or not categoria_id or not localizacao or not resumo or not historia:
         flash('Preencha nome, categoria, localização, resumo e história.', 'danger')
@@ -883,6 +876,9 @@ def editar_lugar(lugar_id):
                 curiosidades = %s,
                 localizacao = %s,
                 nome_imagem = %s,
+                nome_imagem2 = %s,
+                nome_imagem3 = %s,
+                nome_imagem4 = %s,
                 categoria_id = %s
             WHERE id = %s
             ''',
@@ -894,6 +890,9 @@ def editar_lugar(lugar_id):
                 curiosidades or None,
                 localizacao,
                 nome_imagem or None,
+                nome_imagem2 or None,
+                nome_imagem3 or None,
+                nome_imagem4 or None,
                 categoria_id,
                 lugar_id
             )

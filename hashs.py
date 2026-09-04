@@ -1,3 +1,3 @@
-from werkzeug.security import generate_password_hash
-
-print(generate_password_hash("281207"))
+# A autenticação administrativa atual não usa hash no banco.
+# A senha fixa e as matrículas ficam em config.py.
+print("As credenciais administrativas estão em config.py")

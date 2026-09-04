@@ -24,7 +24,7 @@
     <h2>Painel Administrativo</h2>
 
     <p class="login-subtitulo">
-        Área restrita para gerenciamento dos pontos turísticos.
+        Área restrita. Entre com sua matrícula e a senha administrativa.
     </p>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -41,14 +41,17 @@
 
         <input
             type="text"
-            name="username"
-            placeholder="Usuário"
+            name="matricula"
+            inputmode="numeric"
+            autocomplete="username"
+            placeholder="Matrícula"
             required
         >
 
         <input
             type="password"
             name="password"
+            autocomplete="current-password"
             placeholder="Senha"
             required
         >

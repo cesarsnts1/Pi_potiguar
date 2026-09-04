@@ -1,11 +1,5 @@
-from db import conectar
+from config import ADMIN_MATRICULAS
 
-conn = conectar()
-cursor = conn.cursor()
-
-cursor.execute("SELECT * FROM administradores")
-
-for linha in cursor.fetchall():
-    print(linha)
-
-conn.close()
+print("Matrículas administrativas configuradas:")
+for indice, matricula in enumerate(ADMIN_MATRICULAS, start=1):
+    print(f"Admin {indice}: {matricula or '[slot vazio]'}")

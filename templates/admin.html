@@ -20,8 +20,8 @@
             <div class="admin-user-card">
                 <div class="admin-avatar">{{ session.get('admin_usuario', 'A')[:1]|upper }}</div>
                 <div>
-                    <span>Administrador</span>
-                    <strong>{{ session.get('admin_usuario', 'Admin') }}</strong>
+                    <span>Matrícula do administrador</span>
+                    <strong>{{ session.get('admin_matricula', session.get('admin_usuario', 'Admin')) }}</strong>
                 </div>
             </div>
 
@@ -84,7 +84,7 @@
                     <div class="dashboard-hero">
                         <div>
                             <span class="dashboard-eyebrow">MEMÓRIA EM MOVIMENTO</span>
-                            <h2>Olá, {{ session.get('admin_usuario', 'administrador') }}.</h2>
+                            <h2>Olá, administrador.</h2>
                             <p>Acompanhe o conteúdo do projeto, as sugestões recebidas e os novos cadastros em um só lugar.</p>
                         </div>
                         <div class="auto-data-badge">
@@ -207,7 +207,11 @@
                                     <article class="recent-row">
                                         <div class="recent-thumb">
                                             {% if lugar.nome_imagem %}
-                                                <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                {% if lugar.nome_imagem.startswith('http://') or lugar.nome_imagem.startswith('https://') %}
+                                                    <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                {% else %}
+                                                    <img src="{{ url_for('static', filename='img/' ~ lugar.nome_imagem) }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                {% endif %}
                                                 <span style="display:none">{{ lugar.nome[:1]|upper }}</span>
                                             {% else %}
                                                 <span>{{ lugar.nome[:1]|upper }}</span>
@@ -285,9 +289,31 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="placeImg">URL da imagem <em>*</em></label>
-                                <input type="url" id="placeImg" name="imagem" required placeholder="https://site.com/imagem.jpg" class="input-potiguar">
-                                <small>Informe um endereço direto de imagem para representar o local.</small>
+                                <label>Imagens do lugar</label>
+                                <div class="image-slots-grid">
+                                    <div class="image-slot image-slot-cover">
+                                        <span class="image-slot-number">01</span>
+                                        <label for="placeImg1">Imagem 1 — Capa / Fundo <em>*</em></label>
+                                        <input type="text" id="placeImg1" name="imagem1" required placeholder="Ex.: casario_caicoense.jpg ou https://..." class="input-potiguar">
+                                        <small>Esta foto aparece nos cards e como fundo no topo da página do lugar.</small>
+                                    </div>
+                                    <div class="image-slot">
+                                        <span class="image-slot-number">02</span>
+                                        <label for="placeImg2">Imagem 2 — Galeria</label>
+                                        <input type="text" id="placeImg2" name="imagem2" placeholder="Ex.: casario_caicoense2.jpg" class="input-potiguar">
+                                    </div>
+                                    <div class="image-slot">
+                                        <span class="image-slot-number">03</span>
+                                        <label for="placeImg3">Imagem 3 — Galeria</label>
+                                        <input type="text" id="placeImg3" name="imagem3" placeholder="Ex.: casario_caicoense3.jpg" class="input-potiguar">
+                                    </div>
+                                    <div class="image-slot">
+                                        <span class="image-slot-number">04</span>
+                                        <label for="placeImg4">Imagem 4 — Galeria</label>
+                                        <input type="text" id="placeImg4" name="imagem4" placeholder="Ex.: casario_caicoense4.jpg" class="input-potiguar">
+                                    </div>
+                                </div>
+                                <small>Para arquivos do projeto, coloque as fotos em <strong>static/img/</strong> e informe apenas o nome do arquivo. URLs também funcionam.</small>
                             </div>
 
                             <div class="form-actions-potiguar">
@@ -326,7 +352,11 @@
                                     <article class="place-manager-row">
                                         <div class="place-manager-thumb">
                                             {% if lugar.nome_imagem %}
-                                                <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                {% if lugar.nome_imagem.startswith('http://') or lugar.nome_imagem.startswith('https://') %}
+                                                    <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                {% else %}
+                                                    <img src="{{ url_for('static', filename='img/' ~ lugar.nome_imagem) }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                                {% endif %}
                                                 <span style="display:none">{{ lugar.nome[:1]|upper }}</span>
                                             {% else %}
                                                 <span>{{ lugar.nome[:1]|upper }}</span>
@@ -428,15 +458,49 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="editPlaceImg">Imagem</label>
-                                <input type="text" id="editPlaceImg" name="imagem" value="{{ lugar_edicao.nome_imagem or '' }}" placeholder="URL da imagem ou caminho já usado pelo projeto" class="input-potiguar">
-                                <small>Você pode manter a imagem atual, trocar a URL/caminho ou deixar vazio.</small>
+                                <label>Imagens do lugar</label>
+                                <div class="image-slots-grid">
+                                    <div class="image-slot image-slot-cover">
+                                        <span class="image-slot-number">01</span>
+                                        <label for="editPlaceImg1">Imagem 1 — Capa / Fundo</label>
+                                        <input type="text" id="editPlaceImg1" name="imagem1" value="{{ lugar_edicao.nome_imagem or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
+                                        <small>É a imagem principal usada nos cards e no fundo do topo da página.</small>
+                                    </div>
+                                    <div class="image-slot">
+                                        <span class="image-slot-number">02</span>
+                                        <label for="editPlaceImg2">Imagem 2 — Galeria</label>
+                                        <input type="text" id="editPlaceImg2" name="imagem2" value="{{ lugar_edicao.nome_imagem2 or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
+                                    </div>
+                                    <div class="image-slot">
+                                        <span class="image-slot-number">03</span>
+                                        <label for="editPlaceImg3">Imagem 3 — Galeria</label>
+                                        <input type="text" id="editPlaceImg3" name="imagem3" value="{{ lugar_edicao.nome_imagem3 or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
+                                    </div>
+                                    <div class="image-slot">
+                                        <span class="image-slot-number">04</span>
+                                        <label for="editPlaceImg4">Imagem 4 — Galeria</label>
+                                        <input type="text" id="editPlaceImg4" name="imagem4" value="{{ lugar_edicao.nome_imagem4 or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
+                                    </div>
+                                </div>
+                                <small>Arquivos locais devem ficar em <strong>static/img/</strong>. Informe apenas o nome do arquivo.</small>
                             </div>
 
-                            {% if lugar_edicao.nome_imagem %}
-                            <div class="edit-image-preview">
-                                <span>Imagem atual</span>
-                                <img src="{{ lugar_edicao.nome_imagem }}" alt="Imagem atual de {{ lugar_edicao.nome }}" onerror="this.closest('.edit-image-preview').style.display='none'">
+                            {% set imagens_edicao = [lugar_edicao.nome_imagem, lugar_edicao.nome_imagem2, lugar_edicao.nome_imagem3, lugar_edicao.nome_imagem4] %}
+                            {% if imagens_edicao|select|list %}
+                            <div class="edit-images-preview">
+                                <span class="edit-images-title">Imagens atuais</span>
+                                <div class="edit-images-preview-grid">
+                                    {% for imagem in imagens_edicao if imagem %}
+                                    <div class="edit-image-preview">
+                                        <span>{% if loop.index == 1 %}Capa{% else %}Galeria {{ loop.index - 1 }}{% endif %}</span>
+                                        {% if imagem.startswith('http://') or imagem.startswith('https://') %}
+                                            <img src="{{ imagem }}" alt="Imagem de {{ lugar_edicao.nome }}">
+                                        {% else %}
+                                            <img src="{{ url_for('static', filename='img/' ~ imagem) }}" alt="Imagem de {{ lugar_edicao.nome }}">
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
+                                </div>
                             </div>
                             {% endif %}
 
