@@ -3,178 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Memória Potiguar: histórias, cultura, gastronomia e eventos do Rio Grande do Norte.">
     <title>Memória Potiguar - Início</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/barra.css') }}">
-</head>
-<body class="home-body">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/barra.css">
+</head> <!-- Fechamento da tag head corrigido aqui -->
+    
+<body>
+
     <header>
         <div class="logo">
-            <a href="{{ url_for('index') }}">
+            <a href="/index">
                 <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar">
             </a>
-        </div>
-
+        </div> 
+        
         <nav>
             <form action="/buscar" method="GET" class="search-form">
                 <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
-                <button type="submit" aria-label="Buscar">⌕</button>
+                <button type="submit">
+                    
+                </button>
             </form>
-            <a href="{{ url_for('index') }}" class="nav-active">Início</a>
-            <a href="{{ url_for('sobre') }}">Sobre</a>
-            <a href="{{ url_for('sugestao') }}">Sugerir local</a>
-            <a href="{{ url_for('login') }}" class="Adm">Administração</a>
+    
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/sugestao">Sugerir local</a>
+            <a href="/login" class="Adm">Administração</a>
         </nav>
     </header>
 
-    <div class="spacer"></div>
+    <div class="espaço"></div>
 
-    <main>
-        <section class="home-hero">
-            <img src="{{ url_for('static', filename='img/recanto2.jpg') }}" alt="Paisagem do Rio Grande do Norte" class="home-hero-bg">
-            <div class="home-hero-overlay"></div>
-            <div class="home-hero-pattern"></div>
+    <section class="carousel principal-carousel">
+        <img src="{{ url_for('static', filename='img/recanto2.jpg') }}" alt="Banner 1">
+        <img src="{{ url_for('static', filename='img/Gastrobar.jpg') }}" alt="Banner 2">
+        <img src="{{ url_for('static', filename='img/caju.png') }}" alt="Banner 3">
 
-            <div class="home-hero-content">
-                <span class="hero-eyebrow">HISTÓRIA · CULTURA · IDENTIDADE</span>
-                <h1>O Rio Grande do Norte contado por suas memórias.</h1>
-                <p>Descubra lugares, sabores, festas e histórias que preservam a identidade potiguar e ajudam a manter viva a memória do nosso povo.</p>
-                <div class="hero-actions">
-                    <a href="#explorar" class="hero-primary">Explorar o RN <span>↓</span></a>
-                    <a href="{{ url_for('sobre') }}" class="hero-secondary">Conhecer o projeto</a>
-                </div>
+        <div class="carousel-text">
+            <h1>Descubra o RN</h1>
+            <p>Explore histórias, cultura e lugares incríveis do Rio Grande do Norte.</p>
+        </div>
+    </section>
+
+    <section class="section-categories-large">
+        
+        <div class="large-card">
+            <div class="large-card-img">
+                <img src="{{ url_for('static', filename='img/historia.jpg') }}" alt="Histórico">
             </div>
-
-            <div class="hero-side-card">
-                <span>MEMÓRIA POTIGUAR</span>
-                <strong>Preservar também é contar.</strong>
-                <p>Um projeto dedicado à história e à cultura do Seridó e do Rio Grande do Norte.</p>
+            <div class="large-card-content">
+                <h2>Histórico</h2>
+                <p>Viaje no tempo conhecendo os monumentos, os marcos da colonização, as memórias esquecidas e o passado que desenhou as linhas e a identidade do povo potiguar através dos séculos.</p>
+                <a href="/historia" class="btn-large-card">Ver mais</a>
             </div>
+        </div>
 
-            <div class="hero-scroll">Role para descobrir <span>↓</span></div>
-        </section>
-
-        <section class="home-intro" id="explorar">
-            <div class="section-title-block">
-                <span class="section-kicker">EXPLORE NOSSA TERRA</span>
-                <h2>Conheça o RN por diferentes caminhos</h2>
+        <div class="large-card reverse"> 
+            <div class="large-card-img">
+                <img src="{{ url_for('static', filename='img/cutural1.png') }}" alt="Cultural">
             </div>
-            <p class="section-lead">Cada categoria reúne uma parte da memória potiguar: construções, tradições, sabores e celebrações que ajudam a contar quem somos.</p>
-        </section>
-
-        <section class="category-grid">
-            <a href="{{ url_for('historia') }}" class="category-card category-history">
-                <img src="{{ url_for('static', filename='img/historia.jpg') }}" alt="Patrimônio histórico potiguar">
-                <div class="category-overlay"></div>
-                <span class="category-number">01</span>
-                <div class="category-content">
-                    <span class="category-tag">PATRIMÔNIO</span>
-                    <h3>Histórico</h3>
-                    <p>Monumentos, construções e acontecimentos que marcaram o passado potiguar.</p>
-                    <span class="category-link">Conhecer histórias →</span>
-                </div>
-            </a>
-
-            <a href="{{ url_for('cultural') }}" class="category-card category-culture">
-                <img src="{{ url_for('static', filename='img/cutural1.png') }}" alt="Cultura potiguar">
-                <div class="category-overlay"></div>
-                <span class="category-number">02</span>
-                <div class="category-content">
-                    <span class="category-tag">IDENTIDADE</span>
-                    <h3>Cultural</h3>
-                    <p>Tradições, artesanato e expressões populares que dão forma à identidade do nosso povo.</p>
-                    <span class="category-link">Explorar cultura →</span>
-                </div>
-            </a>
-
-            <a href="{{ url_for('gastronomia') }}" class="category-card category-food">
-                <img src="{{ url_for('static', filename='img/gastronomico1.png') }}" alt="Gastronomia potiguar">
-                <div class="category-overlay"></div>
-                <span class="category-number">03</span>
-                <div class="category-content">
-                    <span class="category-tag">SABORES</span>
-                    <h3>Gastronômico</h3>
-                    <p>Pratos, ingredientes e lugares que carregam sabores e histórias da culinária regional.</p>
-                    <span class="category-link">Descobrir sabores →</span>
-                </div>
-            </a>
-
-            <a href="{{ url_for('evento') }}" class="category-card category-events">
-                <img src="{{ url_for('static', filename='img/eventos.png') }}" alt="Festas e eventos do Rio Grande do Norte">
-                <div class="category-overlay"></div>
-                <span class="category-number">04</span>
-                <div class="category-content">
-                    <span class="category-tag">CELEBRAÇÕES</span>
-                    <h3>Eventos</h3>
-                    <p>Festas religiosas, encontros e comemorações que movimentam comunidades e preservam tradições.</p>
-                    <span class="category-link">Ver celebrações →</span>
-                </div>
-            </a>
-        </section>
-
-        <section class="memory-showcase">
-            <div class="showcase-copy">
-                <span class="section-kicker">REGISTROS POTIGUARES</span>
-                <h2>Paisagens que também contam histórias.</h2>
-                <p>Do sertão às construções históricas, cada registro ajuda a guardar um fragmento da memória do Rio Grande do Norte.</p>
-                <a href="{{ url_for('cultural') }}" class="text-link">Ver mais lugares <span>→</span></a>
+            <div class="large-card-content">
+                <h2>Cutural</h2>
+                <p>Mergulhe de cabeça nas nossas ricas manifestações artísticas, no autêntico artesanato feito à mão, no folcloreqpulsante e nas expressões únicas que dão vida e movimento à nossa terra.</p>
+                <a href="/cultural" class="btn-large-card">Ver mais</a>
             </div>
+        </div>
 
-            <div class="showcase-gallery">
-                <figure class="gallery-item gallery-main">
-                    <img src="{{ url_for('static', filename='img/dunas.jpg') }}" alt="Dunas do Rio Grande do Norte">
-                    <figcaption>Natureza e identidade</figcaption>
-                </figure>
-                <figure class="gallery-item">
-                    <img src="{{ url_for('static', filename='img/colagem.png') }}" alt="Registros do Rio Grande do Norte">
-                    <figcaption>Memórias reunidas</figcaption>
-                </figure>
-                <figure class="gallery-item">
-                    <img src="{{ url_for('static', filename='img/forte.png') }}" alt="Patrimônio histórico do Rio Grande do Norte">
-                    <figcaption>Patrimônio vivo</figcaption>
-                </figure>
+        <div class="large-card">
+            <div class="large-card-img">
+                <img src="{{ url_for('static', filename='img/gastronomico1.png') }}" alt="Gastronômico">
             </div>
-        </section>
+            <div class="large-card-content">
+                <h2>Gastronômico</h2>
+                <p>Saboreie a legítima e marcante culinária sertaneja e litorânea. Uma mesa posta cheia de temperos fortes, histórias de herança e ingredientes nativos que oferecem uma verdadeira viagem de sabores.</p>
+                <a href="/gastronomia" class="btn-large-card">Ver mais</a>
+            </div>
+        </div>
 
-        <section class="barra-highlight">
-            <div class="barra-image-wrap">
-                <img src="{{ url_for('static', filename='img/barra.jpg') }}" alt="Barra de Santana">
-                <span class="barra-label">HOMENAGEM ESPECIAL</span>
+         <div class="large-card reverse"> 
+            <div class="large-card-img">
+                <img src="{{ url_for('static', filename='img/eventos.png') }}" alt="Eventos">
             </div>
+            <div class="large-card-content">
+                <h2>Eventos</h2>
+                <p>Descubra os principais eventos culturais, festividades e comemorações que acontecem no Rio Grande do Norte ao longo do ano.</p>
+                <a href="/evento" class="btn-large-card">Ver mais</a>
+            </div>
+        </div>
 
-            <div class="barra-copy">
-                <span class="section-kicker">MEMÓRIA QUE RESISTE</span>
-                <h2>Velha Barra de Santana</h2>
-                <h3>A comunidade que permanece viva mesmo sob as águas.</h3>
-                <p>Um capítulo marcante da história do Seridó. A antiga Barra de Santana cedeu seu território para a construção da Barragem Oiticica, mas as lembranças de suas ruas, casas, celebrações e relações comunitárias permanecem na memória de seus moradores.</p>
-                <p>Preservar essa história é reconhecer que um lugar continua existindo também nas lembranças de quem o viveu.</p>
-                <a href="{{ url_for('barra_santana') }}" class="barra-button">Conhecer essa história <span>→</span></a>
-            </div>
-        </section>
+    </section>
 
-        <section class="suggest-home">
-            <div>
-                <span class="section-kicker">MEMÓRIA COLABORATIVA</span>
-                <h2>Conhece um lugar que deveria estar aqui?</h2>
-                <p>Ajude o projeto a registrar mais histórias do Rio Grande do Norte enviando uma sugestão para nossa equipe.</p>
-            </div>
-            <a href="{{ url_for('sugestao') }}">Sugerir um local <span>→</span></a>
-        </section>
-    </main>
+    <section class="carousel segundo-carousel">
+        <img src="{{ url_for('static', filename='img/dunas.jpg') }}" alt="Galeria 1">
+        <img src="{{ url_for('static', filename='img/colagem.png') }}" alt="Galeria 2">
+        <img src="{{ url_for('static', filename='img/forte.png') }}" alt="Galeria 2">
+
+        <div class="carousel-text">
+            <h2>Registros Potiguares</h2>
+            <p>Paisagens e memórias capturadas pelo tempo.</p>
+        </div>
+    </section>
+
+    <section class="tribute-section">
+        <div class="tribute-container">
+            <span class="tribute-tag">Homenagem Especial</span>
+            <h2>Velha Barra de Santana</h2>
+            <h3>A Cidade Submersa pelas Águas</h3>
+            <p>
+                Um capítulo de profunda nostalgia e história no coração do Seridó. A Velha Barra de Santana hoje descansa sob as águas, mas sua memória permanece viva na mente de seu povo. Recordar suas ruas, sua capela e sua história é trazer à tona a identidade de uma comunidade que cedeu seu chão para dar lugar ao progresso, mas que nunca deixou suas verdadeiras raízes afundarem.
+            </p>
+            <!-- Link corrigido para a rota limpa do Flask -->
+            <a href="/barra-santana" class="btn-tribute">Conhecer essa História →</a>
+        </div>
+    </section>
 
     <footer>
-        <div class="home-footer-inner">
-            <div>
-                <strong>Memória Potiguar</strong>
-                <span>História, cultura e identidade do Rio Grande do Norte.</span>
-            </div>
-            <p>© 2026 Memória Potiguar | IFRN - Caicó</p>
-        </div>
+        © 2026 Memória Potiguar | IFRN - Caicó
     </footer>
+
 </body>
 </html>
