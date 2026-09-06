@@ -39,7 +39,7 @@
 
     <div class="spacer"></div>
 
-    <main class="detalhe-container" data-categoria="HISTÓRICO">
+    <main class="detalhe-container" data-categoria="CULTURAL">
 
         <h1 class="detalhe-titulo">Arco do Triunfo</h1>
         <p class="detalhe-subtitulo">Monumento de fé e devoção</p>
@@ -145,8 +145,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         function inicializarMapa() {
-            var lat = -6.4578488;
-            var lng = -37.0943184;   
+            var lat = -6.4580413;
+            var lng = -37.093118;   
             // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
             var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
@@ -167,7 +167,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup("<br>Muséu Do Seridó, Caicó- RN")
+                .bindPopup("<br>Arco do Triunfo, Caicó - RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
