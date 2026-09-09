@@ -24,7 +24,7 @@ mysql-connector-python>=8.0.0
 #    HOST = "localhost"
 #    PORT = 3306
 #    USER = "root"
-#    PASSWORD = ""
+#    PASSWORD = "12345678"
 #    DATABASE = "pi_potiguar"
 #
 #    IMPORTANTE:
