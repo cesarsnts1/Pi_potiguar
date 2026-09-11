@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lugar.nome }} | Comidas - Memória Potiguar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body class="body-conteudo pagina-detalhe comida-detalhe-page">
+    <header>
+        <div class="logo"><a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar"></a></div>
+        <nav>
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit" aria-label="Buscar">🔍</button>
+            </form>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('comidas') }}">Comidas</a>
+            <a href="{{ url_for('sobre') }}">Sobre</a>
+            <a href="{{ url_for('login') }}" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <main class="detalhe-container comida-detalhe" data-categoria="COMIDAS">
+        <div class="comida-title-block">
+            <span class="comida-badge">COMIDA POTIGUAR</span>
+            <h1 class="detalhe-titulo">{{ lugar.nome }}</h1>
+            <p class="detalhe-subtitulo">{{ lugar.resumo or 'Conheça a história e a receita deste prato.' }}</p>
+        </div>
+
+        {% set imagens = [
+            (1, lugar.tem_imagem1, lugar.nome_imagem),
+            (2, lugar.tem_imagem2, lugar.nome_imagem2),
+            (3, lugar.tem_imagem3, lugar.nome_imagem3),
+            (4, lugar.tem_imagem4, lugar.nome_imagem4)
+        ] %}
+        <section class="galeria-secao comida-galeria" data-secao="galeria">
+            <div class="section-title-row"><div><span class="section-eyebrow">Galeria</span><h2>O prato em imagens</h2></div><span class="photo-count">4 fotos</span></div>
+            <div class="galeria-grid">
+                {% for slot, tem_blob, nome_arquivo in imagens %}
+                    <div class="galeria-item{% if not tem_blob and not nome_arquivo %} galeria-item-vazio{% endif %}">
+                        {% if tem_blob or nome_arquivo %}
+                            <img src="{{ url_for('imagem_lugar', lugar_id=lugar.id, slot=slot) }}" alt="Foto {{ slot }} de {{ lugar.nome }}">
+                        {% else %}
+                            <span>Foto {{ slot }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <div class="comida-content-grid">
+            <div class="comida-main-column">
+                <section class="info-secao historia-secao food-section" id="historia">
+                    <span class="section-eyebrow">Memória</span>
+                    <h2>História do prato</h2>
+                    {% set historia_texto = lugar.historia or lugar.descricao or '' %}
+                    {% for paragrafo in historia_texto.replace('\r\n', '\n').split('\n\n') if paragrafo.strip() %}
+                        <p>{{ paragrafo.strip() }}</p>
+                    {% else %}
+                        <p>A história deste prato ainda não foi cadastrada.</p>
+                    {% endfor %}
+                </section>
+
+                <section class="info-secao receita-secao food-section" id="receita">
+                    <span class="section-eyebrow">Modo de fazer</span>
+                    <h2>Receita</h2>
+                    {% if lugar.receita %}
+                        {% for paragrafo in lugar.receita.replace('\r\n', '\n').split('\n\n') if paragrafo.strip() %}
+                            <div class="receita-bloco">
+                                {% for linha in paragrafo.strip().split('\n') %}
+                                    <div>{{ linha }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>A receita ainda não foi cadastrada.</p>
+                    {% endif %}
+                </section>
+            </div>
+
+            <aside class="comida-side-column">
+                <nav class="comida-jump-links" aria-label="Atalhos da página">
+                    <strong>Nesta página</strong>
+                    <a href="#historia">História do prato <span>→</span></a>
+                    <a href="#receita">Receita <span>→</span></a>
+                    <a href="#onde-comer">Onde comer <span>→</span></a>
+                </nav>
+            </aside>
+        </div>
+
+        <section class="onde-comer-section" id="onde-comer">
+            <div class="section-title-row onde-comer-title">
+                <div>
+                    <span class="section-eyebrow">Experimente</span>
+                    <h2>Onde comer este prato</h2>
+                    <p>Escolha um restaurante para destacar sua localização no mapa.</p>
+                </div>
+                <span class="onde-comer-icon">🍽️</span>
+            </div>
+
+            {% if restaurantes %}
+                <div class="restaurant-map-layout">
+                    <div class="restaurant-options" id="restaurantOptions">
+                        {% for restaurante in restaurantes %}
+                        <button
+                            type="button"
+                            class="restaurant-choice{% if loop.first %} ativo{% endif %}"
+                            data-lat="{{ restaurante.latitude }}"
+                            data-lng="{{ restaurante.longitude }}"
+                            data-name="{{ restaurante.nome|e }}"
+                            data-address="{{ restaurante.endereco|e }}"
+                            data-index="{{ loop.index0 }}"
+                        >
+                            <span class="restaurant-choice-number">{{ '%02d'|format(loop.index) }}</span>
+                            <span class="restaurant-choice-copy">
+                                <strong>{{ restaurante.nome }}</strong>
+                                <small>{{ restaurante.endereco }}</small>
+                            </span>
+                            <span class="restaurant-choice-arrow">→</span>
+                        </button>
+                        {% endfor %}
+                    </div>
+
+                    <div class="restaurant-map-card">
+                        <div id="mapaRestaurantes" class="restaurant-map"></div>
+                        <div class="restaurant-map-actions">
+                            <button type="button" id="toggleRestaurantSatellite" class="btn-mapa btn-satelite">
+                                <span class="maps-btn-icon">🛰</span> Ver em satélite
+                            </button>
+                            <a id="restaurantGoogleMaps" class="btn-mapa btn-google-maps" href="#" target="_blank" rel="noopener">
+                                <span class="maps-btn-icon">↗</span> Abrir selecionado no Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% elif lugar.sugestao_lugar %}
+                <div class="onde-comer-legado">
+                    <strong>Sugestão cadastrada anteriormente</strong>
+                    <p>{{ lugar.sugestao_lugar }}</p>
+                </div>
+            {% else %}
+                <div class="onde-comer-legado">Ainda não há restaurantes cadastrados para este prato.</div>
+            {% endif %}
+        </section>
+
+        <a href="{{ url_for('comidas') }}" class="btn">← Voltar para Comidas</a>
+    </main>
+
+    <footer>© 2026 Memória Potiguar | IFRN - Caicó</footer>
+    {% if restaurantes %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        (function () {
+            const buttons = Array.from(document.querySelectorAll('.restaurant-choice'));
+            if (!buttons.length || typeof L === 'undefined') return;
+
+            const standardLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19,
+                attribution: 'Tiles &copy; Esri'
+            });
+
+            const first = buttons[0];
+            const map = L.map('mapaRestaurantes', { layers: [standardLayer] }).setView(
+                [Number(first.dataset.lat), Number(first.dataset.lng)], 15
+            );
+
+            const markers = buttons.map((button) => {
+                const lat = Number(button.dataset.lat);
+                const lng = Number(button.dataset.lng);
+                const marker = L.marker([lat, lng]).addTo(map);
+                const popup = document.createElement('div');
+                const title = document.createElement('b');
+                const address = document.createElement('div');
+                title.textContent = button.dataset.name;
+                address.textContent = button.dataset.address;
+                popup.appendChild(title);
+                popup.appendChild(address);
+                marker.bindPopup(popup);
+                return marker;
+            });
+
+            if (markers.length > 1) {
+                const group = L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.25));
+            }
+
+            const mapsLink = document.getElementById('restaurantGoogleMaps');
+            const satelliteButton = document.getElementById('toggleRestaurantSatellite');
+            let satellite = false;
+
+            function selectRestaurant(index, focus = true) {
+                const button = buttons[index];
+                if (!button) return;
+                buttons.forEach(item => item.classList.remove('ativo'));
+                button.classList.add('ativo');
+
+                const lat = Number(button.dataset.lat);
+                const lng = Number(button.dataset.lng);
+                if (focus) map.setView([lat, lng], 17, { animate: true });
+                markers[index].openPopup();
+                mapsLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lat + ',' + lng)}`;
+            }
+
+            buttons.forEach((button, index) => {
+                button.addEventListener('click', () => selectRestaurant(index));
+            });
+
+            satelliteButton.addEventListener('click', () => {
+                if (satellite) {
+                    map.removeLayer(satelliteLayer);
+                    standardLayer.addTo(map);
+                    satelliteButton.classList.remove('ativo');
+                    satelliteButton.innerHTML = '<span class="maps-btn-icon">🛰</span> Ver em satélite';
+                } else {
+                    map.removeLayer(standardLayer);
+                    satelliteLayer.addTo(map);
+                    satelliteButton.classList.add('ativo');
+                    satelliteButton.innerHTML = '<span class="maps-btn-icon">🗺</span> Ver mapa padrão';
+                }
+                satellite = !satellite;
+            });
+
+            selectRestaurant(0, false);
+            setTimeout(() => map.invalidateSize(), 100);
+        })();
+    </script>
+    {% endif %}
+
+</body>
+</html>

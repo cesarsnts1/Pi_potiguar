@@ -1,11 +1,64 @@
-from flask import Flask, render_template, request, redirect, flash, session
+from flask import Flask, render_template, request, redirect, flash, session, Response, abort, url_for
 from db import conectar
 from functools import wraps
 from pesquisa_lugares import LUGARES_PESQUISADOS, SEED_CHAVE
 from config import ADMIN_MATRICULAS, ADMIN_SENHA
+import os
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_potiguar'
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # até 32 MB por envio
+
+MAX_IMAGEM_BYTES = 8 * 1024 * 1024  # 8 MB por imagem
+TIPOS_IMAGEM_PERMITIDOS = {'image/jpeg', 'image/png', 'image/webp', 'image/gif'}
+
+
+def detectar_tipo_imagem(dados):
+    if dados.startswith(b'\xff\xd8\xff'):
+        return 'image/jpeg'
+    if dados.startswith(b'\x89PNG\r\n\x1a\n'):
+        return 'image/png'
+    if dados[:4] == b'RIFF' and dados[8:12] == b'WEBP':
+        return 'image/webp'
+    if dados.startswith((b'GIF87a', b'GIF89a')):
+        return 'image/gif'
+    return None
+
+
+def ler_imagem_upload(campo, obrigatoria=False):
+    """Lê uma imagem do formulário, valida formato/tamanho e devolve dados para o MySQL."""
+    arquivo = request.files.get(campo)
+
+    if not arquivo or not arquivo.filename:
+        if obrigatoria:
+            raise ValueError('A imagem de capa é obrigatória.')
+        return None
+
+    dados = arquivo.read(MAX_IMAGEM_BYTES + 1)
+    if len(dados) > MAX_IMAGEM_BYTES:
+        raise ValueError(f'A imagem {arquivo.filename} ultrapassa o limite de 8 MB.')
+
+    tipo_real = detectar_tipo_imagem(dados)
+    if tipo_real not in TIPOS_IMAGEM_PERMITIDOS:
+        raise ValueError(f'O arquivo {arquivo.filename} não é uma imagem JPG, PNG, WEBP ou GIF válida.')
+
+    nome = os.path.basename(arquivo.filename).strip()[:500] or 'imagem'
+    return {'dados': dados, 'tipo': tipo_real, 'nome': nome}
+
+
+def campos_ponto_sem_blobs(alias='p'):
+    """Campos usados nas consultas sem carregar os LONGBLOBs inteiros na memória."""
+    return f"""
+        {alias}.id, {alias}.nome, {alias}.resumo, {alias}.descricao, {alias}.historia,
+        {alias}.curiosidades, {alias}.receita, {alias}.sugestao_lugar,
+        {alias}.localizacao, {alias}.latitude, {alias}.longitude,
+        {alias}.nome_imagem, {alias}.nome_imagem2, {alias}.nome_imagem3, {alias}.nome_imagem4,
+        {alias}.categoria_id,
+        CASE WHEN {alias}.imagem IS NOT NULL AND OCTET_LENGTH({alias}.imagem) > 0 THEN 1 ELSE 0 END AS tem_imagem1,
+        CASE WHEN {alias}.imagem2 IS NOT NULL AND OCTET_LENGTH({alias}.imagem2) > 0 THEN 1 ELSE 0 END AS tem_imagem2,
+        CASE WHEN {alias}.imagem3 IS NOT NULL AND OCTET_LENGTH({alias}.imagem3) > 0 THEN 1 ELSE 0 END AS tem_imagem3,
+        CASE WHEN {alias}.imagem4 IS NOT NULL AND OCTET_LENGTH({alias}.imagem4) > 0 THEN 1 ELSE 0 END AS tem_imagem4
+    """
 
 
 # ============================================================
@@ -56,18 +109,68 @@ def garantir_estrutura_pontos():
         alteracoes.append("ADD COLUMN historia LONGTEXT NULL AFTER descricao")
     if 'curiosidades' not in colunas:
         alteracoes.append("ADD COLUMN curiosidades TEXT NULL AFTER historia")
+    if 'receita' not in colunas:
+        alteracoes.append("ADD COLUMN receita LONGTEXT NULL AFTER curiosidades")
+    if 'sugestao_lugar' not in colunas:
+        alteracoes.append("ADD COLUMN sugestao_lugar TEXT NULL AFTER receita")
+    if 'latitude' not in colunas:
+        alteracoes.append("ADD COLUMN latitude DECIMAL(10,7) NULL AFTER localizacao")
+    if 'longitude' not in colunas:
+        alteracoes.append("ADD COLUMN longitude DECIMAL(10,7) NULL AFTER latitude")
     if 'nome_imagem2' not in colunas:
         alteracoes.append("ADD COLUMN nome_imagem2 VARCHAR(500) NULL AFTER nome_imagem")
     if 'nome_imagem3' not in colunas:
         alteracoes.append("ADD COLUMN nome_imagem3 VARCHAR(500) NULL AFTER nome_imagem2")
     if 'nome_imagem4' not in colunas:
         alteracoes.append("ADD COLUMN nome_imagem4 VARCHAR(500) NULL AFTER nome_imagem3")
+    if 'tipo_imagem' not in colunas:
+        alteracoes.append("ADD COLUMN tipo_imagem VARCHAR(50) NULL AFTER nome_imagem4")
+    if 'imagem' not in colunas:
+        alteracoes.append("ADD COLUMN imagem LONGBLOB NULL AFTER tipo_imagem")
+    if 'tipo_imagem2' not in colunas:
+        alteracoes.append("ADD COLUMN tipo_imagem2 VARCHAR(50) NULL AFTER imagem")
+    if 'imagem2' not in colunas:
+        alteracoes.append("ADD COLUMN imagem2 LONGBLOB NULL AFTER tipo_imagem2")
+    if 'tipo_imagem3' not in colunas:
+        alteracoes.append("ADD COLUMN tipo_imagem3 VARCHAR(50) NULL AFTER imagem2")
+    if 'imagem3' not in colunas:
+        alteracoes.append("ADD COLUMN imagem3 LONGBLOB NULL AFTER tipo_imagem3")
+    if 'tipo_imagem4' not in colunas:
+        alteracoes.append("ADD COLUMN tipo_imagem4 VARCHAR(50) NULL AFTER imagem3")
+    if 'imagem4' not in colunas:
+        alteracoes.append("ADD COLUMN imagem4 LONGBLOB NULL AFTER tipo_imagem4")
 
     for alteracao in alteracoes:
         cursor.execute(f"ALTER TABLE pontos_turisticos {alteracao}")
 
     if alteracoes:
         conn.commit()
+
+    # Compatibilidade com bancos criados antes da troca de Gastronomico por Comidas.
+    cursor.execute("SELECT id FROM categorias WHERE nome = 'Comidas' ORDER BY id LIMIT 1")
+    categoria_comidas = cursor.fetchone()
+    cursor.execute("SELECT id FROM categorias WHERE nome IN ('Gastronômico', 'Gastronomico') ORDER BY id LIMIT 1")
+    categoria_antiga = cursor.fetchone()
+    if categoria_antiga and not categoria_comidas:
+        cursor.execute("UPDATE categorias SET nome = 'Comidas' WHERE id = %s", (categoria_antiga['id'],))
+        conn.commit()
+
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS locais_comida (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            comida_id INT NOT NULL,
+            ordem TINYINT NOT NULL,
+            nome VARCHAR(180) NOT NULL,
+            endereco VARCHAR(250) NOT NULL,
+            latitude DECIMAL(10,7) NOT NULL,
+            longitude DECIMAL(10,7) NOT NULL,
+            UNIQUE KEY uq_comida_ordem (comida_id, ordem),
+            FOREIGN KEY (comida_id) REFERENCES pontos_turisticos(id) ON DELETE CASCADE
+        )
+        """
+    )
+    conn.commit()
 
     cursor.close()
     conn.close()
@@ -92,8 +195,13 @@ def garantir_lugares_pesquisados():
         if cursor.fetchone():
             return
 
+        itens_seed = [
+            item for item in LUGARES_PESQUISADOS
+            if item.get('categoria') not in ('Gastronômico', 'Gastronomico')
+        ]
+
         categorias_ids = {}
-        for categoria_nome in sorted({item['categoria'] for item in LUGARES_PESQUISADOS}):
+        for categoria_nome in sorted({item['categoria'] for item in itens_seed}):
             cursor.execute('SELECT id FROM categorias WHERE nome = %s ORDER BY id LIMIT 1', (categoria_nome,))
             categoria = cursor.fetchone()
             if not categoria:
@@ -102,7 +210,7 @@ def garantir_lugares_pesquisados():
             else:
                 categorias_ids[categoria_nome] = categoria['id']
 
-        for item in LUGARES_PESQUISADOS:
+        for item in itens_seed:
             cursor.execute(
                 'SELECT id FROM pontos_turisticos WHERE LOWER(nome) = LOWER(%s) ORDER BY id LIMIT 1',
                 (item['nome'],)
@@ -147,7 +255,7 @@ def buscar_lugares_por_categoria(*nomes):
     placeholders = ', '.join(['%s'] * len(nomes))
     cursor.execute(
         f"""
-        SELECT p.*, c.nome AS categoria_nome
+        SELECT {campos_ponto_sem_blobs('p')}, c.nome AS categoria_nome
         FROM pontos_turisticos p
         LEFT JOIN categorias c ON c.id = p.categoria_id
         WHERE c.nome IN ({placeholders})
@@ -159,6 +267,119 @@ def buscar_lugares_por_categoria(*nomes):
     cursor.close()
     conn.close()
     return lugares
+
+
+def nome_categoria_por_id(categoria_id):
+    """Busca o nome da categoria sem confiar no texto vindo do formulário."""
+    if not categoria_id:
+        return ''
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT nome FROM categorias WHERE id = %s', (categoria_id,))
+    categoria = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return (categoria or {}).get('nome', '')
+
+
+def buscar_locais_comida(comida_id):
+    """Retorna as sugestões de restaurantes de uma comida na ordem cadastrada."""
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT id, comida_id, ordem, nome, endereco, latitude, longitude
+        FROM locais_comida
+        WHERE comida_id = %s
+        ORDER BY ordem
+        """,
+        (comida_id,)
+    )
+    locais = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return locais
+
+
+def ler_locais_comida_formulario():
+    """Lê até três restaurantes do formulário e valida suas coordenadas."""
+    locais = []
+
+    for ordem in range(1, 4):
+        nome = request.form.get(f'restaurante_{ordem}_nome', '').strip()
+        endereco = request.form.get(f'restaurante_{ordem}_endereco', '').strip()
+        latitude_txt = request.form.get(f'restaurante_{ordem}_latitude', '').strip().replace(',', '.')
+        longitude_txt = request.form.get(f'restaurante_{ordem}_longitude', '').strip().replace(',', '.')
+
+        campos = [nome, endereco, latitude_txt, longitude_txt]
+        if not any(campos):
+            continue
+
+        if not all(campos):
+            raise ValueError(
+                f'Preencha nome, endereço, latitude e longitude da opção {ordem} de onde comer.'
+            )
+
+        try:
+            latitude = float(latitude_txt)
+            longitude = float(longitude_txt)
+        except ValueError:
+            raise ValueError(f'As coordenadas do restaurante {ordem} precisam ser números válidos.')
+
+        if not (-90 <= latitude <= 90) or not (-180 <= longitude <= 180):
+            raise ValueError(f'As coordenadas do restaurante {ordem} estão fora do intervalo válido.')
+
+        locais.append({
+            'ordem': ordem,
+            'nome': nome,
+            'endereco': endereco,
+            'latitude': latitude,
+            'longitude': longitude,
+        })
+
+    if not locais:
+        raise ValueError('Cadastre pelo menos uma opção de restaurante para a comida.')
+
+    return locais
+
+
+def salvar_locais_comida(cursor, comida_id, locais):
+    """Substitui as sugestões de restaurantes da comida pelas enviadas no formulário."""
+    cursor.execute('DELETE FROM locais_comida WHERE comida_id = %s', (comida_id,))
+    for local in locais:
+        cursor.execute(
+            """
+            INSERT INTO locais_comida
+                (comida_id, ordem, nome, endereco, latitude, longitude)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            """,
+            (
+                comida_id, local['ordem'], local['nome'], local['endereco'],
+                local['latitude'], local['longitude']
+            )
+        )
+
+
+def buscar_comidas():
+    """Lista apenas pratos cadastrados como Comidas e que possuem receita."""
+    garantir_lugares_pesquisados()
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        f"""
+        SELECT {campos_ponto_sem_blobs('p')}, c.nome AS categoria_nome
+        FROM pontos_turisticos p
+        LEFT JOIN categorias c ON c.id = p.categoria_id
+        WHERE c.nome = 'Comidas'
+          AND p.receita IS NOT NULL
+          AND TRIM(p.receita) <> ''
+        ORDER BY p.id DESC
+        """
+    )
+    comidas = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return comidas
 
 
 # ============================================================
@@ -188,10 +409,11 @@ def historia():
     return render_template('historia.html', lugares_banco=lugares_banco)
 
 
+@app.route('/comidas')
 @app.route('/gastronomia')
-def gastronomia():
-    lugares_banco = buscar_lugares_por_categoria('Gastronômico', 'Gastronomico')
-    return render_template('gastronomia.html', lugares_banco=lugares_banco)
+def comidas():
+    comidas_banco = buscar_comidas()
+    return render_template('comidas.html', comidas_banco=comidas_banco)
 
 
 @app.route('/barra-santana')
@@ -370,6 +592,61 @@ def festarosario():
 
 
 # ============================================================
+# IMAGENS DOS LUGARES CADASTRADOS NO MYSQL
+# ============================================================
+
+@app.route('/imagem/lugar/<int:lugar_id>/<int:slot>')
+def imagem_lugar(lugar_id, slot):
+    """Entrega a imagem salva no MySQL. Mantém compatibilidade com registros antigos."""
+    campos = {
+        1: ('imagem', 'tipo_imagem', 'nome_imagem'),
+        2: ('imagem2', 'tipo_imagem2', 'nome_imagem2'),
+        3: ('imagem3', 'tipo_imagem3', 'nome_imagem3'),
+        4: ('imagem4', 'tipo_imagem4', 'nome_imagem4'),
+    }
+
+    if slot not in campos:
+        abort(404)
+
+    garantir_estrutura_pontos()
+    campo_blob, campo_tipo, campo_nome = campos[slot]
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        f"SELECT {campo_blob} AS dados, {campo_tipo} AS tipo, {campo_nome} AS nome FROM pontos_turisticos WHERE id = %s",
+        (lugar_id,)
+    )
+    imagem = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if not imagem:
+        abort(404)
+
+    if imagem.get('dados'):
+        resposta = Response(bytes(imagem['dados']), mimetype=imagem.get('tipo') or 'application/octet-stream')
+        resposta.headers['Cache-Control'] = 'public, max-age=86400'
+        resposta.headers['X-Content-Type-Options'] = 'nosniff'
+        return resposta
+
+    # Compatibilidade com os registros antigos do projeto, que guardavam
+    # apenas nome de arquivo/URL em nome_imagem. Novos uploads ficam no MySQL.
+    nome = (imagem.get('nome') or '').strip()
+    if nome.startswith(('http://', 'https://')):
+        return redirect(nome)
+    if nome:
+        return redirect(url_for('static', filename='img/' + nome))
+
+    abort(404)
+
+
+@app.errorhandler(413)
+def arquivo_grande_demais(_erro):
+    flash('As imagens ultrapassaram o limite do envio. Use no máximo 8 MB por foto.', 'danger')
+    return redirect('/admin#novo-lugar')
+
+
+# ============================================================
 # PÁGINA AUTOMÁTICA DOS LUGARES CADASTRADOS NO MYSQL
 # ============================================================
 
@@ -379,8 +656,8 @@ def lugar_dinamico(lugar_id):
     conn = conectar()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
-        """
-        SELECT p.*, c.nome AS categoria_nome
+        f"""
+        SELECT {campos_ponto_sem_blobs('p')}, c.nome AS categoria_nome
         FROM pontos_turisticos p
         LEFT JOIN categorias c ON c.id = p.categoria_id
         WHERE p.id = %s
@@ -393,6 +670,10 @@ def lugar_dinamico(lugar_id):
 
     if not lugar:
         return 'Lugar não encontrado.', 404
+
+    if (lugar.get('categoria_nome') or '').strip().lower() == 'comidas':
+        restaurantes = buscar_locais_comida(lugar_id)
+        return render_template('detalhes/comida_dinamica.html', lugar=lugar, restaurantes=restaurantes)
 
     return render_template('detalhes/lugar_dinamico.html', lugar=lugar)
 
@@ -663,8 +944,8 @@ def admin():
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute(
-        """
-        SELECT p.*, c.nome AS categoria_nome
+        f"""
+        SELECT {campos_ponto_sem_blobs('p')}, c.nome AS categoria_nome
         FROM pontos_turisticos p
         LEFT JOIN categorias c ON c.id = p.categoria_id
         ORDER BY p.id DESC
@@ -730,6 +1011,7 @@ def admin():
     # uma seção de edição já preenchida com os dados do MySQL.
     lugar_edicao = None
     editar_id = request.args.get('editar', type=int)
+    restaurantes_edicao = []
     if editar_id:
         lugar_edicao = next(
             (lugar for lugar in lugares if lugar.get('id') == editar_id),
@@ -737,6 +1019,8 @@ def admin():
         )
         if lugar_edicao is None:
             flash('Lugar não encontrado para edição.', 'danger')
+        elif (lugar_edicao.get('categoria_nome') or '').strip().lower() == 'comidas':
+            restaurantes_edicao = buscar_locais_comida(editar_id)
 
     return render_template(
         'admin.html',
@@ -744,7 +1028,8 @@ def admin():
         categorias=categorias,
         sugestoes=sugestoes,
         dashboard=dashboard,
-        lugar_edicao=lugar_edicao
+        lugar_edicao=lugar_edicao,
+        restaurantes_edicao=restaurantes_edicao
     )
 
 
@@ -760,21 +1045,69 @@ def adicionar_lugar():
     nome = request.form.get('nome', '').strip()
     categoria_id = request.form.get('categoria') or None
     localizacao = request.form.get('endereco', '').strip()
+    latitude = request.form.get('latitude', '').strip()
+    longitude = request.form.get('longitude', '').strip()
     resumo = request.form.get('resumo', '').strip()
     historia = request.form.get('historia', '').strip()
     curiosidades = request.form.get('curiosidades', '').strip()
-    nome_imagem = (request.form.get('imagem1') or request.form.get('imagem') or '').strip()
-    nome_imagem2 = request.form.get('imagem2', '').strip()
-    nome_imagem3 = request.form.get('imagem3', '').strip()
-    nome_imagem4 = request.form.get('imagem4', '').strip()
+    receita = request.form.get('receita', '').strip()
+    sugestao_lugar = request.form.get('sugestao_lugar', '').strip()
+    categoria_nome = nome_categoria_por_id(categoria_id)
+    eh_comida = categoria_nome.strip().lower() == 'comidas'
 
-    if not nome or not categoria_id or not localizacao or not resumo or not historia:
-        flash('Preencha nome, categoria, localização, resumo e história.', 'danger')
+    if not nome or not categoria_id or not resumo or not historia:
+        flash('Preencha nome, categoria, resumo e história.', 'danger')
         return redirect('/admin#novo-lugar')
 
-    # Mantém descricao preenchida para compatibilidade com partes antigas do projeto.
-    descricao = historia
+    locais_comida = []
+    if eh_comida:
+        if not receita:
+            flash('Para Comidas, preencha a receita.', 'danger')
+            return redirect('/admin#novo-lugar')
+        try:
+            locais_comida = ler_locais_comida_formulario()
+        except ValueError as erro:
+            flash(str(erro), 'danger')
+            return redirect('/admin#novo-lugar')
+        sugestao_lugar = None
+        localizacao = ''
+        latitude = None
+        longitude = None
+    else:
+        if not localizacao:
+            flash('Informe o endereço/localização do lugar.', 'danger')
+            return redirect('/admin#novo-lugar')
+        if not latitude or not longitude:
+            flash('Informe latitude e longitude para cadastrar o local com mapa.', 'danger')
+            return redirect('/admin#novo-lugar')
+        try:
+            latitude = float(latitude.replace(',', '.'))
+            longitude = float(longitude.replace(',', '.'))
+        except ValueError:
+            flash('Latitude e longitude devem ser números válidos, como -6.458123 e -37.097456.', 'danger')
+            return redirect('/admin#novo-lugar')
+        if not (-90 <= latitude <= 90):
+            flash('Latitude inválida. Use um valor entre -90 e 90.', 'danger')
+            return redirect('/admin#novo-lugar')
+        if not (-180 <= longitude <= 180):
+            flash('Longitude inválida. Use um valor entre -180 e 180.', 'danger')
+            return redirect('/admin#novo-lugar')
 
+    try:
+        uploads = {
+            1: ler_imagem_upload('imagem1', obrigatoria=True),
+            2: ler_imagem_upload('imagem2'),
+            3: ler_imagem_upload('imagem3'),
+            4: ler_imagem_upload('imagem4'),
+        }
+        if eh_comida and any(uploads[slot] is None for slot in (2, 3, 4)):
+            flash('Para Comidas, envie as 4 fotos do prato.', 'danger')
+            return redirect('/admin#novo-lugar')
+    except ValueError as erro:
+        flash(str(erro), 'danger')
+        return redirect('/admin#novo-lugar')
+
+    descricao = historia
     conn = conectar()
     cursor = conn.cursor()
 
@@ -783,37 +1116,45 @@ def adicionar_lugar():
             '''
             INSERT INTO pontos_turisticos
             (
-                nome,
-                resumo,
-                descricao,
-                historia,
-                curiosidades,
-                localizacao,
-                nome_imagem,
-                nome_imagem2,
-                nome_imagem3,
-                nome_imagem4,
+                nome, resumo, descricao, historia, curiosidades, receita, sugestao_lugar, localizacao,
+                latitude, longitude,
+                nome_imagem, nome_imagem2, nome_imagem3, nome_imagem4,
+                tipo_imagem, imagem,
+                tipo_imagem2, imagem2,
+                tipo_imagem3, imagem3,
+                tipo_imagem4, imagem4,
                 categoria_id
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (
+                %s, %s, %s, %s, %s, %s, %s, %s,
+                %s, %s,
+                %s, %s, %s, %s,
+                %s, %s,
+                %s, %s,
+                %s, %s,
+                %s, %s,
+                %s
+            )
             ''',
             (
-                nome,
-                resumo,
-                descricao,
-                historia,
-                curiosidades or None,
-                localizacao,
-                nome_imagem or None,
-                nome_imagem2 or None,
-                nome_imagem3 or None,
-                nome_imagem4 or None,
+                nome, resumo, descricao, historia, curiosidades or None, receita or None, sugestao_lugar or None, localizacao or None,
+                latitude, longitude,
+                uploads[1]['nome'],
+                uploads[2]['nome'] if uploads[2] else None,
+                uploads[3]['nome'] if uploads[3] else None,
+                uploads[4]['nome'] if uploads[4] else None,
+                uploads[1]['tipo'], uploads[1]['dados'],
+                uploads[2]['tipo'] if uploads[2] else None, uploads[2]['dados'] if uploads[2] else None,
+                uploads[3]['tipo'] if uploads[3] else None, uploads[3]['dados'] if uploads[3] else None,
+                uploads[4]['tipo'] if uploads[4] else None, uploads[4]['dados'] if uploads[4] else None,
                 categoria_id
             )
         )
-        conn.commit()
         novo_id = cursor.lastrowid
-        flash('Lugar cadastrado e publicado automaticamente no site!', 'success')
+        if eh_comida:
+            salvar_locais_comida(cursor, novo_id, locais_comida)
+        conn.commit()
+        flash('Cadastro realizado! As informações e imagens foram salvas diretamente no MySQL.', 'success')
         return redirect(f'/detalhe/lugar/{novo_id}')
 
     except Exception as e:
@@ -834,71 +1175,111 @@ def adicionar_lugar():
 @app.route('/admin/lugar/<int:lugar_id>/editar', methods=['POST'])
 @login_requerido
 def editar_lugar(lugar_id):
-    """Atualiza um lugar no MySQL e reflete a alteração automaticamente no site."""
+    """Atualiza o lugar e, quando houver novos arquivos, substitui as imagens no MySQL."""
     garantir_estrutura_pontos()
 
     nome = request.form.get('nome', '').strip()
     categoria_id = request.form.get('categoria') or None
     localizacao = request.form.get('endereco', '').strip()
+    latitude = request.form.get('latitude', '').strip()
+    longitude = request.form.get('longitude', '').strip()
     resumo = request.form.get('resumo', '').strip()
     historia = request.form.get('historia', '').strip()
     curiosidades = request.form.get('curiosidades', '').strip()
-    nome_imagem = (request.form.get('imagem1') or request.form.get('imagem') or '').strip()
-    nome_imagem2 = request.form.get('imagem2', '').strip()
-    nome_imagem3 = request.form.get('imagem3', '').strip()
-    nome_imagem4 = request.form.get('imagem4', '').strip()
+    receita = request.form.get('receita', '').strip()
+    sugestao_lugar = request.form.get('sugestao_lugar', '').strip()
+    categoria_nome = nome_categoria_por_id(categoria_id)
+    eh_comida = categoria_nome.strip().lower() == 'comidas'
 
-    if not nome or not categoria_id or not localizacao or not resumo or not historia:
-        flash('Preencha nome, categoria, localização, resumo e história.', 'danger')
+    if not nome or not categoria_id or not resumo or not historia:
+        flash('Preencha nome, categoria, resumo e história.', 'danger')
+        return redirect(f'/admin?editar={lugar_id}#editar-lugar')
+
+    locais_comida = []
+    if eh_comida:
+        if not receita:
+            flash('Para Comidas, preencha a receita.', 'danger')
+            return redirect(f'/admin?editar={lugar_id}#editar-lugar')
+        try:
+            locais_comida = ler_locais_comida_formulario()
+        except ValueError as erro:
+            flash(str(erro), 'danger')
+            return redirect(f'/admin?editar={lugar_id}#editar-lugar')
+        sugestao_lugar = None
+        localizacao = ''
+        latitude = None
+        longitude = None
+    else:
+        if not localizacao or not latitude or not longitude:
+            flash('Informe localização, latitude e longitude para manter o mapa do local.', 'danger')
+            return redirect(f'/admin?editar={lugar_id}#editar-lugar')
+        try:
+            latitude = float(latitude.replace(',', '.'))
+            longitude = float(longitude.replace(',', '.'))
+        except ValueError:
+            flash('Latitude e longitude devem ser números válidos, como -6.458123 e -37.097456.', 'danger')
+            return redirect(f'/admin?editar={lugar_id}#editar-lugar')
+        if not (-90 <= latitude <= 90):
+            flash('Latitude inválida. Use um valor entre -90 e 90.', 'danger')
+            return redirect(f'/admin?editar={lugar_id}#editar-lugar')
+        if not (-180 <= longitude <= 180):
+            flash('Longitude inválida. Use um valor entre -180 e 180.', 'danger')
+            return redirect(f'/admin?editar={lugar_id}#editar-lugar')
+
+    try:
+        uploads = {slot: ler_imagem_upload(f'imagem{slot}') for slot in range(1, 5)}
+    except ValueError as erro:
+        flash(str(erro), 'danger')
         return redirect(f'/admin?editar={lugar_id}#editar-lugar')
 
     conn = conectar()
     cursor = conn.cursor(dictionary=True)
 
     try:
-        cursor.execute(
-            'SELECT id, nome FROM pontos_turisticos WHERE id = %s',
-            (lugar_id,)
-        )
+        cursor.execute('SELECT id, nome FROM pontos_turisticos WHERE id = %s', (lugar_id,))
         lugar = cursor.fetchone()
-
         if not lugar:
             flash('Lugar não encontrado ou já removido.', 'danger')
             return redirect('/admin#gerenciar-lugares')
 
+        sets = [
+            'nome = %s', 'resumo = %s', 'descricao = %s', 'historia = %s',
+            'curiosidades = %s', 'receita = %s', 'sugestao_lugar = %s',
+            'localizacao = %s', 'latitude = %s', 'longitude = %s', 'categoria_id = %s'
+        ]
+        valores = [
+            nome, resumo, historia, historia, curiosidades or None, receita or None,
+            sugestao_lugar or None, localizacao or None, latitude, longitude, categoria_id
+        ]
+
+        campos_imagem = {
+            1: ('nome_imagem', 'tipo_imagem', 'imagem'),
+            2: ('nome_imagem2', 'tipo_imagem2', 'imagem2'),
+            3: ('nome_imagem3', 'tipo_imagem3', 'imagem3'),
+            4: ('nome_imagem4', 'tipo_imagem4', 'imagem4'),
+        }
+
+        for slot, (campo_nome, campo_tipo, campo_blob) in campos_imagem.items():
+            upload = uploads[slot]
+            remover = request.form.get(f'remover_imagem{slot}') == '1'
+
+            if upload:
+                sets.extend([f'{campo_nome} = %s', f'{campo_tipo} = %s', f'{campo_blob} = %s'])
+                valores.extend([upload['nome'], upload['tipo'], upload['dados']])
+            elif remover:
+                sets.extend([f'{campo_nome} = NULL', f'{campo_tipo} = NULL', f'{campo_blob} = NULL'])
+
+        valores.append(lugar_id)
         cursor.execute(
-            '''
-            UPDATE pontos_turisticos
-            SET nome = %s,
-                resumo = %s,
-                descricao = %s,
-                historia = %s,
-                curiosidades = %s,
-                localizacao = %s,
-                nome_imagem = %s,
-                nome_imagem2 = %s,
-                nome_imagem3 = %s,
-                nome_imagem4 = %s,
-                categoria_id = %s
-            WHERE id = %s
-            ''',
-            (
-                nome,
-                resumo,
-                historia,  # descricao continua espelhando história por compatibilidade
-                historia,
-                curiosidades or None,
-                localizacao,
-                nome_imagem or None,
-                nome_imagem2 or None,
-                nome_imagem3 or None,
-                nome_imagem4 or None,
-                categoria_id,
-                lugar_id
-            )
+            f"UPDATE pontos_turisticos SET {', '.join(sets)} WHERE id = %s",
+            tuple(valores)
         )
+        if eh_comida:
+            salvar_locais_comida(cursor, lugar_id, locais_comida)
+        else:
+            cursor.execute('DELETE FROM locais_comida WHERE comida_id = %s', (lugar_id,))
         conn.commit()
-        flash(f'Lugar "{nome}" atualizado com sucesso no MySQL e no site.', 'success')
+        flash(f'Lugar "{nome}" atualizado com sucesso. As imagens continuam salvas no MySQL.', 'success')
         return redirect('/admin#gerenciar-lugares')
 
     except Exception as e:

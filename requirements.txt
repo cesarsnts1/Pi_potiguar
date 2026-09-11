@@ -1,53 +1,33 @@
 Flask>=2.3.0
 Werkzeug>=2.3.0
 mysql-connector-python>=8.0.0
+python-dotenv>=1.0.0
 
 # ============================================================
-# COMO RODAR O PROJETO + MYSQL (WINDOWS)
+# COMO RODAR O PROJETO (WINDOWS)
 # ============================================================
-#
-# 1) Crie o ambiente virtual:
+# 1) Criar ambiente virtual:
 #    py -m venv venv
 #
-# 2) Ative o ambiente virtual:
+# 2) Ativar:
 #    venv\Scripts\activate
 #
-# 3) Instale as dependencias:
+# 3) Instalar dependências:
 #    pip install -r requirements.txt
 #
-# 4) Antes de criar o banco, deixe o servidor MySQL ligado.
-#    Pode ser pelo MySQL instalado no Windows, XAMPP ou outro servidor MySQL.
+# 4) Configurar o MySQL:
+#    - Copie .env.example para .env
+#    - MySQL local: mantenha AUTO_CREATE_DATABASE=true
+#    - MySQL online compartilhado: use os dados do provedor e
+#      AUTO_CREATE_DATABASE=false
+#    - Se o provedor exigir TLS, informe MYSQL_SSL_CA no .env
 #
-# 5) CONFIGURACAO DO MYSQL:
-#    Todas as configuracoes ficam no arquivo: config.py
-#
-#    HOST = "localhost"
-#    PORT = 3306
-#    USER = "root"
-#    PASSWORD = "12345678"
-#    DATABASE = "pi_potiguar"
-#
-#    IMPORTANTE:
-#    - Se o seu MySQL tiver senha, coloque-a em PASSWORD no config.py.
-#      Exemplo: PASSWORD = "minhasenha"
-#    - Se o seu MySQL usar outra porta, troque PORT no config.py.
-#      Exemplo: PORT = 3307
-#    - Se usar outro usuario, troque USER no config.py.
-#    - Nao precisa alterar db.py nem createdb.py: ambos usam o config.py.
-#
-# 6) Crie/verifique o banco e as tabelas MySQL:
+# 5) Criar/verificar tabelas:
 #    py createdb.py
 #
-#    Se aparecer "Banco 'pi_potiguar' criado/verificado com sucesso!", esta pronto.
-#    O script cria automaticamente o banco definido em DATABASE caso ele
-#    ainda nao exista e cria as tabelas necessarias.
-#
-# 7) Rode o site:
+# 6) Rodar o site:
 #    py app.py
 #
+# Para configurar um único banco compartilhado pela equipe, leia:
+#    BANCO_ONLINE.md
 # ============================================================
-# COMANDOS GIT (OPCIONAL)
-# ============================================================
-# git add .
-# git commit -m "Escreva aqui uma mensagem descritiva sobre o que fez"
-# git push origin main

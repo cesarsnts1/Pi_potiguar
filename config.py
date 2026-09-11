@@ -1,19 +1,24 @@
-HOST = "localhost"
-PORT = 3306
-USER = "root"
-PASSWORD = "12345678"
-DATABASE = "pi_potiguar"
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-# ============================================================
-# CREDENCIAIS DO PAINEL ADMINISTRATIVO
-# Edite apenas as matrículas abaixo para trocar os administradores.
-# A senha é compartilhada entre os quatro acessos, conforme solicitado.
-# ============================================================
-ADMIN_SENHA = "poti345"
+HOST = os.getenv("MYSQL_HOST", "localhost")
+PORT = int(os.getenv("MYSQL_PORT", "3306"))
+USER = os.getenv("MYSQL_USER", "root")
+PASSWORD = os.getenv("MYSQL_PASSWORD", "")
+DATABASE = os.getenv("MYSQL_DATABASE", "pi_potiguar")
+
+AUTO_CREATE_DATABASE = os.getenv("AUTO_CREATE_DATABASE", "true").strip().lower() in {"1", "true", "yes", "sim"}
+
+MYSQL_SSL_CA = os.getenv("MYSQL_SSL_CA", "").strip()
+MYSQL_SSL_VERIFY_CERT = os.getenv("MYSQL_SSL_VERIFY_CERT", "true").strip().lower() in {"1", "true", "yes", "sim"}
+
+
+ADMIN_SENHA = os.getenv("ADMIN_SENHA", "poti345")
 
 ADMIN_MATRICULAS = [
-    "20231101110023",  # Administrador 1
-    "20231101110049",  # Administrador 2
-    "20231101110015",                # Administrador 3 - coloque a matrícula aqui
-    "",                # Administrador 4 - coloque a matrícula aqui
+    os.getenv("ADMIN_MATRICULA_1", "20231101110023"),
+    os.getenv("ADMIN_MATRICULA_2", "20231101110049"),
+    os.getenv("ADMIN_MATRICULA_3", "20231101110015"),
+    os.getenv("ADMIN_MATRICULA_4", ""),
 ]

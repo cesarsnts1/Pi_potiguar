@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comidas - Memória Potiguar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudo.css') }}">
+</head>
+<body class="body-conteudo comidas-page">
+    <header>
+        <div class="logo">
+            <a href="/index"><img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Logo Memória Potiguar"></a>
+        </div>
+        <nav>
+            <form action="/buscar" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button type="submit" aria-label="Buscar">🔍</button>
+            </form>
+            <a href="/index">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/sugestao">Sugerir local</a>
+            <a href="/login" class="Adm">Administração</a>
+        </nav>
+    </header>
+
+    <div class="spacer"></div>
+
+    <section class="comidas-hero">
+        <img src="{{ url_for('static', filename='img/gastronomico1.png') }}" alt="Comidas do Rio Grande do Norte">
+        <div class="comidas-hero-overlay"></div>
+        <div class="comidas-hero-texto">
+            <span>Sabores da memória</span>
+            <h1>Comidas</h1>
+            <p>Histórias, receitas e sabores que fazem parte da identidade potiguar.</p>
+        </div>
+    </section>
+
+    <section class="comidas-intro">
+        <span class="comidas-kicker">Culinária e tradição</span>
+        <h2>Conheça os pratos da nossa terra</h2>
+        <p>Cada prato reúne memória, modo de preparo e sugestões de onde experimentar essa tradição.</p>
+    </section>
+
+    <section class="container-flex-cards comidas-cards">
+        {% for comida in comidas_banco|default([]) %}
+        <a href="{{ url_for('lugar_dinamico', lugar_id=comida.id) }}" class="card-link card-comida">
+            <div class="card{% if not comida.tem_imagem1 and not comida.nome_imagem %} sem-imagem{% endif %}">
+                {% if comida.tem_imagem1 or comida.nome_imagem %}
+                    <img src="{{ url_for('imagem_lugar', lugar_id=comida.id, slot=1) }}" alt="{{ comida.nome }}">
+                {% endif %}
+                <div class="card-content">
+                    <span class="food-card-label">PRATO</span>
+                    <h3>{{ comida.nome }}</h3>
+                    <p>{{ (comida.resumo or comida.historia or 'Conheça a história e a receita deste prato.')|truncate(170) }}</p>
+                    <span class="food-card-cta">Ver história e receita →</span>
+                </div>
+            </div>
+        </a>
+        {% else %}
+        <div class="comidas-vazio">
+            <span>🍲</span>
+            <h3>Nenhum prato cadastrado ainda</h3>
+            <p>Os pratos adicionados pelo painel administrativo aparecerão aqui automaticamente.</p>
+        </div>
+        {% endfor %}
+    </section>
+
+    <a href="/index" class="btn">← Voltar para Categorias</a>
+
+    <footer>© 2026 Memória Potiguar | IFRN - Caicó</footer>
+</body>
+</html>

@@ -1,6 +1,8 @@
 # Ambiente virtual
 env/
 .env/
+.env
+*.pem
 venv/
 .venv/
 ENV/

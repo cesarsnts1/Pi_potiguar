@@ -989,12 +989,12 @@
     width: min(430px, 100%);
     padding: 42px;
     border-radius: 22px;
-    background: linear-gradient(150deg, #3c1a09, #6a2f0d);
+    background: #662c09;
     box-shadow: 0 24px 60px rgba(67,31,12,.18);
     text-align: center;
     border: 1px solid rgba(255,255,255,.08);
 }
-.login-logo { width: 170px; max-width: 100%; margin-bottom: 18px; }
+.login-logo { width: 230px; max-width: 100%; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; }
 .container-cadastro h2 { color: #fff7ed; margin-bottom: 7px; font-size: 25px; }
 .login-subtitulo { color: #e7d4c6; font-size: 12px; margin-bottom: 25px; }
 .container-cadastro form { display: flex; flex-direction: column; gap: 13px; }
@@ -1110,4 +1110,254 @@
 @media (max-width: 780px) {
     .image-slots-grid { grid-template-columns: 1fr; }
     .edit-images-preview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ==========================================================================
+   MAPA NO CADASTRO / EDIÇÃO DE LUGARES
+   ========================================================================== */
+.map-admin-box {
+    margin: 10px 0 30px;
+    padding: 26px;
+    border: 1px solid #e2c8ae;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #fffdf9, #fff7ee);
+    box-shadow: 0 10px 28px rgba(91, 50, 24, .06);
+}
+
+.map-admin-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.map-admin-heading strong {
+    display: block;
+    color: #5d280b;
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+}
+
+.map-admin-heading small {
+    display: block;
+    max-width: 680px;
+    color: #75665c;
+    line-height: 1.6;
+}
+
+.map-admin-heading > span {
+    white-space: nowrap;
+    color: #74350f;
+    background: #f2deca;
+    border: 1px solid #e6c9ad;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.map-admin-actions {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.btn-map-preview,
+.btn-map-open {
+    min-height: 52px;
+    border-radius: 14px;
+    padding: 13px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font: 700 .88rem 'Poppins', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+}
+
+.btn-map-preview {
+    flex: 1 1 300px;
+    border: 1px solid #76320d;
+    background: linear-gradient(135deg, #8e3d11, #642806);
+    color: #fff;
+    box-shadow: 0 9px 20px rgba(113, 48, 6, .16);
+}
+
+.btn-map-preview:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(113, 48, 6, .22);
+}
+
+.map-button-icon {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: rgba(255,255,255,.14);
+    font-size: 1rem;
+}
+
+.btn-map-open {
+    flex: 1 1 280px;
+    border: 1px solid #c99b70;
+    background: #fff;
+    color: #6c2d0b;
+    box-shadow: 0 6px 16px rgba(91, 50, 24, .07);
+}
+
+.btn-map-open:hover {
+    transform: translateY(-2px);
+    border-color: #9c5a2e;
+    background: #fff8f1;
+    box-shadow: 0 10px 22px rgba(91, 50, 24, .11);
+}
+
+.map-admin-preview {
+    margin-top: 20px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid #d7b99c;
+    background: #efe6dd;
+    box-shadow: 0 12px 32px rgba(61, 43, 31, .10);
+}
+
+.map-admin-preview iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.map-admin-message {
+    margin: 12px 2px 0;
+    min-height: 20px;
+    color: #8a4a23;
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+.map-admin-message.map-message-success {
+    color: #2e7047;
+}
+
+@media (max-width: 640px) {
+    .map-admin-box { padding: 19px 16px; }
+    .map-admin-heading { flex-direction: column; }
+    .map-admin-actions { flex-direction: column; }
+    .btn-map-preview,
+    .btn-map-open { width: 100%; flex-basis: auto; }
+    .map-admin-preview { height: 360px; }
+}
+
+
+/* Upload real das imagens para o MySQL */
+.file-input-potiguar {
+    padding: 8px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.file-input-potiguar::file-selector-button {
+    margin-right: 12px;
+    padding: 9px 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #713006;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.file-input-potiguar::file-selector-button:hover {
+    background: #8d4212;
+}
+
+.remove-image-option {
+    display: flex !important;
+    align-items: center;
+    gap: 7px;
+    margin: 9px 2px 1px !important;
+    color: #8c3028;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+}
+
+.remove-image-option input {
+    width: 15px;
+    height: 15px;
+    accent-color: #8c3028;
+}
+
+
+/* Campos especiais exibidos ao cadastrar a categoria Comidas */
+.food-admin-fields {
+    margin: 28px 0;
+    padding: 24px;
+    border: 1px solid #e1c0a5;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #fffaf5, #fbf0e6);
+}
+.food-admin-heading { margin-bottom: 22px; }
+.food-admin-heading > div { display: flex; align-items: center; gap: 12px; }
+.food-admin-heading > div > span { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px; background: #713008; font-size: 1.35rem; }
+.food-admin-heading strong { display: block; color: #713008; font-size: 1.02rem; }
+.food-admin-heading small { color: #8b7869; }
+.location-fields-group.hidden, .food-admin-fields.hidden { display: none !important; }
+
+
+/* RESTAURANTES DAS COMIDAS */
+.restaurant-admin-section {
+    margin-top: 22px;
+    display: grid;
+    gap: 16px;
+}
+.restaurant-admin-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #f8eee4;
+    border: 1px solid #ead3bd;
+    color: #713008;
+}
+.restaurant-admin-title strong, .restaurant-admin-title small { display: block; }
+.restaurant-admin-title small { margin-top: 4px; color: #7e6d60; font-size: .78rem; }
+.restaurant-admin-title > span { font-size: 1.6rem; }
+.restaurant-option-card {
+    position: relative;
+    padding: 22px 20px 6px;
+    border-radius: 18px;
+    border: 1px solid #ead9ca;
+    background: #fffaf5;
+    box-shadow: 0 8px 22px rgba(83, 43, 18, .05);
+}
+.restaurant-option-number {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    min-width: 34px;
+    height: 30px;
+    padding: 0 8px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: #713008;
+    color: #fff;
+    font-size: .72rem;
+    font-weight: 800;
 }

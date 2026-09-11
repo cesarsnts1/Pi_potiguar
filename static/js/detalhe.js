@@ -22,7 +22,7 @@
     let category = clean(main.dataset.categoria);
     if (!category) {
         const path = location.pathname.toLowerCase();
-        if (path.includes('gastronom')) category = 'GASTRONÔMICO';
+        if (path.includes('gastronom') || path.includes('comida')) category = 'COMIDAS';
         else if (path.includes('evento') || path.includes('festa')) category = 'EVENTO';
         else category = 'CULTURAL';
     }

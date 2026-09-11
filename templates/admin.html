@@ -206,12 +206,8 @@
                                 {% for lugar in dashboard.ultimos_lugares %}
                                     <article class="recent-row">
                                         <div class="recent-thumb">
-                                            {% if lugar.nome_imagem %}
-                                                {% if lugar.nome_imagem.startswith('http://') or lugar.nome_imagem.startswith('https://') %}
-                                                    <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                                                {% else %}
-                                                    <img src="{{ url_for('static', filename='img/' ~ lugar.nome_imagem) }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                                                {% endif %}
+                                            {% if lugar.tem_imagem1 or lugar.nome_imagem %}
+                                                <img src="{{ url_for('imagem_lugar', lugar_id=lugar.id, slot=1) }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
                                                 <span style="display:none">{{ lugar.nome[:1]|upper }}</span>
                                             {% else %}
                                                 <span>{{ lugar.nome[:1]|upper }}</span>
@@ -246,10 +242,10 @@
                     </div>
 
                     <section class="form-card-modern">
-                        <form id="placeForm" method="POST" action="{{ url_for('adicionar_lugar') }}" class="form-potiguar">
+                        <form id="placeForm" method="POST" action="{{ url_for('adicionar_lugar') }}" class="form-potiguar" enctype="multipart/form-data">
                             <div class="form-row">
                                 <div class="form-group flex-2">
-                                    <label for="placeName">Nome do lugar <em>*</em></label>
+                                    <label for="placeName">Nome <em>*</em></label>
                                     <input type="text" id="placeName" name="nome" required autocomplete="off" placeholder="Ex.: Capela de Santana" class="input-potiguar">
                                 </div>
 
@@ -264,10 +260,48 @@
                                 </div>
                             </div>
 
+                            <div id="createLocationFields" class="location-fields-group">
                             <div class="form-group">
                                 <label for="placeAddress">Endereço / Localização <em>*</em></label>
                                 <input type="text" id="placeAddress" name="endereco" required autocomplete="street-address" placeholder="Ex.: Zona Rural, Caicó - RN" class="input-potiguar">
                                 <small>Use uma localização curta e clara para o visitante.</small>
+                            </div>
+
+                            <div class="map-admin-box">
+                                <div class="map-admin-heading">
+                                    <div>
+                                        <strong>Localização no mapa</strong>
+                                        <small>No Google Maps, clique com o botão direito no ponto e clique nas coordenadas para copiá-las.</small>
+                                    </div>
+                                    <span>Google Maps</span>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group flex-1">
+                                        <label for="placeLatitude">Latitude <em>*</em></label>
+                                        <input type="text" inputmode="decimal" id="placeLatitude" name="latitude" required placeholder="Ex.: -6.458123" class="input-potiguar">
+                                    </div>
+                                    <div class="form-group flex-1">
+                                        <label for="placeLongitude">Longitude <em>*</em></label>
+                                        <input type="text" inputmode="decimal" id="placeLongitude" name="longitude" required placeholder="Ex.: -37.097456" class="input-potiguar">
+                                    </div>
+                                </div>
+
+                                <div class="map-admin-actions">
+                                    <button type="button" class="btn-map-preview" data-map-preview="create">
+                                        <span class="map-button-icon">⌖</span>
+                                        <span>Visualizar localização no mapa</span>
+                                    </button>
+                                    <a class="btn-map-open hidden" id="createMapOpen" href="#" target="_blank" rel="noopener">
+                                        <span>↗</span>
+                                        <span>Abrir localização no Google Maps</span>
+                                    </a>
+                                </div>
+                                <div class="map-admin-preview hidden" id="createMapPreview">
+                                    <iframe title="Prévia da localização" loading="lazy" allowfullscreen></iframe>
+                                </div>
+                                <p class="map-admin-message" id="createMapMessage"></p>
+                            </div>
                             </div>
 
                             <div class="form-group">
@@ -282,6 +316,46 @@
                                 <div class="textarea-helper"><span>Você pode separar a história em parágrafos usando uma linha em branco</span><span id="historyCount">0 caracteres</span></div>
                             </div>
 
+                            <div id="createFoodFields" class="food-admin-fields hidden">
+                                <div class="food-admin-heading">
+                                    <div><span>🍲</span><div><strong>Informações da comida</strong><small>Esses campos aparecem porque a categoria selecionada é Comidas.</small></div></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="placeRecipe">Receita <em>*</em></label>
+                                    <textarea id="placeRecipe" name="receita" rows="10" placeholder="Digite os ingredientes e o modo de preparo. Você pode separar em blocos usando uma linha em branco." class="input-potiguar textarea-potiguar"></textarea>
+                                    <div class="textarea-helper"><span>Inclua ingredientes e modo de preparo</span><span id="recipeCount">0 caracteres</span></div>
+                                </div>
+                                <div class="restaurant-admin-section">
+                                    <div class="restaurant-admin-title">
+                                        <div><strong>Onde comer</strong><small>Cadastre até três restaurantes. A primeira opção é obrigatória.</small></div>
+                                        <span>📍</span>
+                                    </div>
+                                    {% for ordem in range(1, 4) %}
+                                    <div class="restaurant-option-card">
+                                        <span class="restaurant-option-number">{{ ordem|string|upper }}</span>
+                                        <div class="form-group">
+                                            <label for="restaurant{{ ordem }}Name">Restaurante {{ ordem }}{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                            <input type="text" id="restaurant{{ ordem }}Name" name="restaurante_{{ ordem }}_nome" {% if ordem == 1 %}required{% endif %} placeholder="Ex.: Restaurante Ponto Certo" class="input-potiguar">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="restaurant{{ ordem }}Address">Endereço{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                            <input type="text" id="restaurant{{ ordem }}Address" name="restaurante_{{ ordem }}_endereco" {% if ordem == 1 %}required{% endif %} placeholder="Ex.: Centro, Caicó - RN" class="input-potiguar">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group flex-1">
+                                                <label for="restaurant{{ ordem }}Lat">Latitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                                <input type="text" inputmode="decimal" id="restaurant{{ ordem }}Lat" name="restaurante_{{ ordem }}_latitude" {% if ordem == 1 %}required{% endif %} placeholder="-6.458123" class="input-potiguar">
+                                            </div>
+                                            <div class="form-group flex-1">
+                                                <label for="restaurant{{ ordem }}Lng">Longitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                                <input type="text" inputmode="decimal" id="restaurant{{ ordem }}Lng" name="restaurante_{{ ordem }}_longitude" {% if ordem == 1 %}required{% endif %} placeholder="-37.097456" class="input-potiguar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="placeCuriosities">Curiosidades</label>
                                 <textarea id="placeCuriosities" name="curiosidades" rows="5" placeholder="Digite uma curiosidade por linha. Ex.:\nÉ uma das construções mais antigas da região.\nFoi restaurada em determinado período." class="input-potiguar textarea-potiguar"></textarea>
@@ -289,31 +363,31 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Imagens do lugar</label>
+                                <label>Imagens</label>
                                 <div class="image-slots-grid">
                                     <div class="image-slot image-slot-cover">
                                         <span class="image-slot-number">01</span>
                                         <label for="placeImg1">Imagem 1 — Capa / Fundo <em>*</em></label>
-                                        <input type="text" id="placeImg1" name="imagem1" required placeholder="Ex.: casario_caicoense.jpg ou https://..." class="input-potiguar">
-                                        <small>Esta foto aparece nos cards e como fundo no topo da página do lugar.</small>
+                                        <input type="file" id="placeImg1" name="imagem1" required accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
+                                        <small>É a imagem principal dos cards e da galeria. Para Comidas, envie as 4 fotos.</small>
                                     </div>
                                     <div class="image-slot">
                                         <span class="image-slot-number">02</span>
                                         <label for="placeImg2">Imagem 2 — Galeria</label>
-                                        <input type="text" id="placeImg2" name="imagem2" placeholder="Ex.: casario_caicoense2.jpg" class="input-potiguar">
+                                        <input type="file" id="placeImg2" name="imagem2" accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
                                     </div>
                                     <div class="image-slot">
                                         <span class="image-slot-number">03</span>
                                         <label for="placeImg3">Imagem 3 — Galeria</label>
-                                        <input type="text" id="placeImg3" name="imagem3" placeholder="Ex.: casario_caicoense3.jpg" class="input-potiguar">
+                                        <input type="file" id="placeImg3" name="imagem3" accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
                                     </div>
                                     <div class="image-slot">
                                         <span class="image-slot-number">04</span>
                                         <label for="placeImg4">Imagem 4 — Galeria</label>
-                                        <input type="text" id="placeImg4" name="imagem4" placeholder="Ex.: casario_caicoense4.jpg" class="input-potiguar">
+                                        <input type="file" id="placeImg4" name="imagem4" accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
                                     </div>
                                 </div>
-                                <small>Para arquivos do projeto, coloque as fotos em <strong>static/img/</strong> e informe apenas o nome do arquivo. URLs também funcionam.</small>
+                                <small>Formatos aceitos: JPG, PNG, WEBP e GIF. Limite de <strong>8 MB por imagem</strong>. Não é necessário copiar arquivos para <strong>static/img</strong> nem informar links.</small>
                             </div>
 
                             <div class="form-actions-potiguar">
@@ -351,12 +425,8 @@
                                 {% for lugar in lugares %}
                                     <article class="place-manager-row">
                                         <div class="place-manager-thumb">
-                                            {% if lugar.nome_imagem %}
-                                                {% if lugar.nome_imagem.startswith('http://') or lugar.nome_imagem.startswith('https://') %}
-                                                    <img src="{{ lugar.nome_imagem }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                                                {% else %}
-                                                    <img src="{{ url_for('static', filename='img/' ~ lugar.nome_imagem) }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                                                {% endif %}
+                                            {% if lugar.tem_imagem1 or lugar.nome_imagem %}
+                                                <img src="{{ url_for('imagem_lugar', lugar_id=lugar.id, slot=1) }}" alt="{{ lugar.nome }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
                                                 <span style="display:none">{{ lugar.nome[:1]|upper }}</span>
                                             {% else %}
                                                 <span>{{ lugar.nome[:1]|upper }}</span>
@@ -416,10 +486,10 @@
                     </div>
 
                     <section class="form-card-modern edit-form-card">
-                        <form id="editPlaceForm" method="POST" action="{{ url_for('editar_lugar', lugar_id=lugar_edicao.id) }}" class="form-potiguar">
+                        <form id="editPlaceForm" method="POST" action="{{ url_for('editar_lugar', lugar_id=lugar_edicao.id) }}" class="form-potiguar" enctype="multipart/form-data">
                             <div class="form-row">
                                 <div class="form-group flex-2">
-                                    <label for="editPlaceName">Nome do lugar <em>*</em></label>
+                                    <label for="editPlaceName">Nome <em>*</em></label>
                                     <input type="text" id="editPlaceName" name="nome" required autocomplete="off" value="{{ lugar_edicao.nome }}" class="input-potiguar">
                                 </div>
 
@@ -434,9 +504,47 @@
                                 </div>
                             </div>
 
+                            <div id="editLocationFields" class="location-fields-group">
                             <div class="form-group">
                                 <label for="editPlaceAddress">Endereço / Localização <em>*</em></label>
                                 <input type="text" id="editPlaceAddress" name="endereco" required value="{{ lugar_edicao.localizacao or '' }}" class="input-potiguar">
+                            </div>
+
+                            <div class="map-admin-box">
+                                <div class="map-admin-heading">
+                                    <div>
+                                        <strong>Localização no mapa</strong>
+                                        <small>Você pode alterar as coordenadas e conferir a prévia antes de salvar.</small>
+                                    </div>
+                                    <span>Google Maps</span>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group flex-1">
+                                        <label for="editPlaceLatitude">Latitude <em>*</em></label>
+                                        <input type="text" inputmode="decimal" id="editPlaceLatitude" name="latitude" required value="{{ lugar_edicao.latitude if lugar_edicao.latitude is not none else '' }}" placeholder="Ex.: -6.458123" class="input-potiguar">
+                                    </div>
+                                    <div class="form-group flex-1">
+                                        <label for="editPlaceLongitude">Longitude <em>*</em></label>
+                                        <input type="text" inputmode="decimal" id="editPlaceLongitude" name="longitude" required value="{{ lugar_edicao.longitude if lugar_edicao.longitude is not none else '' }}" placeholder="Ex.: -37.097456" class="input-potiguar">
+                                    </div>
+                                </div>
+
+                                <div class="map-admin-actions">
+                                    <button type="button" class="btn-map-preview" data-map-preview="edit">
+                                        <span class="map-button-icon">⌖</span>
+                                        <span>Visualizar localização no mapa</span>
+                                    </button>
+                                    <a class="btn-map-open hidden" id="editMapOpen" href="#" target="_blank" rel="noopener">
+                                        <span>↗</span>
+                                        <span>Abrir localização no Google Maps</span>
+                                    </a>
+                                </div>
+                                <div class="map-admin-preview hidden" id="editMapPreview">
+                                    <iframe title="Prévia da localização" loading="lazy" allowfullscreen></iframe>
+                                </div>
+                                <p class="map-admin-message" id="editMapMessage"></p>
+                            </div>
                             </div>
 
                             <div class="form-group">
@@ -451,6 +559,47 @@
                                 <div class="textarea-helper"><span>Separe os parágrafos com uma linha em branco</span><span id="editHistoryCount">0 caracteres</span></div>
                             </div>
 
+                            <div id="editFoodFields" class="food-admin-fields hidden">
+                                <div class="food-admin-heading">
+                                    <div><span>🍲</span><div><strong>Informações da comida</strong><small>Receita e sugestão de onde experimentar o prato.</small></div></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPlaceRecipe">Receita <em>*</em></label>
+                                    <textarea id="editPlaceRecipe" name="receita" rows="10" class="input-potiguar textarea-potiguar">{{ lugar_edicao.receita or '' }}</textarea>
+                                    <div class="textarea-helper"><span>Ingredientes e modo de preparo</span><span id="editRecipeCount">0 caracteres</span></div>
+                                </div>
+                                <div class="restaurant-admin-section">
+                                    <div class="restaurant-admin-title">
+                                        <div><strong>Onde comer</strong><small>Altere as opções de restaurante e suas coordenadas.</small></div>
+                                        <span>📍</span>
+                                    </div>
+                                    {% for ordem in range(1, 4) %}
+                                        {% set restaurante = (restaurantes_edicao | selectattr('ordem', 'equalto', ordem) | list | first) %}
+                                        <div class="restaurant-option-card">
+                                            <span class="restaurant-option-number">{{ ordem }}</span>
+                                            <div class="form-group">
+                                                <label for="editRestaurant{{ ordem }}Name">Restaurante {{ ordem }}{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                                <input type="text" id="editRestaurant{{ ordem }}Name" name="restaurante_{{ ordem }}_nome" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.nome if restaurante else '' }}" class="input-potiguar">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="editRestaurant{{ ordem }}Address">Endereço{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                                <input type="text" id="editRestaurant{{ ordem }}Address" name="restaurante_{{ ordem }}_endereco" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.endereco if restaurante else '' }}" class="input-potiguar">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group flex-1">
+                                                    <label for="editRestaurant{{ ordem }}Lat">Latitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                                    <input type="text" inputmode="decimal" id="editRestaurant{{ ordem }}Lat" name="restaurante_{{ ordem }}_latitude" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.latitude if restaurante else '' }}" class="input-potiguar">
+                                                </div>
+                                                <div class="form-group flex-1">
+                                                    <label for="editRestaurant{{ ordem }}Lng">Longitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
+                                                    <input type="text" inputmode="decimal" id="editRestaurant{{ ordem }}Lng" name="restaurante_{{ ordem }}_longitude" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.longitude if restaurante else '' }}" class="input-potiguar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="editPlaceCuriosities">Curiosidades</label>
                                 <textarea id="editPlaceCuriosities" name="curiosidades" rows="6" class="input-potiguar textarea-potiguar">{{ lugar_edicao.curiosidades or '' }}</textarea>
@@ -458,47 +607,58 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Imagens do lugar</label>
+                                <label>Substituir imagens</label>
                                 <div class="image-slots-grid">
                                     <div class="image-slot image-slot-cover">
                                         <span class="image-slot-number">01</span>
-                                        <label for="editPlaceImg1">Imagem 1 — Capa / Fundo</label>
-                                        <input type="text" id="editPlaceImg1" name="imagem1" value="{{ lugar_edicao.nome_imagem or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
-                                        <small>É a imagem principal usada nos cards e no fundo do topo da página.</small>
+                                        <label for="editPlaceImg1">Nova imagem 1 — Capa / Fundo</label>
+                                        <input type="file" id="editPlaceImg1" name="imagem1" accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
+                                        <small>Se você não escolher um novo arquivo, a imagem atual será mantida.</small>
                                     </div>
                                     <div class="image-slot">
                                         <span class="image-slot-number">02</span>
-                                        <label for="editPlaceImg2">Imagem 2 — Galeria</label>
-                                        <input type="text" id="editPlaceImg2" name="imagem2" value="{{ lugar_edicao.nome_imagem2 or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
+                                        <label for="editPlaceImg2">Nova imagem 2 — Galeria</label>
+                                        <input type="file" id="editPlaceImg2" name="imagem2" accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
                                     </div>
                                     <div class="image-slot">
                                         <span class="image-slot-number">03</span>
-                                        <label for="editPlaceImg3">Imagem 3 — Galeria</label>
-                                        <input type="text" id="editPlaceImg3" name="imagem3" value="{{ lugar_edicao.nome_imagem3 or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
+                                        <label for="editPlaceImg3">Nova imagem 3 — Galeria</label>
+                                        <input type="file" id="editPlaceImg3" name="imagem3" accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
                                     </div>
                                     <div class="image-slot">
                                         <span class="image-slot-number">04</span>
-                                        <label for="editPlaceImg4">Imagem 4 — Galeria</label>
-                                        <input type="text" id="editPlaceImg4" name="imagem4" value="{{ lugar_edicao.nome_imagem4 or '' }}" placeholder="Nome do arquivo ou URL" class="input-potiguar">
+                                        <label for="editPlaceImg4">Nova imagem 4 — Galeria</label>
+                                        <input type="file" id="editPlaceImg4" name="imagem4" accept="image/jpeg,image/png,image/webp,image/gif" class="input-potiguar file-input-potiguar">
                                     </div>
                                 </div>
-                                <small>Arquivos locais devem ficar em <strong>static/img/</strong>. Informe apenas o nome do arquivo.</small>
+                                <small>Novas imagens substituem as antigas e são gravadas diretamente no MySQL.</small>
                             </div>
 
-                            {% set imagens_edicao = [lugar_edicao.nome_imagem, lugar_edicao.nome_imagem2, lugar_edicao.nome_imagem3, lugar_edicao.nome_imagem4] %}
-                            {% if imagens_edicao|select|list %}
+                            {% set imagens_edicao = [
+                                (1, lugar_edicao.tem_imagem1, lugar_edicao.nome_imagem),
+                                (2, lugar_edicao.tem_imagem2, lugar_edicao.nome_imagem2),
+                                (3, lugar_edicao.tem_imagem3, lugar_edicao.nome_imagem3),
+                                (4, lugar_edicao.tem_imagem4, lugar_edicao.nome_imagem4)
+                            ] %}
+                            {% set ns_img = namespace(total=0) %}
+                            {% for slot, tem_blob, nome_arquivo in imagens_edicao %}
+                                {% if tem_blob or nome_arquivo %}{% set ns_img.total = ns_img.total + 1 %}{% endif %}
+                            {% endfor %}
+                            {% if ns_img.total > 0 %}
                             <div class="edit-images-preview">
                                 <span class="edit-images-title">Imagens atuais</span>
                                 <div class="edit-images-preview-grid">
-                                    {% for imagem in imagens_edicao if imagem %}
-                                    <div class="edit-image-preview">
-                                        <span>{% if loop.index == 1 %}Capa{% else %}Galeria {{ loop.index - 1 }}{% endif %}</span>
-                                        {% if imagem.startswith('http://') or imagem.startswith('https://') %}
-                                            <img src="{{ imagem }}" alt="Imagem de {{ lugar_edicao.nome }}">
-                                        {% else %}
-                                            <img src="{{ url_for('static', filename='img/' ~ imagem) }}" alt="Imagem de {{ lugar_edicao.nome }}">
+                                    {% for slot, tem_blob, nome_arquivo in imagens_edicao %}
+                                        {% if tem_blob or nome_arquivo %}
+                                        <div class="edit-image-preview">
+                                            <span>{% if slot == 1 %}Capa{% else %}Galeria {{ slot - 1 }}{% endif %}</span>
+                                            <img src="{{ url_for('imagem_lugar', lugar_id=lugar_edicao.id, slot=slot) }}" alt="Imagem {{ slot }} de {{ lugar_edicao.nome }}">
+                                            <label class="remove-image-option">
+                                                <input type="checkbox" name="remover_imagem{{ slot }}" value="1">
+                                                Remover esta imagem
+                                            </label>
+                                        </div>
                                         {% endif %}
-                                    </div>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -629,9 +789,11 @@
             ['placeSummary', 'summaryCount'],
             ['placeHistory', 'historyCount'],
             ['placeCuriosities', 'curiosityCount'],
+            ['placeRecipe', 'recipeCount'],
             ['editPlaceSummary', 'editSummaryCount'],
             ['editPlaceHistory', 'editHistoryCount'],
-            ['editPlaceCuriosities', 'editCuriosityCount']
+            ['editPlaceCuriosities', 'editCuriosityCount'],
+            ['editPlaceRecipe', 'editRecipeCount']
         ];
         counters.forEach(([fieldId, countId]) => {
             const field = document.getElementById(fieldId);
@@ -641,6 +803,116 @@
             field.addEventListener('input', updateCount);
             updateCount();
         });
+
+        function configureCategoryMode(prefix) {
+            const isEdit = prefix === 'edit';
+            const category = document.getElementById(isEdit ? 'editPlaceCategory' : 'placeCategory');
+            const locationFields = document.getElementById(isEdit ? 'editLocationFields' : 'createLocationFields');
+            const foodFields = document.getElementById(isEdit ? 'editFoodFields' : 'createFoodFields');
+            const address = document.getElementById(isEdit ? 'editPlaceAddress' : 'placeAddress');
+            const lat = document.getElementById(isEdit ? 'editPlaceLatitude' : 'placeLatitude');
+            const lng = document.getElementById(isEdit ? 'editPlaceLongitude' : 'placeLongitude');
+            const recipe = document.getElementById(isEdit ? 'editPlaceRecipe' : 'placeRecipe');
+            const images = [2, 3, 4].map(slot => document.getElementById(`${isEdit ? 'editPlaceImg' : 'placeImg'}${slot}`));
+
+            if (!category || !locationFields || !foodFields) return;
+
+            function updateCategoryMode() {
+                const option = category.options[category.selectedIndex];
+                const isFood = option && option.textContent.trim().toLowerCase() === 'comidas';
+
+                locationFields.classList.toggle('hidden', isFood);
+                foodFields.classList.toggle('hidden', !isFood);
+
+                [address, lat, lng].forEach(field => {
+                    if (field) field.required = !isFood;
+                });
+                if (recipe) recipe.required = isFood;
+                foodFields.querySelectorAll('[name^="restaurante_1_"]').forEach(field => {
+                    field.required = isFood;
+                });
+
+                // No cadastro de uma comida, as quatro fotos fazem parte do modelo.
+                // Na edição não obrigamos novo upload, porque as fotos atuais podem ser mantidas.
+                if (!isEdit) {
+                    images.forEach(field => {
+                        if (field) field.required = isFood;
+                    });
+                }
+            }
+
+            category.addEventListener('change', updateCategoryMode);
+            updateCategoryMode();
+        }
+
+        configureCategoryMode('create');
+        configureCategoryMode('edit');
+
+        function configureMapPreview(prefix) {
+            const isEdit = prefix === 'edit';
+            const latInput = document.getElementById(isEdit ? 'editPlaceLatitude' : 'placeLatitude');
+            const lngInput = document.getElementById(isEdit ? 'editPlaceLongitude' : 'placeLongitude');
+            const preview = document.getElementById(isEdit ? 'editMapPreview' : 'createMapPreview');
+            const openLink = document.getElementById(isEdit ? 'editMapOpen' : 'createMapOpen');
+            const message = document.getElementById(isEdit ? 'editMapMessage' : 'createMapMessage');
+            const button = document.querySelector(`[data-map-preview="${prefix}"]`);
+
+            if (!button || !latInput || !lngInput || !preview || !openLink || !message) return;
+
+            function normalizeCoordinate(value) {
+                return String(value || '').trim().replace(',', '.');
+            }
+
+            function updatePreview() {
+                const lat = normalizeCoordinate(latInput.value);
+                const lng = normalizeCoordinate(lngInput.value);
+                const latNumber = Number(lat);
+                const lngNumber = Number(lng);
+
+                message.classList.remove('map-message-success');
+                message.textContent = '';
+
+                if (!lat || !lng) {
+                    message.textContent = 'Informe a latitude e a longitude para visualizar o mapa.';
+                    preview.classList.add('hidden');
+                    openLink.classList.add('hidden');
+                    return;
+                }
+
+                if (Number.isNaN(latNumber) || Number.isNaN(lngNumber)) {
+                    message.textContent = 'Use coordenadas numéricas válidas, por exemplo: -6.458123 e -37.097456.';
+                    preview.classList.add('hidden');
+                    openLink.classList.add('hidden');
+                    return;
+                }
+
+                if (latNumber < -90 || latNumber > 90 || lngNumber < -180 || lngNumber > 180) {
+                    message.textContent = 'Coordenadas fora do intervalo válido. Latitude: -90 a 90; longitude: -180 a 180.';
+                    preview.classList.add('hidden');
+                    openLink.classList.add('hidden');
+                    return;
+                }
+
+                const query = `${latNumber},${lngNumber}`;
+                preview.querySelector('iframe').src = `https://www.google.com/maps?q=${encodeURIComponent(query)}&z=17&output=embed`;
+                preview.classList.remove('hidden');
+
+                openLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+                openLink.classList.remove('hidden');
+
+                message.textContent = `Localização carregada pelas coordenadas ${latNumber}, ${lngNumber}.`;
+                message.classList.add('map-message-success');
+            }
+
+            button.addEventListener('click', updatePreview);
+
+            if (isEdit && latInput.value && lngInput.value) {
+                updatePreview();
+            }
+        }
+
+        configureMapPreview('create');
+        configureMapPreview('edit');
 
         ['placeForm', 'editPlaceForm'].forEach(formId => {
             const form = document.getElementById(formId);
