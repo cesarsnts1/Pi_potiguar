@@ -77,7 +77,7 @@
 
         <section class="info-secao localizacao-secao" data-secao="localizacao">
             <h2>Localização</h2>
-            <p><strong>Endereço:</strong> Nas proxímidades de Jucurutu - RN</p>
+            <p><strong>Endereço:</strong> locazida na br 118 ,Jucurutu - RN</p>
             
             <div id="mapa"></div>
         </section>
@@ -93,8 +93,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         function inicializarMapa() {
-            var lat = -6.013829;
-            var lng = -37.020790;
+            var lat = -6.15548308424508;
+            var lng = -37.10430958969672;
 
             // 1. CAMADA PADRÃO: Mapa Comum (OpenStreetMap)
             var mapaComum = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -116,7 +116,7 @@
             // Adiciona o marcador com texto fixo
             L.marker([lat, lng])
                 .addTo(mapa)
-                .bindPopup(" <br>Casa de Pedra, Jucurutu - RN")
+                .bindPopup(" <br>Nova Barra de Santana, Jucurutu - RN")
                 .openPopup();
 
             // 3. CONTROLE DE CAMADAS: Cria o seletor no canto superior direito
