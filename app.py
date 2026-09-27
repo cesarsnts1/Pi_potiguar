@@ -3,13 +3,16 @@ from db import conectar
 from functools import wraps
 from pesquisa_lugares import LUGARES_PESQUISADOS, SEED_CHAVE
 from config import ADMIN_MATRICULAS, ADMIN_SENHA
+from io import BytesIO
 import os
+from PIL import Image, ImageOps
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_potiguar'
 app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # até 32 MB por envio
 
-MAX_IMAGEM_BYTES = 8 * 1024 * 1024  # 8 MB por imagem
+MAX_IMAGEM_BYTES = 8 * 1024 * 1024  # 8 MB por imagem enviada
+MAX_IMAGEM_BANCO_BYTES = 700 * 1024  # mantém cada pacote abaixo do limite comum do MySQL
 TIPOS_IMAGEM_PERMITIDOS = {'image/jpeg', 'image/png', 'image/webp', 'image/gif'}
 
 
@@ -23,6 +26,32 @@ def detectar_tipo_imagem(dados):
     if dados.startswith((b'GIF87a', b'GIF89a')):
         return 'image/gif'
     return None
+
+
+def preparar_imagem_para_banco(dados):
+    """Redimensiona e codifica fotos em WebP para respeitar o limite de pacote do MySQL."""
+    try:
+        imagem = Image.open(BytesIO(dados))
+        imagem.seek(0)
+        imagem = ImageOps.exif_transpose(imagem)
+        if imagem.mode not in ('RGB', 'RGBA'):
+            imagem = imagem.convert('RGBA' if 'transparency' in imagem.info else 'RGB')
+        imagem.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+
+        while True:
+            for qualidade in (82, 72, 62, 52, 42):
+                buffer = BytesIO()
+                imagem.save(buffer, format='WEBP', quality=qualidade, method=4)
+                comprimida = buffer.getvalue()
+                if len(comprimida) <= MAX_IMAGEM_BANCO_BYTES:
+                    return comprimida
+
+            largura, altura = imagem.size
+            if max(largura, altura) <= 480:
+                raise ValueError('A imagem não pôde ser reduzida para o limite aceito pelo banco.')
+            imagem = imagem.resize((max(1, int(largura * 0.8)), max(1, int(altura * 0.8))), Image.Resampling.LANCZOS)
+    except (OSError, ValueError) as erro:
+        raise ValueError(f'Não foi possível preparar a imagem para salvar: {erro}') from erro
 
 
 def ler_imagem_upload(campo, obrigatoria=False):
@@ -42,8 +71,13 @@ def ler_imagem_upload(campo, obrigatoria=False):
     if tipo_real not in TIPOS_IMAGEM_PERMITIDOS:
         raise ValueError(f'O arquivo {arquivo.filename} não é uma imagem JPG, PNG, WEBP ou GIF válida.')
 
+    try:
+        dados = preparar_imagem_para_banco(dados)
+    except ValueError as erro:
+        raise ValueError(f'{arquivo.filename}: {erro}') from erro
+
     nome = os.path.basename(arquivo.filename).strip()[:500] or 'imagem'
-    return {'dados': dados, 'tipo': tipo_real, 'nome': nome}
+    return {'dados': dados, 'tipo': 'image/webp', 'nome': nome}
 
 
 def campos_ponto_sem_blobs(alias='p'):
@@ -302,7 +336,7 @@ def buscar_locais_comida(comida_id):
 
 
 def ler_locais_comida_formulario():
-    """Lê até três restaurantes do formulário e valida suas coordenadas."""
+    """Lê até três restaurantes, aceitando endereço e coordenadas opcionais."""
     locais = []
 
     for ordem in range(1, 4):
@@ -311,23 +345,23 @@ def ler_locais_comida_formulario():
         latitude_txt = request.form.get(f'restaurante_{ordem}_latitude', '').strip().replace(',', '.')
         longitude_txt = request.form.get(f'restaurante_{ordem}_longitude', '').strip().replace(',', '.')
 
-        campos = [nome, endereco, latitude_txt, longitude_txt]
-        if not any(campos):
+        # Sem nome, não existe restaurante para salvar; campos vazios são opcionais.
+        if not nome:
             continue
 
-        if not all(campos):
-            raise ValueError(
-                f'Preencha nome, endereço, latitude e longitude da opção {ordem} de onde comer.'
-            )
+        if bool(latitude_txt) != bool(longitude_txt):
+            raise ValueError(f'Informe latitude e longitude juntas para o restaurante {ordem}.')
 
-        try:
-            latitude = float(latitude_txt)
-            longitude = float(longitude_txt)
-        except ValueError:
-            raise ValueError(f'As coordenadas do restaurante {ordem} precisam ser números válidos.')
+        latitude = longitude = None
+        if latitude_txt and longitude_txt:
+            try:
+                latitude = float(latitude_txt)
+                longitude = float(longitude_txt)
+            except ValueError:
+                raise ValueError(f'As coordenadas do restaurante {ordem} precisam ser números válidos.')
 
-        if not (-90 <= latitude <= 90) or not (-180 <= longitude <= 180):
-            raise ValueError(f'As coordenadas do restaurante {ordem} estão fora do intervalo válido.')
+            if not (-90 <= latitude <= 90) or not (-180 <= longitude <= 180):
+                raise ValueError(f'As coordenadas do restaurante {ordem} estão fora do intervalo válido.')
 
         locais.append({
             'ordem': ordem,
@@ -337,11 +371,7 @@ def ler_locais_comida_formulario():
             'longitude': longitude,
         })
 
-    if not locais:
-        raise ValueError('Cadastre pelo menos uma opção de restaurante para a comida.')
-
     return locais
-
 
 def salvar_locais_comida(cursor, comida_id, locais):
     """Substitui as sugestões de restaurantes da comida pelas enviadas no formulário."""
@@ -1119,20 +1149,14 @@ def adicionar_lugar():
                 nome, resumo, descricao, historia, curiosidades, receita, sugestao_lugar, localizacao,
                 latitude, longitude,
                 nome_imagem, nome_imagem2, nome_imagem3, nome_imagem4,
-                tipo_imagem, imagem,
-                tipo_imagem2, imagem2,
-                tipo_imagem3, imagem3,
-                tipo_imagem4, imagem4,
+                tipo_imagem, tipo_imagem2, tipo_imagem3, tipo_imagem4,
                 categoria_id
             )
             VALUES (
                 %s, %s, %s, %s, %s, %s, %s, %s,
                 %s, %s,
                 %s, %s, %s, %s,
-                %s, %s,
-                %s, %s,
-                %s, %s,
-                %s, %s,
+                %s, %s, %s, %s,
                 %s
             )
             ''',
@@ -1143,14 +1167,28 @@ def adicionar_lugar():
                 uploads[2]['nome'] if uploads[2] else None,
                 uploads[3]['nome'] if uploads[3] else None,
                 uploads[4]['nome'] if uploads[4] else None,
-                uploads[1]['tipo'], uploads[1]['dados'],
-                uploads[2]['tipo'] if uploads[2] else None, uploads[2]['dados'] if uploads[2] else None,
-                uploads[3]['tipo'] if uploads[3] else None, uploads[3]['dados'] if uploads[3] else None,
-                uploads[4]['tipo'] if uploads[4] else None, uploads[4]['dados'] if uploads[4] else None,
+                uploads[1]['tipo'],
+                uploads[2]['tipo'] if uploads[2] else None,
+                uploads[3]['tipo'] if uploads[3] else None,
+                uploads[4]['tipo'] if uploads[4] else None,
                 categoria_id
             )
         )
         novo_id = cursor.lastrowid
+        # Salva cada imagem em uma instrução separada para evitar exceder
+        # max_allowed_packet quando o formulário envia quatro fotos grandes.
+        colunas_blob = {
+            1: ('tipo_imagem', 'imagem'),
+            2: ('tipo_imagem2', 'imagem2'),
+            3: ('tipo_imagem3', 'imagem3'),
+            4: ('tipo_imagem4', 'imagem4'),
+        }
+        for slot, (coluna_tipo, coluna_blob) in colunas_blob.items():
+            if uploads[slot]:
+                cursor.execute(
+                    f'UPDATE pontos_turisticos SET {coluna_tipo} = %s, {coluna_blob} = %s WHERE id = %s',
+                    (uploads[slot]['tipo'], uploads[slot]['dados'], novo_id)
+                )
         if eh_comida:
             salvar_locais_comida(cursor, novo_id, locais_comida)
         conn.commit()
@@ -1158,7 +1196,11 @@ def adicionar_lugar():
         return redirect(f'/detalhe/lugar/{novo_id}')
 
     except Exception as e:
-        conn.rollback()
+        try:
+            if conn.is_connected():
+                conn.rollback()
+        except Exception:
+            pass
         print('ERRO BANCO:', e)
         flash(f'Erro ao salvar: {e}', 'danger')
         return redirect('/admin#novo-lugar')

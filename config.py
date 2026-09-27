@@ -6,6 +6,7 @@ HOST = os.getenv("MYSQL_HOST", "localhost")
 PORT = int(os.getenv("MYSQL_PORT", "3306"))
 USER = os.getenv("MYSQL_USER", "root")
 PASSWORD = os.getenv("MYSQL_PASSWORD", "")
+PASSWORD = os.getenv("MYSQL_PASSWORD", "icaro")
 DATABASE = os.getenv("MYSQL_DATABASE", "pi_potiguar")
 
 AUTO_CREATE_DATABASE = os.getenv("AUTO_CREATE_DATABASE", "true").strip().lower() in {"1", "true", "yes", "sim"}

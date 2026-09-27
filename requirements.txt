@@ -2,6 +2,7 @@ Flask>=2.3.0
 Werkzeug>=2.3.0
 mysql-connector-python>=8.0.0
 python-dotenv>=1.0.0
+Pillow>=10.0.0
 
 # ============================================================
 # COMO RODAR O PROJETO (WINDOWS)

@@ -334,21 +334,21 @@
                                     <div class="restaurant-option-card">
                                         <span class="restaurant-option-number">{{ ordem|string|upper }}</span>
                                         <div class="form-group">
-                                            <label for="restaurant{{ ordem }}Name">Restaurante {{ ordem }}{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                            <input type="text" id="restaurant{{ ordem }}Name" name="restaurante_{{ ordem }}_nome" {% if ordem == 1 %}required{% endif %} placeholder="Ex.: Restaurante Ponto Certo" class="input-potiguar">
+                                            <label for="restaurant{{ ordem }}Name">Restaurante {{ ordem }}</label>
+                                            <input type="text" id="restaurant{{ ordem }}Name" name="restaurante_{{ ordem }}_nome" placeholder="Ex.: Restaurante Ponto Certo" class="input-potiguar">
                                         </div>
                                         <div class="form-group">
-                                            <label for="restaurant{{ ordem }}Address">Endereço{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                            <input type="text" id="restaurant{{ ordem }}Address" name="restaurante_{{ ordem }}_endereco" {% if ordem == 1 %}required{% endif %} placeholder="Ex.: Centro, Caicó - RN" class="input-potiguar">
+                                            <label for="restaurant{{ ordem }}Address">Endereço</label>
+                                            <input type="text" id="restaurant{{ ordem }}Address" name="restaurante_{{ ordem }}_endereco" placeholder="Ex.: Centro, Caicó - RN" class="input-potiguar">
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group flex-1">
-                                                <label for="restaurant{{ ordem }}Lat">Latitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                                <input type="text" inputmode="decimal" id="restaurant{{ ordem }}Lat" name="restaurante_{{ ordem }}_latitude" {% if ordem == 1 %}required{% endif %} placeholder="-6.458123" class="input-potiguar">
+                                                <label for="restaurant{{ ordem }}Lat">Latitude</label>
+                                                <input type="text" inputmode="decimal" id="restaurant{{ ordem }}Lat" name="restaurante_{{ ordem }}_latitude" placeholder="-6.458123" class="input-potiguar">
                                             </div>
                                             <div class="form-group flex-1">
-                                                <label for="restaurant{{ ordem }}Lng">Longitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                                <input type="text" inputmode="decimal" id="restaurant{{ ordem }}Lng" name="restaurante_{{ ordem }}_longitude" {% if ordem == 1 %}required{% endif %} placeholder="-37.097456" class="input-potiguar">
+                                                <label for="restaurant{{ ordem }}Lng">Longitude</label>
+                                                <input type="text" inputmode="decimal" id="restaurant{{ ordem }}Lng" name="restaurante_{{ ordem }}_longitude" placeholder="-37.097456" class="input-potiguar">
                                             </div>
                                         </div>
                                     </div>
@@ -578,21 +578,21 @@
                                         <div class="restaurant-option-card">
                                             <span class="restaurant-option-number">{{ ordem }}</span>
                                             <div class="form-group">
-                                                <label for="editRestaurant{{ ordem }}Name">Restaurante {{ ordem }}{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                                <input type="text" id="editRestaurant{{ ordem }}Name" name="restaurante_{{ ordem }}_nome" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.nome if restaurante else '' }}" class="input-potiguar">
+                                                <label for="editRestaurant{{ ordem }}Name">Restaurante {{ ordem }}</label>
+                                                <input type="text" id="editRestaurant{{ ordem }}Name" name="restaurante_{{ ordem }}_nome" value="{{ restaurante.nome if restaurante else '' }}" class="input-potiguar">
                                             </div>
                                             <div class="form-group">
-                                                <label for="editRestaurant{{ ordem }}Address">Endereço{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                                <input type="text" id="editRestaurant{{ ordem }}Address" name="restaurante_{{ ordem }}_endereco" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.endereco if restaurante else '' }}" class="input-potiguar">
+                                                <label for="editRestaurant{{ ordem }}Address">Endereço</label>
+                                                <input type="text" id="editRestaurant{{ ordem }}Address" name="restaurante_{{ ordem }}_endereco" value="{{ restaurante.endereco if restaurante else '' }}" class="input-potiguar">
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group flex-1">
-                                                    <label for="editRestaurant{{ ordem }}Lat">Latitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                                    <input type="text" inputmode="decimal" id="editRestaurant{{ ordem }}Lat" name="restaurante_{{ ordem }}_latitude" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.latitude if restaurante else '' }}" class="input-potiguar">
+                                                    <label for="editRestaurant{{ ordem }}Lat">Latitude</label>
+                                                    <input type="text" inputmode="decimal" id="editRestaurant{{ ordem }}Lat" name="restaurante_{{ ordem }}_latitude" value="{{ restaurante.latitude if restaurante else '' }}" class="input-potiguar">
                                                 </div>
                                                 <div class="form-group flex-1">
-                                                    <label for="editRestaurant{{ ordem }}Lng">Longitude{% if ordem == 1 %} <em>*</em>{% endif %}</label>
-                                                    <input type="text" inputmode="decimal" id="editRestaurant{{ ordem }}Lng" name="restaurante_{{ ordem }}_longitude" {% if ordem == 1 %}required{% endif %} value="{{ restaurante.longitude if restaurante else '' }}" class="input-potiguar">
+                                                    <label for="editRestaurant{{ ordem }}Lng">Longitude</label>
+                                                    <input type="text" inputmode="decimal" id="editRestaurant{{ ordem }}Lng" name="restaurante_{{ ordem }}_longitude" value="{{ restaurante.longitude if restaurante else '' }}" class="input-potiguar">
                                                 </div>
                                             </div>
                                         </div>
@@ -828,9 +828,6 @@
                     if (field) field.required = !isFood;
                 });
                 if (recipe) recipe.required = isFood;
-                foodFields.querySelectorAll('[name^="restaurante_1_"]').forEach(field => {
-                    field.required = isFood;
-                });
 
                 // No cadastro de uma comida, as quatro fotos fazem parte do modelo.
                 // Na edição não obrigamos novo upload, porque as fotos atuais podem ser mantidas.
