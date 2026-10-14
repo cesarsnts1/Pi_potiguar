@@ -1,20 +1,16 @@
 
-   .tribute-section {
+
+/* ========================================
+   SEÇÃO DE HOMENAGEM
+======================================== */
+
+.tribute-section {
     background: #5a2e1f;
     color: #f5e6d3;
-    padding: 80px ;
-
+    padding: 80px 20px;
     text-align: center;
 }
 
-
-.gallery-item + p {
-    margin-top: 40px;
-}
-
-.gallery-item + h2 {
-    margin-top: 60px;
-}
 .tribute-container {
     max-width: 800px;
     margin: 0 auto;
@@ -51,12 +47,13 @@
 }
 
 .btn-tribute {
-    
+    display: inline-block;
     text-decoration: none;
     background: #92400e;
     color: white;
     padding: 12px 35px;
     border-radius: 30px;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .btn-tribute:hover {
@@ -64,30 +61,56 @@
     transform: scale(1.03);
 }
 
-@media (max-width: 768px) {
-    .tribute-section h2 {
-        font-size: 2rem;
-    }
+/* ========================================
+   ESPAÇAMENTO DOS ELEMENTOS
+======================================== */
+
+.gallery-item + p {
+    margin-top: 40px;
 }
+
+.gallery-item + h2 {
+    margin-top: 60px;
+}
+
+/* ========================================
+   BANNER PRINCIPAL
+======================================== */
 
 .article-banner {
     position: relative;
     width: 100%;
-    height: 450px;
-    background: linear-gradient(rgba(102, 44, 9, 0.6), rgba(61, 43, 31, 0.85)), url("/static/img/recanto2.jpg") no-repeat center center;
+    min-height: 450px;
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            rgba(102, 44, 9, 0.6),
+            rgba(61, 43, 31, 0.85)
+        ),
+        url("/static/img/recanto2.jpg") no-repeat center center;
+
     background-size: cover;
+    background-position: center;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     text-align: center;
     color: #ffffff;
-    padding: 20px;
+    padding: 40px 20px;
+}
+
+.banner-title {
+    max-width: 900px;
+    width: 100%;
 }
 
 .banner-title h1 {
     font-size: 3rem;
     font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     margin-bottom: 10px;
 }
 
@@ -95,23 +118,43 @@
     font-size: 1.3rem;
     color: #fde68a;
     font-style: italic;
+    line-height: 1.6;
 }
+
+/* ========================================
+   CONTEÚDO DA REPORTAGEM
+======================================== */
 
 .reportage-container {
     max-width: 900px;
+    width: 100%;
+    box-sizing: border-box;
     margin: 40px auto;
     padding: 0 20px;
 }
+
+/* ========================================
+   INFORMAÇÕES DA REPORTAGEM
+======================================== */
 
 .meta-info {
     border-bottom: 2px solid #c18d6a;
     padding-bottom: 15px;
     margin-bottom: 30px;
+
     font-size: 0.9rem;
     color: #662c09;
+
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
+
+/* ========================================
+   TEXTO HISTÓRICO
+======================================== */
 
 .story-text {
     font-size: 1.15rem;
@@ -128,68 +171,42 @@
 .story-text h2 {
     color: #662c09;
     font-size: 1.8rem;
-    margin: 40px 0 20px 0;
+    line-height: 1.4;
+    margin: 40px 0 20px;
+
     border-left: 5px solid #c18d6a;
     padding-left: 15px;
 }
 
-/* Bloco de citação de moradores antigos (Dá tom de notícia/documentário) */
-.interview-quote {
-    background-color: #ebd9c5;
-    border-left: 4px solid #662c09;
-    padding: 20px;
-    margin: 30px 0;
-    font-style: italic;
-    border-radius: 0 8px 8px 0;
-}
-
-.interview-quote span {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-    color: #662c09;
-    font-style: normal;
-    font-size: 0.95rem;
-}
-
-/* Seção Multimídia: Galeria de Fotos Rústica */
-.media-section-title {
-    text-align: center;
-    color: #662c09;
-    margin: 60px 0 30px 0;
-    font-size: 2rem;
-    position: relative;
-}
-
-.media-section-title::after {
-    content: '';
-    display: block;
-    width: 80px;
-    height: 3px;
-    background: #c18d6a;
-    margin: 10px auto 0 auto;
-}
-
-.photo-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
+/* ========================================
+   GALERIA E BLOCOS DE MÍDIA
+======================================== */
 
 .gallery-item {
+    width: 100%;
+    box-sizing: border-box;
     background: #ffffff;
     padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    margin: 25px 0;
+
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     border: 1px solid #ebd9c5;
+
+    overflow: hidden;
 }
 
+/* IMAGENS DENTRO DO TEXTO E DA GALERIA */
+
 .gallery-item img {
+    display: block;
     width: 100%;
-    height: 200px;
+    height: 300px;
+
     object-fit: cover;
-    border-radius: 2px;
+    object-position: center;
+
+    border-radius: 4px;
     transition: transform 0.3s ease;
 }
 
@@ -197,60 +214,306 @@
     transform: scale(1.02);
 }
 
-.gallery-item p {
-    font-size: 0.85rem;
-    color: #662c09;
-    margin-top: 8px;
-    text-align: center;
-    font-style: italic;
+/* VÍDEOS DENTRO DO TEXTO E DA GALERIA */
+
+.gallery-item video,
+.story-text video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+
+    object-fit: contain;
+    background: #000000;
+
+    border-radius: 6px;
 }
 
-/* Seção Multimídia: Vídeos e Documentários */
+/* LEGENDAS DAS IMAGENS E DOS VÍDEOS */
+
+.gallery-item p {
+    font-size: 0.9rem;
+    color: #662c09;
+    margin: 10px 0 0;
+    text-align: center;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* ========================================
+   CITAÇÃO DOS MORADORES
+======================================== */
+
+.interview-quote {
+    background-color: #ebd9c5;
+    border-left: 4px solid #662c09;
+
+    padding: 20px;
+    margin: 30px 0;
+
+    font-style: italic;
+    line-height: 1.8;
+
+    border-radius: 0 8px 8px 0;
+}
+
+.interview-quote span {
+    display: block;
+    margin-top: 10px;
+
+    font-weight: bold;
+    color: #662c09;
+    font-style: normal;
+    font-size: 0.95rem;
+}
+
+/* ========================================
+   TÍTULOS DA SEÇÃO MULTIMÍDIA
+======================================== */
+
+.media-section-title {
+    text-align: center;
+    color: #662c09;
+
+    margin: 60px 0 30px;
+    font-size: 2rem;
+    line-height: 1.4;
+
+    position: relative;
+}
+
+.media-section-title::after {
+    content: "";
+    display: block;
+
+    width: 80px;
+    height: 3px;
+
+    background: #c18d6a;
+    margin: 10px auto 0;
+}
+
+/* ========================================
+   GALERIA DE FOTOS
+======================================== */
+
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+    margin-bottom: 40px;
+    align-items: start;
+}
+
+/* ========================================
+   VÍDEOS E DOCUMENTÁRIOS
+======================================== */
+
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
     gap: 25px;
     margin-bottom: 60px;
+    align-items: start;
 }
 
 .video-card {
+    min-width: 0;
+    box-sizing: border-box;
+
     background: #662c09;
     padding: 12px;
+
     border-radius: 8px;
     color: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
+
+/* CONTÊINER RESPONSIVO PARA VÍDEOS DO YOUTUBE */
 
 .video-wrapper {
     position: relative;
-    padding-bottom: 56.25%; /* Proporção 16:9 para vídeos */
-    height: 0;
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+    height: auto;
+
     overflow: hidden;
     border-radius: 4px;
+    background: #000000;
 }
 
 .video-wrapper iframe {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+
     width: 100%;
     height: 100%;
+
     border: none;
 }
 
+/* TÍTULO E DESCRIÇÃO DOS VÍDEOS */
+
 .video-card h4 {
     margin-top: 12px;
+    margin-bottom: 8px;
+
     font-size: 1.1rem;
+    line-height: 1.5;
     color: #fde68a;
 }
 
 .video-card p {
     font-size: 0.85rem;
+    line-height: 1.6;
+
     color: #ebd9c5;
     margin-top: 5px;
+    margin-bottom: 5px;
 }
 
+/* ========================================
+   RODAPÉ
+======================================== */
+
+footer {
+    text-align: center;
+    padding: 25px 20px;
+    background: #5a2e1f;
+    color: #f5e6d3;
+    line-height: 1.6;
+}
+
+/* ========================================
+   RESPONSIVIDADE PARA TABLETS
+======================================== */
+
 @media (max-width: 768px) {
-    .banner-title h1 { font-size: 2.2rem; }
-    .video-grid { grid-template-columns: 1fr; }
+
+    .tribute-section {
+        padding: 55px 20px;
+    }
+
+    .tribute-section h2 {
+        font-size: 2rem;
+    }
+
+    .tribute-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .article-banner {
+        min-height: 350px;
+        padding: 30px 15px;
+    }
+
+    .banner-title h1 {
+        font-size: 2.2rem;
+    }
+
+    .banner-title p {
+        font-size: 1.1rem;
+    }
+
+    .reportage-container {
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+
+    .story-text {
+        font-size: 1.05rem;
+    }
+
+    .story-text h2 {
+        font-size: 1.55rem;
+    }
+
+    .gallery-item img {
+        height: 250px;
+    }
+
+    .photo-gallery,
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .media-section-title {
+        font-size: 1.7rem;
+        margin-top: 45px;
+    }
+
+    .meta-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* ========================================
+   RESPONSIVIDADE PARA CELULARES
+======================================== */
+
+@media (max-width: 480px) {
+
+    .tribute-section {
+        padding: 40px 15px;
+    }
+
+    .article-banner {
+        min-height: 280px;
+        padding: 25px 15px;
+    }
+
+    .banner-title h1 {
+        font-size: 1.8rem;
+    }
+
+    .banner-title p {
+        font-size: 1rem;
+    }
+
+    .reportage-container {
+        padding: 0 12px;
+    }
+
+    .story-text {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .story-text h2 {
+        font-size: 1.35rem;
+        margin: 30px 0 15px;
+    }
+
+    .gallery-item {
+        padding: 7px;
+        margin: 20px 0;
+    }
+
+    .gallery-item img {
+        height: 220px;
+    }
+
+    .gallery-item video,
+    .story-text video {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .video-card {
+        padding: 9px;
+    }
+
+    .media-section-title {
+        font-size: 1.45rem;
+    }
+
+    .interview-quote {
+        padding: 15px;
+    }
 }
