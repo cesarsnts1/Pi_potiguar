@@ -120,9 +120,9 @@
             </p>
 
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
+                <img src="{{ url_for('static', filename='img/barraano.png') }}"
                      alt="Cotidiano da antiga Barra de Santana">
-                <p>O cotidiano da antiga Barra de Santana.</p>
+                <p>Ultimo ano novo na Velha Barra de Santana.</p>
             </div>
 
             <p>
@@ -168,11 +168,7 @@
                 buscando melhores condições para o reassentamento.
             </p>
 
-            <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
-                     alt="Primeiras manifestações">
-                <p>Primeiras manifestações.</p>
-            </div>
+           
 
             <p>
                 A principal reivindicação era que a Nova Barra de Santana fosse
@@ -201,9 +197,12 @@
             </p>
 
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/colagem.png') }}"
-                     alt="Saída das famílias de Barra de Santana">
-                <p>A saída das famílias da antiga Barra de Santana.</p>
+                <video controls preload="metadata">
+                    <source src="{{ url_for('static', filename='img/barra.mp4') }}"
+                            type="video/mp4">
+                    Seu navegador não suporta a reprodução de vídeos.
+                </video>
+                <p>Inicio das demoliçoes da Velha Barra .</p>
             </div>
 
             <p>
@@ -271,71 +270,34 @@
         <section class="photo-gallery">
 
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/recanto2.jpg') }}"
-                     alt="Antiga Capela">
-                <p>A histórica Capela de Santana antes das águas.</p>
+                <img src="{{ url_for('static', filename='img/capelanasaguas.jpg') }}"
+                     alt="Antiga Capela quase submersa">
+                <p>A histórica Capela de Santana depois das águas.</p>
             </div>
 
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/historia.jpg') }}"
+                <img src="{{ url_for('static', filename='img/bannersantana.jpg') }}"
                      alt="Casario Antigo">
-                <p>Fachadas do antigo casario da comunidade.</p>
+                <p>Banner da tradicional ferinha de santana</p>
             </div>
 
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/dunas.jpg') }}"
+                <img src="{{ url_for('static', filename='img/cavalgadavelha.jpg') }}"
                      alt="Área da barragem">
-                <p>Região do Seridó que hoje abriga o reservatório.</p>
+                <p>Ultima calavagada de santana na Velha Barra de santana</p>
             </div>
 
             <div class="gallery-item">
-                <img src="{{ url_for('static', filename='img/colagem.png') }}"
+                <img src="{{ url_for('static', filename='img/nvbarra.png') }}"
                      alt="Mudança dos moradores">
                 <p>Registros da transição e do cotidiano dos moradores.</p>
             </div>
 
         </section>
 
-        <!-- VÍDEOS E DOCUMENTÁRIOS -->
-        <h3 class="media-section-title">Registros em Vídeo e Documentários</h3>
+       
 
-        <section class="video-grid">
-
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <iframe
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                        title="Documentário Velha Barra"
-                        loading="lazy"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-
-                <h4>Memórias da Velha Barra - O Documentário</h4>
-                <p>
-                    Relatos dos moradores locais sobre a história da comunidade
-                    e os dias que antecederam a inundação.
-                </p>
-            </div>
-
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <iframe
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                        title="A Nova Barra de Santana"
-                        loading="lazy"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-
-                <h4>A Construção de um Novo Amanhã</h4>
-                <p>
-                    Registro em vídeo mostrando o surgimento da Nova Barra de
-                    Santana e a transferência das famílias.
-                </p>
-            </div>
-
-        </section>
+        
 
     </main>
 

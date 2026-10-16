@@ -88,7 +88,7 @@
             rgba(102, 44, 9, 0.6),
             rgba(61, 43, 31, 0.85)
         ),
-        url("/static/img/recanto2.jpg") no-repeat center center;
+        url("/static/img/logobarra.png") no-repeat center center;
 
     background-size: cover;
     background-position: center;
