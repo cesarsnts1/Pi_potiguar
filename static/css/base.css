@@ -31,7 +31,8 @@ header {
     display: flex;
     justify-content: space-between; /* Empurra a logo para a esquerda e o nav para a direita */
     align-items: center;
-    padding: 10px 8%; 
+    min-height: 84px;
+    padding: 10px 5%;
     background: #662c09;
     position: fixed;
     width: 100%;
@@ -52,7 +53,8 @@ header {
 }
 
 .logo img {
-    width: 250px;     
+    width: 220px;
+    max-width: 24vw;
     height: auto;     
     display: block;
     cursor: pointer; 
@@ -94,7 +96,7 @@ nav a:hover {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     color: #3d2b1f;
-    width: 180px;
+    width: clamp(120px, 14vw, 180px);
     transition: width 0.4s ease;
 }
 

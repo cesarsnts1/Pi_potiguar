@@ -847,9 +847,8 @@ def buscar():
         cursor.close()
         conn.close()
 
-    # buscar.html está dentro de templates/detalhes/
     return render_template(
-        'detalhes/buscar.html',
+        'buscar.html',
         termo=termo,
         resultados=resultados
     )

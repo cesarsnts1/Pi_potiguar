@@ -6,7 +6,7 @@ HOST = os.getenv("MYSQL_HOST", "localhost")
 PORT = int(os.getenv("MYSQL_PORT", "3306"))
 USER = os.getenv("MYSQL_USER", "root")
 PASSWORD = os.getenv("MYSQL_PASSWORD", "admin")
-#PASSWORD = os.getenv("MYSQL_PASSWORD", "icaro")
+PASSWORD = os.getenv("MYSQL_PASSWORD", "icaro")
 DATABASE = os.getenv("MYSQL_DATABASE", "pi_potiguar")
 
 AUTO_CREATE_DATABASE = os.getenv("AUTO_CREATE_DATABASE", "true").strip().lower() in {"1", "true", "yes", "sim"}
@@ -21,5 +21,5 @@ ADMIN_MATRICULAS = [
     os.getenv("ADMIN_MATRICULA_1", "20231101110023"),
     os.getenv("ADMIN_MATRICULA_2", "20231101110049"),
     os.getenv("ADMIN_MATRICULA_3", "20231101110015"),
-    os.getenv("ADMIN_MATRICULA_4", ""),
+    os.getenv("ADMIN_MATRICULA_4", "20221101110009"),
 ]
