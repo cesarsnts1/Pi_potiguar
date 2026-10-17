@@ -103,6 +103,21 @@ def garantir_tabela_sugestoes():
     """Cria a tabela de sugestões caso o banco já exista sem a migração nova."""
     conn = conectar()
     cursor = conn.cursor()
+    # Bancos parcialmente inicializados podem ainda n\u00e3o ter categorias.
+    # A tabela precisa existir antes de sugestoes declarar a chave estrangeira.
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS categorias (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nome VARCHAR(100) NOT NULL UNIQUE
+        )
+        """
+    )
+    for nome_categoria in ('Hist' + chr(243) + 'rico', 'Cultural', 'Comidas', 'Eventos'):
+        cursor.execute(
+            'INSERT IGNORE INTO categorias (nome) VALUES (%s)',
+            (nome_categoria,)
+        )
     cursor.execute(
         """
         CREATE TABLE IF NOT EXISTS sugestoes (

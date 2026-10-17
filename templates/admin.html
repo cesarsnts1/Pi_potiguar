@@ -914,6 +914,41 @@
         ['placeForm', 'editPlaceForm'].forEach(formId => {
             const form = document.getElementById(formId);
             if (!form) return;
+            if (formId === 'placeForm') {
+                const draftKey = 'memoria-potiguar-novo-lugar';
+                let savedDraft = '{}';
+                try {
+                    savedDraft = sessionStorage.getItem(draftKey) || '{}';
+                } catch (error) {
+                    // O formulário continua funcionando mesmo se o navegador bloquear o armazenamento.
+                }
+                try {
+                    const savedValues = JSON.parse(savedDraft);
+                    Array.from(form.elements).forEach(field => {
+                        if (!field.name || field.type === 'file' || !(field.name in savedValues)) return;
+                        field.value = savedValues[field.name];
+                    });
+                } catch (error) {
+                    // Ignora rascunhos inválidos e mantém o formulário disponível.
+                }
+                try {
+                    sessionStorage.removeItem(draftKey);
+                } catch (error) {
+                    // O armazenamento pode estar indisponível em alguns navegadores.
+                }
+
+                form.addEventListener('submit', () => {
+                    const values = {};
+                    Array.from(form.elements).forEach(field => {
+                        if (field.name && field.type !== 'file') values[field.name] = field.value;
+                    });
+                    try {
+                        sessionStorage.setItem(draftKey, JSON.stringify(values));
+                    } catch (error) {
+                        // O envio continua normalmente se o armazenamento do navegador estiver indisponível.
+                    }
+                });
+            }
             form.addEventListener('submit', () => {
                 const btn = form.querySelector('.btn-enviar-potiguar');
                 if (!btn) return;
