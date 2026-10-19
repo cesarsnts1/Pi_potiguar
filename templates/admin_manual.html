@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administra&ccedil;&atilde;o | Mem&oacute;ria Potiguar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+    <div class="admin-shell">
+        <aside class="admin-sidebar" id="adminSidebar">
+            <a href="{{ url_for('index') }}" class="admin-brand" aria-label="Voltar ao site">
+                <img src="{{ url_for('static', filename='img/logo5.png') }}" alt="Mem&oacute;ria Potiguar">
+            </a>
+            <div class="admin-user-card">
+                <div class="admin-avatar">{{ session.get('admin_matricula', 'A')[:1]|upper }}</div>
+                <div>
+                    <span>Administrador</span>
+                    <strong>{{ session.get('admin_matricula', 'Conta local') }}</strong>
+                </div>
+            </div>
+            <nav class="admin-menu" aria-label="Navega&ccedil;&atilde;o do painel">
+                <a class="admin-menu-item active" href="#conteudo-manual">
+                    <span class="menu-icon">M</span>
+                    <span>Conte&uacute;do manual</span>
+                </a>
+                <a class="admin-menu-item" href="{{ url_for('sugestao') }}">
+                    <span class="menu-icon">W</span>
+                    <span>Sugest&otilde;es em WIP</span>
+                </a>
+            </nav>
+            <div class="admin-sidebar-footer">
+                <a href="{{ url_for('index') }}">Voltar ao site</a>
+                <small>Mem&oacute;ria Potiguar - IFRN Caico</small>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button class="sidebar-toggle" type="button" id="sidebarToggle" aria-label="Abrir menu">&#9776;</button>
+                <div>
+                    <span class="topbar-kicker">PAINEL ADMINISTRATIVO</span>
+                    <h1>Conte&uacute;do manual</h1>
+                </div>
+                <a class="view-site-btn" href="{{ url_for('index') }}">Ver site <span>&#8599;</span></a>
+            </header>
+
+            <main class="admin-content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-stack">
+                            {% for category, message in messages %}
+                                <div class="admin-flash admin-flash-{{ category }}"><p>{{ message }}</p></div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <section class="dashboard-hero" id="conteudo-manual">
+                    <div>
+                        <span class="dashboard-eyebrow">MODO DE PUBLICA&Ccedil;&Atilde;O</span>
+                        <h2>Os lugares s&atilde;o p&aacute;ginas feitas manualmente</h2>
+                        <p>Este painel est&aacute; sem cadastro din&acirc;mico. As p&aacute;ginas existentes continuam no site; novos lugares s&atilde;o criados diretamente nos arquivos do projeto.</p>
+                    </div>
+                    <div class="manual-mode-badge"><span></span> Banco de dados desativado</div>
+                </section>
+
+                <div class="dashboard-grid">
+                    <section class="dashboard-card">
+                        <div class="dashboard-card-head">
+                            <div><span class="card-kicker">CONTE&Uacute;DO DO SITE</span><h3>P&aacute;ginas existentes</h3></div>
+                            <span class="card-total">{{ paginas|length }} p&aacute;ginas</span>
+                        </div>
+                        <div class="quick-actions">
+                            {% for titulo, url, descricao in paginas %}
+                                <a class="quick-action" href="{{ url }}">
+                                    <span class="quick-action-icon">&#8599;</span>
+                                    <span><strong>{{ titulo }}</strong><small>{{ descricao }}</small></span>
+                                    <b>&rsaquo;</b>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </section>
+
+                    <section class="dashboard-card">
+                        <div class="dashboard-card-head">
+                            <div><span class="card-kicker">COMO PUBLICAR</span><h3>Novo lugar</h3></div>
+                        </div>
+                        <div class="manual-steps">
+                            <p><strong>1.</strong> Crie a p&aacute;gina em <code>templates/detalhes/</code>.</p>
+                            <p><strong>2.</strong> Registre a rota e o t&iacute;tulo de busca em <code>app.py</code>.</p>
+                            <p><strong>3.</strong> Adicione o card na p&aacute;gina da categoria correspondente.</p>
+                        </div>
+                        <div class="wip-notice"><strong>WIP</strong><span>Cadastro, edi&ccedil;&atilde;o e sugest&otilde;es pelo painel est&atilde;o pausados.</span></div>
+                        <a class="view-site-btn manual-logout" href="{{ url_for('sair') }}">Sair da administra&ccedil;&atilde;o</a>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        const sidebar = document.getElementById('adminSidebar');
+        const toggle = document.getElementById('sidebarToggle');
+        toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+    </script>
+</body>
+</html>

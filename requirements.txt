@@ -1,34 +1,3 @@
 Flask>=2.3.0
 Werkzeug>=2.3.0
-mysql-connector-python>=8.0.0
 python-dotenv>=1.0.0
-Pillow>=10.0.0
-
-# ============================================================
-# COMO RODAR O PROJETO (WINDOWS)
-# ============================================================
-# 1) Criar ambiente virtual:
-#    py -m venv venv
-#
-# 2) Ativar:
-#    venv\Scripts\activate
-#
-# 3) Instalar dependências:
-#    pip install -r requirements.txt
-#
-# 4) Configurar o MySQL:
-#    - Copie .env.example para .env
-#    - MySQL local: mantenha AUTO_CREATE_DATABASE=true
-#    - MySQL online compartilhado: use os dados do provedor e
-#      AUTO_CREATE_DATABASE=false
-#    - Se o provedor exigir TLS, informe MYSQL_SSL_CA no .env
-#
-# 5) Criar/verificar tabelas:
-#    py createdb.py
-#
-# 6) Rodar o site:
-#    py app.py
-#
-# Para configurar um único banco compartilhado pela equipe, leia:
-#    BANCO_ONLINE.md
-# ============================================================
